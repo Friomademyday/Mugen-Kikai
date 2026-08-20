@@ -1,12 +1,16 @@
 import makeWASocket, { 
   DisconnectReason, 
-  useMultiFileAuthState, 
-  proto 
+  useMultiFileAuthState 
 } from '@whiskeysockets/baileys';
 import { Boom } from '@hapi/boom';
 import { CONFIG } from './config';
+import { commands } from './commands';
+import { connectDB } from './database/connect';
 
 async function startBot() {
+  
+  await connectDB();
+
   const { state, saveCreds } = await useMultiFileAuthState('baileys_auth_info');
 
   const sock = makeWASocket({
@@ -20,9 +24,7 @@ async function startBot() {
     const { connection, lastDisconnect } = update;
     if (connection === 'close') {
       const shouldReconnect = (lastDisconnect?.error as Boom)?.output?.statusCode !== DisconnectReason.loggedOut;
-      if (shouldReconnect) {
-        startBot();
-      }
+      if (shouldReconnect) startBot();
     } else if (connection === 'open') {
       console.log('Mugen Kikai MD connected successfully!');
     }
@@ -33,24 +35,39 @@ async function startBot() {
     if (!msg.message || msg.key.fromMe) return;
 
     const from = msg.key.remoteJid || '';
+    const sender = msg.key.participant || msg.key.remoteJid || '';
+    const isGroup = from.endsWith('@g.us');
+
     const messageContent = 
       msg.message.conversation || 
       msg.message.extendedTextMessage?.text || 
       '';
 
-    
     if (!messageContent.startsWith(CONFIG.prefix)) return;
-
 
     const args = messageContent.slice(CONFIG.prefix.length).trim().split(/ +/);
     const commandName = args.shift()?.toLowerCase();
 
-    
-    if (commandName === 'ping') {
-      const start = Date.now();
-      await sock.sendMessage(from, { text: 'Testing speed...' }, { quoted: msg });
-      const latency = Date.now() - start;
-      await sock.sendMessage(from, { text: `Pong! Latency is ${latency}ms` }, { quoted: msg });
+    if (!commandName) return;
+
+    const targetCommand = commands.get(commandName);
+
+    if (targetCommand) {
+      try {
+        await targetCommand.execute({
+          sock,
+          msg,
+          from,
+          sender,
+          args,
+          command: commandName,
+          text: args.join(' '),
+          isGroup
+        });
+      } catch (error) {
+        console.error(`Error executing ${commandName}:`, error);
+        await sock.sendMessage(from, { text: 'An error occurred while executing that command!' }, { quoted: msg });
+      }
     }
   });
 }
