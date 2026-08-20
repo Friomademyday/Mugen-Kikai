@@ -1,1 +1,33 @@
-
+{
+  "name": "mugen-kikai-md",
+  "version": "1.0.0",
+  "description": "Modular WhatsApp RPG & Economy Bot built with TypeScript and MongoDB",
+  "main": "dist/index.js",
+  "type": "commonjs",
+  "scripts": {
+    "build": "tsc",
+    "start": "node dist/index.js",
+    "dev": "ts-node-dev --respawn --transpile-only src/index.ts"
+  },
+  "keywords": [
+    "whatsapp-bot",
+    "baileys",
+    "typescript",
+    "rpg",
+    "economy"
+  ],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@whiskeysockets/baileys": "^6.7.24",
+    "dotenv": "^16.4.5",
+    "mongoose": "^8.9.5",
+    "pino": "^8.20.0",
+    "qrcode-terminal": "^0.12.0"
+  },
+  "devDependencies": {
+    "@types/node": "^20.12.7",
+    "ts-node-dev": "^2.0.0",
+    "typescript": "^5.4.5"
+  }
+}
