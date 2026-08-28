@@ -1,5 +1,5 @@
 import { Command } from '../types/command';
-import { User, IUser } from '../database/models/User';
+import { User } from '../database/models/User';
 
 const getTargetJid = (ctx: any): string | null => {
   if (ctx.msg.message?.extendedTextMessage?.contextInfo?.mentionedJid?.length) {
@@ -26,12 +26,13 @@ export const economyCommands: Command[] = [
         return;
       }
 
-      user.wallet += 5000;
+      const bonus = Math.floor(Math.random() * (75000 - 24000 + 1)) + 24000;
+      user.wallet += bonus;
       user.custom01 = true;
       await user.save();
 
       await ctx.sock.sendMessage(ctx.from, {
-        text: `▬▬▬▬▬▬▬▬▬▬ ⬩ 𝗘 𝗖 𝗢 𝗡 𝗢 𝗠 𝗬\n\n🎉 *STARTER PACK CLAIMED!*\n\n💵 Added: *+$5,000*\n👛 Wallet Balance: *$${user.wallet.toLocaleString()}*`
+        text: `▬▬▬▬▬▬▬▬▬▬ ⬩ 𝗘 𝗖 𝗢 𝗡 𝗢 𝗠 𝗬\n\n🎉 *STARTER PACK CLAIMED!*\n\n Added: *+🪙${bonus.toLocaleString()}*\n👛 Wallet Balance: *🪙${user.wallet.toLocaleString()}*`
       }, { quoted: ctx.msg });
     }
   },
@@ -64,7 +65,7 @@ export const economyCommands: Command[] = [
       await user.save();
 
       await ctx.sock.sendMessage(ctx.from, {
-        text: `▬▬▬▬▬▬▬▬▬▬ ⬩ 𝗘 𝗖 𝗢 𝗡 𝗢 𝗠 𝗬\n\n☀️ *DAILY ALLOWANCE*\n\n💵 Reward: *+$${reward.toLocaleString()}*\n👛 Wallet Balance: *$${user.wallet.toLocaleString()}*`
+        text: `▬▬▬▬▬▬▬▬▬▬ ⬩ 𝗘 𝗖 𝗢 𝗡 𝗢 𝗠 𝗬\n\n☀️ *DAILY ALLOWANCE*\n\n Reward: *+🪙${reward.toLocaleString()}*\n👛 Wallet Balance: *🪙${user.wallet.toLocaleString()}*`
       }, { quoted: ctx.msg });
     }
   },
@@ -79,7 +80,7 @@ export const economyCommands: Command[] = [
       const total = user.wallet + user.bank;
 
       await ctx.sock.sendMessage(ctx.from, {
-        text: `▬▬▬▬▬▬▬▬▬▬ ⬩ 𝗘 𝗖 𝗢 𝗡 𝗢 𝗠 𝗬\n\n💳 *FINANCIAL STATEMENT*\n\n👛 Wallet: *$${user.wallet.toLocaleString()}*\n🏛️ Bank: *$${user.bank.toLocaleString()}*\n💎 Net Worth: *$${total.toLocaleString()}*`
+        text: `▬▬▬▬▬▬▬▬▬▬ ⬩ 𝗘 𝗖 𝗢 𝗡 𝗢 𝗠 𝗬\n\n💳 *FINANCIAL STATEMENT*\n\n👛 Wallet: *🪙${user.wallet.toLocaleString()}*\n🏛️ Bank: *🪙${user.bank.toLocaleString()}*\n💎 Net Worth: *🪙${total.toLocaleString()}*`
       }, { quoted: ctx.msg });
     }
   },
@@ -120,7 +121,7 @@ export const economyCommands: Command[] = [
       await user.save();
 
       await ctx.sock.sendMessage(ctx.from, {
-        text: `▬▬▬▬▬▬▬▬▬▬ ⬩ 𝗘 𝗖 𝗢 𝗡 𝗢 𝗠 𝗬\n\n🏛️ *BANK DEPOSIT*\n\n📥 Deposited: *$${amount.toLocaleString()}*\n👛 Wallet: *$${user.wallet.toLocaleString()}*\n🏦 Bank: *$${user.bank.toLocaleString()}*`
+        text: `▬▬▬▬▬▬▬▬▬▬ ⬩ 𝗘 𝗖 𝗢 𝗡 𝗢 𝗠 𝗬\n\n🏛️ *BANK DEPOSIT*\n\n📥 Deposited: *🪙${amount.toLocaleString()}*\n👛 Wallet: *🪙${user.wallet.toLocaleString()}*\n🏦 Bank: *🪙${user.bank.toLocaleString()}*`
       }, { quoted: ctx.msg });
     }
   },
@@ -161,7 +162,7 @@ export const economyCommands: Command[] = [
       await user.save();
 
       await ctx.sock.sendMessage(ctx.from, {
-        text: `▬▬▬▬▬▬▬▬▬▬ ⬩ 𝗘 𝗖 𝗢 𝗡 𝗢 𝗠 𝗬\n\n📤 *BANK WITHDRAWAL*\n\n💸 Withdrawn: *$${amount.toLocaleString()}*\n👛 Wallet: *$${user.wallet.toLocaleString()}*\n🏦 Bank: *$${user.bank.toLocaleString()}*`
+        text: `▬▬▬▬▬▬▬▬▬▬ ⬩ 𝗘 𝗖 𝗢 𝗡 𝗢 𝗠 𝗬\n\n📤 *BANK WITHDRAWAL*\n\n💸 Withdrawn: *🪙${amount.toLocaleString()}*\n👛 Wallet: *🪙${user.wallet.toLocaleString()}*\n🏦 Bank: *🪙${user.bank.toLocaleString()}*`
       }, { quoted: ctx.msg });
     }
   },
@@ -204,7 +205,7 @@ export const economyCommands: Command[] = [
       await targetUser.save();
 
       await ctx.sock.sendMessage(ctx.from, {
-        text: `▬▬▬▬▬▬▬▬▬▬ ⬩ 𝗘 𝗖 𝗢 𝗡 𝗢 𝗠 𝗬\n\n💸 *TRANSFER EXECUTED*\n\n📤 Sent: *$${amount.toLocaleString()}*\n👤 Recipient: @${targetJid.split('@')[0]}`,
+        text: `▬▬▬▬▬▬▬▬▬▬ ⬩ 𝗘 𝗖 𝗢 𝗡 𝗢 𝗠 𝗬\n\n💸 *TRANSFER EXECUTED*\n\n📤 Sent: *🪙${amount.toLocaleString()}*\n👤 Recipient: @${targetJid.split('@')[0]}`,
         mentions: [targetJid]
       }, { quoted: ctx.msg });
     }
@@ -231,12 +232,12 @@ export const economyCommands: Command[] = [
       const victim = await User.getOrCreate(victimJid);
 
       if (victim.wallet < 1000) {
-        await ctx.sock.sendMessage(ctx.from, { text: `❌ Target is too broke to rob! (Requires min $1,000 in wallet)` }, { quoted: ctx.msg });
+        await ctx.sock.sendMessage(ctx.from, { text: `❌ Target is too broke to rob! (Requires min 🪙1,000 in wallet)` }, { quoted: ctx.msg });
         return;
       }
 
       if (robber.wallet < 500) {
-        await ctx.sock.sendMessage(ctx.from, { text: `❌ You need at least $500 in your wallet to risk a robbery!` }, { quoted: ctx.msg });
+        await ctx.sock.sendMessage(ctx.from, { text: `❌ You need at least 🪙500 in your wallet to risk a robbery!` }, { quoted: ctx.msg });
         return;
       }
 
@@ -253,7 +254,7 @@ export const economyCommands: Command[] = [
         await robber.save();
 
         await ctx.sock.sendMessage(ctx.from, {
-          text: `▬▬▬▬▬▬▬▬▬▬ ⬩ 𝗘 𝗖 𝗢 𝗡 𝗢 𝗠 𝗬\n\n🗡️ *ROBBERY SUCCESSFUL*\n\n💰 Stolen: *$${stolen.toLocaleString()}*\n👤 Target: @${victimJid.split('@')[0]}`,
+          text: `▬▬▬▬▬▬▬▬▬▬ ⬩ 𝗘 𝗖 𝗢 𝗡 𝗢 𝗠 𝗬\n\n🗡️ *ROBBERY SUCCESSFUL*\n\n💰 Stolen: *🪙${stolen.toLocaleString()}*\n👤 Target: @${victimJid.split('@')[0]}`,
           mentions: [victimJid]
         }, { quoted: ctx.msg });
       } else {
@@ -262,7 +263,7 @@ export const economyCommands: Command[] = [
         await robber.save();
 
         await ctx.sock.sendMessage(ctx.from, {
-          text: `▬▬▬▬▬▬▬▬▬▬ ⬩ 𝗘 𝗖 𝗢 𝗡 𝗢 𝗠 𝗬\n\n🚨 *ROBBERY FAILED*\n\n🚔 You got caught by enforcement!\n📉 Penalty Paid: *-$${penalty.toLocaleString()}*`
+          text: `▬▬▬▬▬▬▬▬▬▬ ⬩ 𝗘 𝗖 𝗢 𝗡 𝗢 𝗠 𝗬\n\n🚨 *ROBBERY FAILED*\n\n🚔 You got caught by enforcement!\n📉 Penalty Paid: *-🪙${penalty.toLocaleString()}*`
         }, { quoted: ctx.msg });
       }
     }
@@ -288,14 +289,14 @@ export const economyCommands: Command[] = [
       }
 
       if (robber.wallet < 10000) {
-        await ctx.sock.sendMessage(ctx.from, { text: `❌ You need at least $10,000 in your wallet to pull off a heavy heist!` }, { quoted: ctx.msg });
+        await ctx.sock.sendMessage(ctx.from, { text: `❌ You need at least 🪙10,000 in your wallet to pull off a heavy heist!` }, { quoted: ctx.msg });
         return;
       }
 
       const victim = await User.getOrCreate(victimJid);
 
       if (victim.wallet < 25000) {
-        await ctx.sock.sendMessage(ctx.from, { text: `❌ Target wallet must contain at least $25,000!` }, { quoted: ctx.msg });
+        await ctx.sock.sendMessage(ctx.from, { text: `❌ Target wallet must contain at least 🪙25,000!` }, { quoted: ctx.msg });
         return;
       }
 
@@ -312,7 +313,7 @@ export const economyCommands: Command[] = [
         await robber.save();
 
         await ctx.sock.sendMessage(ctx.from, {
-          text: `▬▬▬▬▬▬▬▬▬▬ ⬩ 𝗘 𝗖 𝗢 𝗡 𝗢 𝗠 𝗬\n\n💥 *HEAVY HEIST SUCCESSFUL*\n\n💎 Escaped With: *$${stolen.toLocaleString()}*\n👤 Target: @${victimJid.split('@')[0]}`,
+          text: `▬▬▬▬▬▬▬▬▬▬ ⬩ 𝗘 𝗖 𝗢 𝗡 𝗢 𝗠 𝗬\n\n💥 *HEAVY HEIST SUCCESSFUL*\n\n💎 Escaped With: *🪙${stolen.toLocaleString()}*\n👤 Target: @${victimJid.split('@')[0]}`,
           mentions: [victimJid]
         }, { quoted: ctx.msg });
       } else {
@@ -323,7 +324,7 @@ export const economyCommands: Command[] = [
         await robber.save();
 
         await ctx.sock.sendMessage(ctx.from, {
-          text: `▬▬▬▬▬▬▬▬▬▬ ⬩ 𝗘 𝗖 𝗢 𝗡 𝗢 𝗠 𝗬\n\n💥 *HEAVY HEIST CRASHED*\n\n🚓 High Command seized your assets!\n📉 Total Loss: *-$${penalty.toLocaleString()}*`
+          text: `▬▬▬▬▬▬▬▬▬▬ ⬩ 𝗘 𝗖 𝗢 𝗡 𝗢 𝗠 𝗬\n\n💥 *HEAVY HEIST CRASHED*\n\n🚓 High Command seized your assets!\n📉 Total Loss: *-🪙${penalty.toLocaleString()}*`
         }, { quoted: ctx.msg });
       }
     }
@@ -347,7 +348,7 @@ export const economyCommands: Command[] = [
       await user.save();
 
       await ctx.sock.sendMessage(ctx.from, {
-        text: `▬▬▬▬▬▬▬▬▬▬ ⬩ 𝗘 𝗖 𝗢 𝗡 𝗢 𝗠 𝗬\n\n🏦 *EMERGENCY LOAN ISSUED*\n\n💵 Amount: *$${loanAmount.toLocaleString()}*\n📌 Repayment recorded in registry.`
+        text: `▬▬▬▬▬▬▬▬▬▬ ⬩ 𝗘 𝗖 𝗢 𝗡 𝗢 𝗠 𝗬\n\n🏦 *EMERGENCY LOAN ISSUED*\n\n Amount: *🪙${loanAmount.toLocaleString()}*\n📌 Repayment recorded in registry.`
       }, { quoted: ctx.msg });
     }
   }
