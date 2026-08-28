@@ -32,19 +32,19 @@ export const gambleCommands: Command[] = [
         return;
       }
 
-      const win = Math.random() >= 0.55;
+      const win = Math.random() < 0.37;
       
       if (win) {
         user.wallet += bet;
         await user.save();
         await ctx.sock.sendMessage(ctx.from, {
-          text: `▬▬▬▬▬▬▬▬▬▬ ⬩ 𝗚 𝗔 𝗠 𝗕 𝗟 𝗜 𝗡 𝗚\n\n🎲 *RISK ARENA: VICTORY*\n\n📈 Profit: *+$${bet.toLocaleString()}*\n👛 Wallet: *$${user.wallet.toLocaleString()}*`
+          text: `▬▬▬▬▬▬▬▬▬▬ ⬩ 𝗚 𝗔 𝗠 𝗕 𝗟 𝗜 𝗡 𝗚\n\n🎲 *RISK ARENA: VICTORY*\n\n📈 Profit: *+🪙${bet.toLocaleString()}*\n👛 Wallet: *🪙${user.wallet.toLocaleString()}*`
         }, { quoted: ctx.msg });
       } else {
         user.wallet -= bet;
         await user.save();
         await ctx.sock.sendMessage(ctx.from, {
-          text: `▬▬▬▬▬▬▬▬▬▬ ⬩ 𝗚 𝗔 𝗠 𝗕 𝗟 𝗜 𝗡 𝗚\n\n🎲 *RISK ARENA: DEFEAT*\n\n📉 Lost: *-$${bet.toLocaleString()}*\n👛 Wallet: *$${user.wallet.toLocaleString()}*`
+          text: `▬▬▬▬▬▬▬▬▬▬ ⬩ 𝗚 𝗔 𝗠 𝗕 𝗟 𝗜 𝗡 𝗚\n\n🎲 *RISK ARENA: DEFEAT*\n\n📉 Lost: *-🪙${bet.toLocaleString()}*\n👛 Wallet: *🪙${user.wallet.toLocaleString()}*`
         }, { quoted: ctx.msg });
       }
     }
@@ -77,20 +77,20 @@ export const gambleCommands: Command[] = [
         return;
       }
 
-      const outcome = Math.random() < 0.5 ? 'heads' : 'tails';
-      const won = choice === outcome;
+      const win = Math.random() < 0.37;
+      const outcome = win ? choice : (choice === 'heads' ? 'tails' : 'heads');
 
-      if (won) {
+      if (win) {
         user.wallet += bet;
         await user.save();
         await ctx.sock.sendMessage(ctx.from, {
-          text: `▬▬▬▬▬▬▬▬▬▬ ⬩ 𝗚 𝗔 𝗠 𝗕 𝗟 𝗜 𝗡 𝗚\n\n🪙 *COIN FLIP*\n\nResult: *${outcome.toUpperCase()}*\n✨ Prediction Matched!\n📈 Won: *+$${bet.toLocaleString()}*`
+          text: `▬▬▬▬▬▬▬▬▬▬ ⬩ 𝗚 𝗔 𝗠 𝗕 𝗟 𝗜 𝗡 𝗚\n\n🪙 *COIN FLIP*\n\nResult: *${outcome.toUpperCase()}*\n✨ Prediction Matched!\n📈 Won: *+🪙${bet.toLocaleString()}*`
         }, { quoted: ctx.msg });
       } else {
         user.wallet -= bet;
         await user.save();
         await ctx.sock.sendMessage(ctx.from, {
-          text: `▬▬▬▬▬▬▬▬▬▬ ⬩ 𝗚 𝗔 𝗠 𝗕 𝗟 𝗜 𝗡 𝗚\n\n🪙 *COIN FLIP*\n\nResult: *${outcome.toUpperCase()}*\n💥 Failed Prediction!\n📉 Lost: *-$${bet.toLocaleString()}*`
+          text: `▬▬▬▬▬▬▬▬▬▬ ⬩ 𝗚 𝗔 𝗠 𝗕 𝗟 𝗜 𝗡 𝗚\n\n🪙 *COIN FLIP*\n\nResult: *${outcome.toUpperCase()}*\n💥 Failed Prediction!\n📉 Lost: *-🪙${bet.toLocaleString()}*`
         }, { quoted: ctx.msg });
       }
     }
@@ -117,15 +117,22 @@ export const gambleCommands: Command[] = [
       }
 
       const items = ['🎰', '💎', '👑', '7️⃣', '🔥', '💥'];
-      const r1 = items[Math.floor(Math.random() * items.length)];
-      const r2 = items[Math.floor(Math.random() * items.length)];
-      const r3 = items[Math.floor(Math.random() * items.length)];
-
+      const isWin = Math.random() < 0.37;
+      
+      let r1: string, r2: string, r3: string;
       let multiplier = 0;
-      if (r1 === r2 && r2 === r3) {
-        multiplier = 5;
-      } else if (r1 === r2 || r2 === r3 || r1 === r3) {
-        multiplier = 2;
+
+      if (isWin) {
+        const symbol = items[Math.floor(Math.random() * items.length)];
+        r1 = symbol;
+        r2 = symbol;
+        r3 = Math.random() < 0.2 ? symbol : items[Math.floor(Math.random() * items.length)];
+        multiplier = (r1 === r2 && r2 === r3) ? 5 : 2;
+      } else {
+        r1 = items[0];
+        r2 = items[1];
+        r3 = items[2];
+        multiplier = 0;
       }
 
       if (multiplier > 0) {
@@ -133,13 +140,13 @@ export const gambleCommands: Command[] = [
         user.wallet += reward;
         await user.save();
         await ctx.sock.sendMessage(ctx.from, {
-          text: `▬▬▬▬▬▬▬▬▬▬ ⬩ 𝗚 𝗔 𝗠 𝗕 𝗟 𝗜 𝗡 𝗚\n\n[ ${r1} | ${r2} | ${r3} ]\n\n🎉 *JACKPOT ALIGNMENT!*\nMultiplier: *${multiplier}x*\n📈 Won: *+$${reward.toLocaleString()}*`
+          text: `▬▬▬▬▬▬▬▬▬▬ ⬩ 𝗚 𝗔 𝗠 𝗕 𝗟 𝗜 𝗡 𝗚\n\n[ ${r1} | ${r2} | ${r3} ]\n\n🎉 *JACKPOT ALIGNMENT!*\nMultiplier: *${multiplier}x*\n📈 Won: *+🪙${reward.toLocaleString()}*`
         }, { quoted: ctx.msg });
       } else {
         user.wallet -= bet;
         await user.save();
         await ctx.sock.sendMessage(ctx.from, {
-          text: `▬▬▬▬▬▬▬▬▬▬ ⬩ 𝗚 𝗔 𝗠 𝗕 𝗟 𝗜 𝗡 𝗚\n\n[ ${r1} | ${r2} | ${r3} ]\n\n💥 *NO MATCH*\n📉 Lost: *-$${bet.toLocaleString()}*`
+          text: `▬▬▬▬▬▬▬▬▬▬ ⬩ 𝗚 𝗔 𝗠 𝗕 𝗟 𝗜 𝗡 𝗚\n\n[ ${r1} | ${r2} | ${r3} ]\n\n💥 *NO MATCH*\n📉 Lost: *-🪙${bet.toLocaleString()}*`
         }, { quoted: ctx.msg });
       }
     }
@@ -166,20 +173,28 @@ export const gambleCommands: Command[] = [
         return;
       }
 
-      const playerRoll = Math.floor(Math.random() * 6) + 1;
-      const botRoll = Math.floor(Math.random() * 6) + 1;
+      const isWin = Math.random() < 0.37;
+      let playerRoll: number, botRoll: number;
+
+      if (isWin) {
+        playerRoll = Math.floor(Math.random() * 3) + 4;
+        botRoll = Math.floor(Math.random() * 3) + 1;
+      } else {
+        playerRoll = Math.floor(Math.random() * 3) + 1;
+        botRoll = Math.floor(Math.random() * 3) + 4;
+      }
 
       if (playerRoll > botRoll) {
         user.wallet += bet;
         await user.save();
         await ctx.sock.sendMessage(ctx.from, {
-          text: `▬▬▬▬▬▬▬▬▬▬ ⬩ 𝗚 𝗔 𝗠 𝗕 𝗟 𝗜 𝗡 𝗚\n\n🎲 You: *${playerRoll}* | 🤖 House: *${botRoll}*\n\n📈 *VICTORY!*\nProfit: *+$${bet.toLocaleString()}*`
+          text: `▬▬▬▬▬▬▬▬▬▬ ⬩ 𝗚 𝗔 𝗠 𝗕 𝗟 𝗜 𝗡 𝗚\n\n🎲 You: *${playerRoll}* | 🤖 House: *${botRoll}*\n\n📈 *VICTORY!*\nProfit: *+🪙${bet.toLocaleString()}*`
         }, { quoted: ctx.msg });
       } else {
         user.wallet -= bet;
         await user.save();
         await ctx.sock.sendMessage(ctx.from, {
-          text: `▬▬▬▬▬▬▬▬▬▬ ⬩ 𝗚 𝗔 𝗠 𝗕 𝗟 𝗜 𝗡 𝗚\n\n🎲 You: *${playerRoll}* | 🤖 House: *${botRoll}*\n\n📉 *DEFEAT!*\nLost: *-$${bet.toLocaleString()}*`
+          text: `▬▬▬▬▬▬▬▬▬▬ ⬩ 𝗚 𝗔 𝗠 𝗕 𝗟 𝗜 𝗡 𝗚\n\n🎲 You: *${playerRoll}* | 🤖 House: *${botRoll}*\n\n📉 *DEFEAT!*\nLost: *-🪙${bet.toLocaleString()}*`
         }, { quoted: ctx.msg });
       }
     }
@@ -206,22 +221,25 @@ export const gambleCommands: Command[] = [
         return;
       }
 
-      const pScore = Math.floor(Math.random() * 7) + 15;
-      const dScore = Math.floor(Math.random() * 7) + 15;
+      const isWin = Math.random() < 0.37;
+      let pScore: number, dScore: number;
+
+      if (isWin) {
+        pScore = 20;
+        dScore = 17;
+      } else {
+        pScore = 17;
+        dScore = 20;
+      }
 
       let msg = `♠️ *BLACKJACK TABLE*\n\nYour Hand: *${pScore}*\nDealer Hand: *${dScore}*\n\n`;
 
-      if (pScore > 21) {
-        user.wallet -= bet;
-        msg += `💥 *BUST!* Lost *-$${bet.toLocaleString()}*`;
-      } else if (dScore > 21 || pScore > dScore) {
+      if (pScore > dScore) {
         user.wallet += bet;
-        msg += `📈 *DEALER BEATEN!* Won *+$${bet.toLocaleString()}*`;
-      } else if (pScore === dScore) {
-        msg += `⚖️ *PUSH!* Stakes returned.`;
+        msg += `📈 *DEALER BEATEN!* Won *+🪙${bet.toLocaleString()}*`;
       } else {
         user.wallet -= bet;
-        msg += `📉 *DEALER WINS!* Lost *-$${bet.toLocaleString()}*`;
+        msg += `📉 *DEALER WINS!* Lost *-🪙${bet.toLocaleString()}*`;
       }
 
       await user.save();
@@ -255,24 +273,28 @@ export const gambleCommands: Command[] = [
         return;
       }
 
-      const roll = Math.floor(Math.random() * 37);
-      let landedColor = 'black';
-      if (roll === 0) landedColor = 'green';
-      else if (roll % 2 === 0) landedColor = 'red';
+      const isWin = Math.random() < 0.37;
+      let landedColor = color;
+      let roll = 10;
 
-      if (color === landedColor) {
+      if (!isWin) {
+        landedColor = color === 'red' ? 'black' : 'red';
+        roll = 11;
+      }
+
+      if (isWin) {
         const mult = landedColor === 'green' ? 14 : 2;
         const reward = bet * mult;
         user.wallet += reward;
         await user.save();
         await ctx.sock.sendMessage(ctx.from, {
-          text: `▬▬▬▬▬▬▬▬▬▬ ⬩ 𝗚 𝗔 𝗠 𝗕 𝗟 𝗜 𝗡 𝗚\n\n🎡 Wheel Landed: *${roll} (${landedColor.toUpperCase()})*\n\n🎯 *WINNER!*\nProfit: *+$${reward.toLocaleString()}*`
+          text: `▬▬▬▬▬▬▬▬▬▬ ⬩ 𝗚 𝗔 𝗠 𝗕 𝗟 𝗜 𝗡 𝗚\n\n🎡 Wheel Landed: *${roll} (${landedColor.toUpperCase()})*\n\n🎯 *WINNER!*\nProfit: *+🪙${reward.toLocaleString()}*`
         }, { quoted: ctx.msg });
       } else {
         user.wallet -= bet;
         await user.save();
         await ctx.sock.sendMessage(ctx.from, {
-          text: `▬▬▬▬▬▬▬▬▬▬ ⬩ 𝗚 𝗔 𝗠 𝗕 𝗟 𝗜 𝗡 𝗚\n\n🎡 Wheel Landed: *${roll} (${landedColor.toUpperCase()})*\n\n💥 *NO HIT*\nLost: *-$${bet.toLocaleString()}*`
+          text: `▬▬▬▬▬▬▬▬▬▬ ⬩ 𝗚 𝗔 𝗠 𝗕 𝗟 𝗜 𝗡 𝗚\n\n🎡 Wheel Landed: *${roll} (${landedColor.toUpperCase()})*\n\n💥 *NO HIT*\nLost: *-🪙${bet.toLocaleString()}*`
         }, { quoted: ctx.msg });
       }
     }
