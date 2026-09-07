@@ -57,7 +57,7 @@ export const leaderboardCommands: Command[] = [
       caption += `*─────────────────────────*\n`;
       caption += `✨ *Note:* Unlimited reserves are restricted from competition.`;
 
-      const leaderboardImagePath = './assets/leaderboard.jpg';
+      const leaderboardImagePath = './assets/lb.jpg';
 
       try {
         await ctx.sock.sendMessage(ctx.from, {
