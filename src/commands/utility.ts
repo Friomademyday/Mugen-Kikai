@@ -18,7 +18,7 @@ export const menuCommand: Command = {
   execute: async ({ sock, from }: CommandContext) => {
     const caption = await getFormattedMenu();
 
-    if (fs.existsSync(MENU_IMAGE_PATH)) {
+    if (MENU_IMAGE_PATH && fs.existsSync(MENU_IMAGE_PATH)) {
       await sock.sendMessage(from, {
         image: { url: MENU_IMAGE_PATH },
         caption
