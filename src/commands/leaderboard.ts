@@ -26,8 +26,6 @@ export const leaderboardCommands: Command[] = [
         return;
       }
 
-      const senderPushName = ctx.msg.pushName || 'Unknown Operator';
-
       let caption = `▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬\n`;
       caption += `🏛️   *𝗙 𝗥 𝗜 𝗢 𝗩 𝗘 𝗥 𝗦 𝗘   𝗥 𝗜 𝗖 𝗛 𝗘 𝗦 𝗧*\n`;
       caption += `*──────── Vault Reserves Ranking ────────*\n\n`;
@@ -36,12 +34,7 @@ export const leaderboardCommands: Command[] = [
         const u = topUsers[i];
         const rank = i + 1;
         const bankVal = formatNum(u.bank);
-
-        let displayName = ctx.sender === u.jid ? senderPushName : 'Anonymized Titan';
-
-        if (ctx.sender === u.jid && ctx.msg.pushName) {
-          displayName = ctx.msg.pushName;
-        }
+        const displayName = u.pushName || 'Anonymous Titan';
 
         if (rank === 1) {
           caption += `🥇  *─── 𝗡 𝗢 . 𝟭   𝗚 𝗢 𝗟 𝗗 ───*\n`;
