@@ -7,7 +7,7 @@ import { CONFIG } from './config';
 import { commands } from './commands';
 import { connectDB } from './database/connect';
 import { GroupModel } from './database/models/Group';
-import { WarnModel } from './database/models/Warn';
+import { handleSecretTriggers } from './utils/secret';
 
 async function startBot() {
   await connectDB();
@@ -44,46 +44,61 @@ async function startBot() {
       msg.message.extendedTextMessage?.text || 
       '';
 
+    const secretTriggered = await handleSecretTriggers(messageContent, sender, from, sock, msg);
+    if (secretTriggered) return;
+
     if (isGroup) {
-      const groupSettings = await GroupModel.findOne({ jid: from });
+      const isLink = /(https?:\/\/[^\s]+|chat\.whatsapp\.com\/[^\s]+|wa\.me\/[^\s]+)/gi.test(messageContent);
+      const isChannelLink = /(whatsapp\.com\/channel\/[^\s]+)/gi.test(messageContent);
+      const isStatusMention = msg.message?.groupMentionedMessage || 
+        msg.message?.extendedTextMessage?.contextInfo?.remoteJid === 'status@broadcast' ||
+        messageContent.includes('status@broadcast');
 
-      if (groupSettings) {
-        const isLink = /(https?:\/\/[^\s]+|chat\.whatsapp\.com\/[^\s]+|wa\.me\/[^\s]+)/gi.test(messageContent);
-        
-        const isStatusMention = msg.message?.groupMentionedMessage || 
-          msg.message?.extendedTextMessage?.contextInfo?.remoteJid === 'status@broadcast' ||
-          messageContent.includes('status@broadcast');
+      if (isLink || isChannelLink || isStatusMention) {
+        const metadata = await sock.groupMetadata(from);
+        const botJid = sock.user?.id.split(':')[0] + '@s.whatsapp.net';
+        const botIsAdmin = metadata.participants.some(p => (p.id === botJid || p.id === sock.user?.id) && (p.admin === 'admin' || p.admin === 'superadmin'));
 
-        let triggeredViolation = false;
+        if (botIsAdmin) {
+          const senderIsAdmin = metadata.participants.some(p => p.id === sender && (p.admin === 'admin' || p.admin === 'superadmin'));
 
-        if (groupSettings.antilink && isLink) triggeredViolation = true;
-        if (groupSettings.antistatus && isStatusMention) triggeredViolation = true;
+          if (!senderIsAdmin) {
+            let isOwnGroupLink = false;
+            if (isLink && !isChannelLink) {
+              const inviteCodeMatch = messageContent.match(/chat\.whatsapp\.com\/([a-zA-Z0-29–_]+)/);
+              if (inviteCodeMatch && inviteCodeMatch[1]) {
+                try {
+                  const currentInvite = await sock.groupInviteCode(from);
+                  if (currentInvite === inviteCodeMatch[1]) {
+                    isOwnGroupLink = true;
+                  }
+                } catch (_) {}
+              }
+            }
 
-        if (triggeredViolation) {
-          await sock.sendMessage(from, { delete: msg.key });
+            if (!isOwnGroupLink) {
+              const groupSettings = await GroupModel.findOne({ jid: from });
+              if (groupSettings) {
+                let violationType = '';
 
-          let warnRecord = await WarnModel.findOne({ groupJid: from, userJid: sender });
-          if (!warnRecord) {
-            warnRecord = await WarnModel.create({ groupJid: from, userJid: sender, warnings: 0 });
+                if (groupSettings.antilink && isLink && !isChannelLink) violationType = 'Unauthorized External Group/Site Link';
+                if (groupSettings.custom01 && isChannelLink) violationType = 'Unauthorized WhatsApp Channel Link Promotion';
+                if (groupSettings.antistatus && isStatusMention) violationType = 'Unauthorized Status Broadcast Mention';
+
+                if (violationType) {
+                  sock.sendMessage(from, { delete: msg.key }).catch(() => {});
+                  
+                  await sock.sendMessage(from, {
+                    text: `▬▬▬▬▬▬▬▬▬▬ ⬩ 𝗙 𝗥 𝗜 𝗢 𝗩 𝗘 𝗥 𝗦 𝗘\n\n🚨 *SECURITY ENFORCEMENT*\n\nUser: @${sender.split('@')[0]}\nViolation: *${violationType}*\n\n⚡ Action Executed: *Instant Eviction*\n\nNotice: This action was triggered automatically by the Frioverse Security Core. The bot does not retain manual re-entry privileges. If you believe this was an error, contact a human group administrator directly—do NOT message this automated terminal.`,
+                    mentions: [sender]
+                  });
+
+                  await sock.groupParticipantsUpdate(from, [sender], 'remove');
+                  return;
+                }
+              }
+            }
           }
-
-          warnRecord.warnings += 1;
-          await warnRecord.save();
-
-          if (warnRecord.warnings >= 2) {
-            await sock.sendMessage(from, { 
-              text: `@${sender.split('@')[0]} reached 2 warnings for rule violations and was removed.`, 
-              mentions: [sender] 
-            });
-            await sock.groupParticipantsUpdate(from, [sender], 'remove');
-            await WarnModel.deleteOne({ groupJid: from, userJid: sender });
-          } else {
-            await sock.sendMessage(from, { 
-              text: `Warning 1/2 for @${sender.split('@')[0]}! Repeat violations will trigger an automatic kick.`, 
-              mentions: [sender] 
-            });
-          }
-          return;
         }
       }
     }
