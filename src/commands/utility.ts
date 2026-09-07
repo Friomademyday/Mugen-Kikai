@@ -1,5 +1,5 @@
 import fs from 'fs';
-import { CommandContext } from './index';
+import { CommandContext } from '../index';
 import { getFormattedMenu, MENU_IMAGE_PATH } from '../utils/menuText';
 import { getSystemMetrics } from '../utils/system';
 import { User } from '../database/models/User';
