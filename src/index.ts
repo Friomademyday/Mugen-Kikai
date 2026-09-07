@@ -37,8 +37,22 @@ async function startBot() {
 
   const sock = makeWASocket({
     auth: state,
-    printQRInTerminal: true
+    printQRInTerminal: false
   });
+
+  if (!sock.authState.creds.registered) {
+    const phoneNumber = "YOUR_PHONE_NUMBER";
+    setTimeout(async () => {
+      try {
+        const code = await sock.requestPairingCode(phoneNumber);
+        console.log(`\n========================================`);
+        console.log(`YOUR WHATSAPP PAIRING CODE: ${code}`);
+        console.log(`========================================\n`);
+      } catch (err) {
+        console.error('Failed to request pairing code:', err);
+      }
+    }, 3000);
+  }
 
   sock.ev.on('creds.update', saveCreds);
 
