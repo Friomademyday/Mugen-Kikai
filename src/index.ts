@@ -53,12 +53,12 @@ async function startBot() {
     if (connection === 'connecting') {
       if (!sock.authState.creds.registered && !pairingRequested) {
         pairingRequested = true;
-
-        const rawPhoneNumber = process.env.OWNER_NUMBER || CONFIG.phoneNumber || '';
-        const phoneNumber = rawPhoneNumber.replace(/[^0-9]/g, '');
+        
+        const rawNumber = process.env.OWNER_NUMBER || CONFIG.ownerNumber || '';
+        const phoneNumber = rawNumber.replace(/[^0-9]/g, '');
 
         if (!phoneNumber) {
-          console.error('ERROR: No valid phone number provided in environment variables!');
+          console.error('ERROR: OWNER_NUMBER environment variable is missing or empty!');
           pairingRequested = false;
           return;
         }
