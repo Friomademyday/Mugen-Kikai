@@ -1,7 +1,8 @@
-import { Schema, model, Document } from 'mongoose';
+import { Schema, model, Document, Model } from 'mongoose';
 
 export interface IUser extends Document {
   jid: string;
+  pushName?: string;
   xp: number;
   classType: 'Knight' | 'Sorcerer' | 'Lord of Summons' | 'Vessel of Faith' | 'None';
   stamina: number;
@@ -36,9 +37,14 @@ export interface IUser extends Document {
   updatedAt: Date;
 }
 
-const UserSchema = new Schema<IUser>(
+export interface IUserModel extends Model<IUser> {
+  getOrCreate(jid: string, pushName?: string): Promise<IUser>;
+}
+
+const UserSchema = new Schema<IUser, IUserModel>(
   {
     jid: { type: String, required: true, unique: true, index: true },
+    pushName: { type: String, default: 'Anonymous Titan' },
     xp: { type: Number, default: 0 },
     classType: { 
       type: String, 
@@ -77,4 +83,15 @@ const UserSchema = new Schema<IUser>(
   { timestamps: true }
 );
 
-export const User = model<IUser>('User', UserSchema);
+UserSchema.statics.getOrCreate = async function (jid: string, pushName?: string) {
+  let user = await this.findOne({ jid });
+  if (!user) {
+    user = await this.create({ jid, pushName: pushName || 'Anonymous Titan' });
+  } else if (pushName && user.pushName !== pushName) {
+    user.pushName = pushName;
+    await user.save();
+  }
+  return user;
+};
+
+export const User = model<IUser, IUserModel>('User', UserSchema);
