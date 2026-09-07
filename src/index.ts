@@ -54,7 +54,7 @@ async function startBot() {
       if (!sock.authState.creds.registered && !pairingRequested) {
         pairingRequested = true;
 
-        const rawPhoneNumber = process.env.PHONE_NUMBER || CONFIG.phoneNumber || '';
+        const rawPhoneNumber = process.env.OWNER_NUMBER || CONFIG.phoneNumber || '';
         const phoneNumber = rawPhoneNumber.replace(/[^0-9]/g, '');
 
         if (!phoneNumber) {
