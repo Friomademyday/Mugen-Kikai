@@ -7,6 +7,7 @@ import { CONFIG } from './config';
 import { commands } from './commands';
 import { connectDB } from './database/connect';
 import { GroupModel } from './database/models/Group';
+import { User } from './database/models/User';
 import { handleSecretTriggers } from './utils/secret';
 
 async function startBot() {
@@ -38,6 +39,11 @@ async function startBot() {
     const from = msg.key.remoteJid || '';
     const sender = msg.key.participant || msg.key.remoteJid || '';
     const isGroup = from.endsWith('@g.us');
+    const pushName = msg.pushName || undefined;
+
+    if (sender) {
+      await User.getOrCreate(sender, pushName);
+    }
 
     const messageContent = 
       msg.message.conversation || 
