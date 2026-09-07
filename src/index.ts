@@ -11,6 +11,8 @@ import { connectDB } from './database/connect';
 import { GroupModel } from './database/models/Group';
 import { User } from './database/models/User';
 import { handleSecretTriggers } from './utils/secret';
+import fs from 'fs';
+import path from 'path';
 
 export interface CommandContext {
   sock: WASocket;
@@ -31,11 +33,13 @@ export interface Command {
 }
 
 let pairingRequested = false;
+let pairingTimer: NodeJS.Timeout | null = null;
 
 async function startBot() {
   await connectDB();
 
-  const { state, saveCreds } = await useMultiFileAuthState('baileys_auth_info');
+  const authFolder = path.join(__dirname, '..', 'baileys_auth_info');
+  const { state, saveCreds } = await useMultiFileAuthState(authFolder);
 
   const sock = makeWASocket({
     auth: state,
@@ -63,7 +67,9 @@ async function startBot() {
           return;
         }
 
-        setTimeout(async () => {
+        if (pairingTimer) clearTimeout(pairingTimer);
+
+        pairingTimer = setTimeout(async () => {
           try {
             const code = await sock.requestPairingCode(phoneNumber);
             console.log(`\n========================================`);
@@ -78,13 +84,24 @@ async function startBot() {
     }
 
     if (connection === 'close') {
+      if (pairingTimer) {
+        clearTimeout(pairingTimer);
+        pairingTimer = null;
+      }
+      pairingRequested = false;
+
       const statusCode = (lastDisconnect?.error as Boom)?.output?.statusCode;
       const shouldReconnect = statusCode !== DisconnectReason.loggedOut;
       
-      console.log(`Connection closed, reconnecting: ${shouldReconnect}`);
+      console.log(`Connection closed (status: ${statusCode}), reconnecting: ${shouldReconnect}`);
       
       if (shouldReconnect) {
-        pairingRequested = false;
+        setTimeout(() => startBot(), 3000);
+      } else {
+        console.log('Logged out or session invalid. Deleting auth folder for fresh pair...');
+        if (fs.existsSync(authFolder)) {
+          fs.rmSync(authFolder, { recursive: true, force: true });
+        }
         setTimeout(() => startBot(), 3000);
       }
     } else if (connection === 'open') {
