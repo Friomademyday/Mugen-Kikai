@@ -11,56 +11,125 @@ async function checkIsAdmin(sock: any, from: string, sender: string): Promise<bo
 export const groupCommands: Command[] = [
   {
     name: 'antilink',
+    aliases: ['antilinkon', 'antilinkoff'],
     category: 'group',
     description: 'Toggle antilink protection on or off',
-    execute: async ({ sock, from, msg, sender, args, isGroup }) => {
+    execute: async ({ sock, from, msg, sender, args, command, isGroup }) => {
       if (!isGroup) return;
       if (!(await checkIsAdmin(sock, from, sender))) {
         await sock.sendMessage(from, { text: 'Only group admins can use this command.' }, { quoted: msg });
         return;
       }
 
-      const status = args[0]?.toLowerCase();
+      let status = args[0]?.toLowerCase();
+      if (command === 'antilinkon') status = 'on';
+      if (command === 'antilinkoff') status = 'off';
+
       if (status !== 'on' && status !== 'off') {
-        await sock.sendMessage(from, { text: 'Usage: .antilink on | off' }, { quoted: msg });
+        await sock.sendMessage(from, { text: 'Usage: .antilink on | off or .antilinkon / .antilinkoff' }, { quoted: msg });
         return;
       }
 
-      const isEnabled = status === 'on';
-      await GroupModel.findOneAndUpdate(
-        { jid: from },
-        { antilink: isEnabled },
-        { upsert: true, new: true }
-      );
+      const shouldEnable = status === 'on';
+      let group = await GroupModel.findOne({ jid: from });
+      if (!group) group = await GroupModel.create({ jid: from });
 
-      await sock.sendMessage(from, { text: `Antilink is now ${isEnabled ? 'ENABLED' : 'DISABLED'}.` }, { quoted: msg });
+      if (shouldEnable && group.antilink) {
+        await sock.sendMessage(from, { text: '⚠️ Antilink protection is already ENABLED.' }, { quoted: msg });
+        return;
+      }
+
+      if (!shouldEnable && !group.antilink) {
+        await sock.sendMessage(from, { text: '⚠️ Antilink protection is already DISABLED.' }, { quoted: msg });
+        return;
+      }
+
+      group.antilink = shouldEnable;
+      await group.save();
+
+      await sock.sendMessage(from, { text: `Antilink is now ${shouldEnable ? 'ENABLED' : 'DISABLED'}.` }, { quoted: msg });
+    }
+  },
+  {
+    name: 'antichannel',
+    aliases: ['antichannelon', 'antichanneloff'],
+    category: 'group',
+    description: 'Toggle WhatsApp channel link protection on or off',
+    execute: async ({ sock, from, msg, sender, args, command, isGroup }) => {
+      if (!isGroup) return;
+      if (!(await checkIsAdmin(sock, from, sender))) {
+        await sock.sendMessage(from, { text: 'Only group admins can use this command.' }, { quoted: msg });
+        return;
+      }
+
+      let status = args[0]?.toLowerCase();
+      if (command === 'antichannelon') status = 'on';
+      if (command === 'antichanneloff') status = 'off';
+
+      if (status !== 'on' && status !== 'off') {
+        await sock.sendMessage(from, { text: 'Usage: .antichannel on | off or .antichannelon / .antichanneloff' }, { quoted: msg });
+        return;
+      }
+
+      const shouldEnable = status === 'on';
+      let group = await GroupModel.findOne({ jid: from });
+      if (!group) group = await GroupModel.create({ jid: from });
+
+      if (shouldEnable && group.custom01) {
+        await sock.sendMessage(from, { text: '⚠️ Anti-channel protection is already ENABLED.' }, { quoted: msg });
+        return;
+      }
+
+      if (!shouldEnable && !group.custom01) {
+        await sock.sendMessage(from, { text: '⚠️ Anti-channel protection is already DISABLED.' }, { quoted: msg });
+        return;
+      }
+
+      group.custom01 = shouldEnable;
+      await group.save();
+
+      await sock.sendMessage(from, { text: `Anti-channel protection is now ${shouldEnable ? 'ENABLED' : 'DISABLED'}.` }, { quoted: msg });
     }
   },
   {
     name: 'antistatus',
+    aliases: ['antistatuson', 'antistatusoff'],
     category: 'group',
     description: 'Toggle anti-status mention protection on or off',
-    execute: async ({ sock, from, msg, sender, args, isGroup }) => {
+    execute: async ({ sock, from, msg, sender, args, command, isGroup }) => {
       if (!isGroup) return;
       if (!(await checkIsAdmin(sock, from, sender))) {
         await sock.sendMessage(from, { text: 'Only group admins can use this command.' }, { quoted: msg });
         return;
       }
 
-      const status = args[0]?.toLowerCase();
+      let status = args[0]?.toLowerCase();
+      if (command === 'antistatuson') status = 'on';
+      if (command === 'antistatusoff') status = 'off';
+
       if (status !== 'on' && status !== 'off') {
-        await sock.sendMessage(from, { text: 'Usage: .antistatus on | off' }, { quoted: msg });
+        await sock.sendMessage(from, { text: 'Usage: .antistatus on | off or .antistatuson / .antistatusoff' }, { quoted: msg });
         return;
       }
 
-      const isEnabled = status === 'on';
-      await GroupModel.findOneAndUpdate(
-        { jid: from },
-        { antistatus: isEnabled },
-        { upsert: true, new: true }
-      );
+      const shouldEnable = status === 'on';
+      let group = await GroupModel.findOne({ jid: from });
+      if (!group) group = await GroupModel.create({ jid: from });
 
-      await sock.sendMessage(from, { text: `Anti-status protection is now ${isEnabled ? 'ENABLED' : 'DISABLED'}.` }, { quoted: msg });
+      if (shouldEnable && group.antistatus) {
+        await sock.sendMessage(from, { text: '⚠️ Anti-status protection is already ENABLED.' }, { quoted: msg });
+        return;
+      }
+
+      if (!shouldEnable && !group.antistatus) {
+        await sock.sendMessage(from, { text: '⚠️ Anti-status protection is already DISABLED.' }, { quoted: msg });
+        return;
+      }
+
+      group.antistatus = shouldEnable;
+      await group.save();
+
+      await sock.sendMessage(from, { text: `Anti-status protection is now ${shouldEnable ? 'ENABLED' : 'DISABLED'}.` }, { quoted: msg });
     }
   },
   {
