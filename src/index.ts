@@ -1,6 +1,8 @@
 import makeWASocket, { 
   DisconnectReason, 
-  useMultiFileAuthState 
+  useMultiFileAuthState,
+  WASocket,
+  WAMessage
 } from '@whiskeysockets/baileys';
 import { Boom } from '@hapi/boom';
 import { CONFIG } from './config';
@@ -9,6 +11,24 @@ import { connectDB } from './database/connect';
 import { GroupModel } from './database/models/Group';
 import { User } from './database/models/User';
 import { handleSecretTriggers } from './utils/secret';
+
+export interface CommandContext {
+  sock: WASocket;
+  msg: WAMessage;
+  from: string;
+  sender: string;
+  args: string[];
+  command: string;
+  text: string;
+  isGroup: boolean;
+}
+
+export interface Command {
+  name: string;
+  description: string;
+  aliases?: string[];
+  execute: (ctx: CommandContext) => Promise<void>;
+}
 
 async function startBot() {
   await connectDB();
