@@ -30,6 +30,8 @@ export interface Command {
   execute: (ctx: CommandContext) => Promise<void>;
 }
 
+let pairingRequested = false;
+
 async function startBot() {
   await connectDB();
 
@@ -37,30 +39,54 @@ async function startBot() {
 
   const sock = makeWASocket({
     auth: state,
-    printQRInTerminal: false
+    printQRInTerminal: false,
+    connectTimeoutMs: 60000,
+    defaultQueryTimeoutMs: 0,
+    keepAliveIntervalMs: 10000
   });
-
-  if (!sock.authState.creds.registered) {
-    const phoneNumber = "YOUR_PHONE_NUMBER";
-    setTimeout(async () => {
-      try {
-        const code = await sock.requestPairingCode(phoneNumber);
-        console.log(`\n========================================`);
-        console.log(`YOUR WHATSAPP PAIRING CODE: ${code}`);
-        console.log(`========================================\n`);
-      } catch (err) {
-        console.error('Failed to request pairing code:', err);
-      }
-    }, 3000);
-  }
 
   sock.ev.on('creds.update', saveCreds);
 
-  sock.ev.on('connection.update', (update) => {
+  sock.ev.on('connection.update', async (update) => {
     const { connection, lastDisconnect } = update;
+
+    if (connection === 'connecting') {
+      if (!sock.authState.creds.registered && !pairingRequested) {
+        pairingRequested = true;
+
+        const rawPhoneNumber = process.env.PHONE_NUMBER || CONFIG.phoneNumber || '';
+        const phoneNumber = rawPhoneNumber.replace(/[^0-9]/g, '');
+
+        if (!phoneNumber) {
+          console.error('ERROR: No valid phone number provided in environment variables!');
+          pairingRequested = false;
+          return;
+        }
+
+        setTimeout(async () => {
+          try {
+            const code = await sock.requestPairingCode(phoneNumber);
+            console.log(`\n========================================`);
+            console.log(`YOUR WHATSAPP PAIRING CODE: ${code}`);
+            console.log(`========================================\n`);
+          } catch (err) {
+            console.error('Failed to request pairing code:', err);
+            pairingRequested = false;
+          }
+        }, 6000);
+      }
+    }
+
     if (connection === 'close') {
-      const shouldReconnect = (lastDisconnect?.error as Boom)?.output?.statusCode !== DisconnectReason.loggedOut;
-      if (shouldReconnect) startBot();
+      const statusCode = (lastDisconnect?.error as Boom)?.output?.statusCode;
+      const shouldReconnect = statusCode !== DisconnectReason.loggedOut;
+      
+      console.log(`Connection closed, reconnecting: ${shouldReconnect}`);
+      
+      if (shouldReconnect) {
+        pairingRequested = false;
+        setTimeout(() => startBot(), 3000);
+      }
     } else if (connection === 'open') {
       console.log('Mugen Kikai MD connected successfully!');
     }
