@@ -150,11 +150,18 @@ export const profileCommand: Command = {
 
     try {
       const pfpUrl = await sock.profilePictureUrl(sender, 'image');
-      await sock.sendMessage(from, {
-        image: { url: pfpUrl },
-        caption,
-        mentions: [sender]
-      });
+      if (pfpUrl) {
+        await sock.sendMessage(from, {
+          image: { url: pfpUrl },
+          caption,
+          mentions: [sender]
+        });
+      } else {
+        await sock.sendMessage(from, {
+          text: caption,
+          mentions: [sender]
+        });
+      }
     } catch (_) {
       await sock.sendMessage(from, {
         text: caption,
