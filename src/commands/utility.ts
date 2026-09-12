@@ -139,7 +139,7 @@ export const runtimeCommand: Command = {
   execute: async ({ sock, from }: CommandContext) => {
     const metrics = await getSystemMetrics();
     await sock.sendMessage(from, {
-      text: `▬▬▬▬▬▬▬▬▬▬ ⬩ 𝗥 𝗨 𝗡 𝗧 𝗜 𝗠 𝗘\n\n⏱️ Active System Duration: *${metrics.runtime}*\n🧠 Memory Reserve: *${metrics.ramUsage}*`
+      text: `▬▬▬▬▬▬▬ ⬩ 𝗥 𝗨 𝗡 𝗧 𝗜 𝗠 𝗘\n\n⏱️ Active System Duration: *${metrics.runtime}*\n🧠 Memory Reserve: *${metrics.ramUsage}*`
     });
   }
 };
@@ -149,7 +149,7 @@ export const ownerCommand: Command = {
   description: 'Display bot owner contact details',
   aliases: ['creator', 'developer'],
   execute: async ({ sock, from }: CommandContext) => {
-    const ownerText = `▬▬▬▬▬▬▬▬▬▬ ⬩ 𝗢 𝗪 𝗡 𝗘 𝗥\n\n👨‍💻 Creator: *frio*\n🐙 GitHub: *@Friomademyday*\n💬 Discord: https://discord.gg/kUSvNJ3M\n\n⚡ Mugen Kikai MD Core Operations`;
+    const ownerText = `▬▬▬▬▬▬▬ ⬩ 𝗢 𝗪 𝗡 𝗘 𝗥\n\n👨‍💻 Creator: *frio*\n🐙 GitHub: *@Friomademyday*\n💬 Discord: https://discord.gg/kUSvNJ3M\n\n⚡ Mugen Kikai MD Core Operations`;
     await sock.sendMessage(from, { text: ownerText });
   }
 };
@@ -173,7 +173,7 @@ export const profileCommand: Command = {
     const pushName = msg.pushName || 'Operative';
     const totalNet = user.wallet + user.bank;
 
-    const caption = `▬▬▬▬▬▬▬▬▬▬ ⬩ 𝗣 𝗥 𝗢 𝗙 𝗜 𝗟 𝗘\n\n👤 Name: *${pushName}*\n🆔 Tag: @${sender.split('@')[0]}\n\n💳 *ACCOUNT DETAILS*\n💵 Wallet: *$${user.wallet.toLocaleString()}*\n🏦 Bank Reserve: *$${user.bank.toLocaleString()}*\n📈 Total Net Worth: *$${totalNet.toLocaleString()}*`;
+    const caption = `▬▬▬▬▬▬▬ ⬩ 𝗣 𝗥 𝗢 𝗙 𝗜 𝗟 𝗘\n\n👤 Name: *${pushName}*\n🆔 Tag: @${sender.split('@')[0]}\n\n💳 *ACCOUNT DETAILS*\n💵 Wallet: *$${user.wallet.toLocaleString()}*\n🏦 Bank Reserve: *$${user.bank.toLocaleString()}*\n📈 Total Net Worth: *$${totalNet.toLocaleString()}*`;
 
     try {
       const pfpUrl = await sock.profilePictureUrl(sender, 'image');
