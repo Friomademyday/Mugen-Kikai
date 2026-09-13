@@ -1,11 +1,11 @@
 import path from 'path';
 import { getSystemMetrics } from './system';
 
-export const MENU_IMAGE_PATH = path.join(__dirname, '../assets/mugenmenu.jpg');
+export const MENU_IMAGE_PATH = path.join(process.cwd(), 'assets', 'mugenmenu.jpg');
 
 export async function getFormattedMenu(): Promise<string> {
   const metrics = await getSystemMetrics();
-
+  
   return `⬩Ｍ Ｕ Ｇ Ｅ Ｎ     Ｋ Ｉ Ｋ Ａ Ｉ⬩
 ⬩╭────────────╮ 
 ⬩                                ╰──────╯⬩
