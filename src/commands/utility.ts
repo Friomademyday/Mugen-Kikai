@@ -182,7 +182,49 @@ export const profileCommand: Command = {
     const pushName = msg.pushName || 'Operative';
     const totalNet = user.wallet + user.bank;
 
-    const caption = `▬▬▬▬▬▬▬ ⬩ 𝗣 𝗥 𝗢 𝗙 𝗜 𝗟 𝗘\n\n👤 Name: *${pushName}*\n🆔 Tag: @${sender.split('@')[0]}\n\n💳 *ACCOUNT DETAILS*\n💵 Wallet: *$${user.wallet.toLocaleString()}*\n🏦 Bank Reserve: *$${user.bank.toLocaleString()}*\n📈 Total Net Worth: *$${totalNet.toLocaleString()}*`;
+    // Helper function to format numbers into readable string notation
+    const formatNetWorth = (num: number): string => {
+      if (num >= 1e15) return `${(num / 1e15).toFixed(2)} Quadrillion`;
+      if (num >= 1e12) return `${(num / 1e12).toFixed(2)} Trillion`;
+      if (num >= 1e9) return `${(num / 1e9).toFixed(2)} Billion`;
+      if (num >= 1e6) return `${(num / 1e6).toFixed(2)} Million`;
+      if (num >= 1e4) return `${(num / 1e3).toFixed(1)} Tens of Thousands`;
+      if (num >= 1e3) return `${(num / 1e3).toFixed(1)} Thousands`;
+      return num.toLocaleString();
+    };
+
+    // Calculate actual global rank across the entire MongoDB database
+    let rankDisplay = 'Unranked';
+    try {
+      const usersAbove = await User.countDocuments({
+        $expr: {
+          $gt: [{ $add: ['$wallet', '$bank'] }, totalNet]
+        }
+      });
+      rankDisplay = `#${usersAbove + 1}`;
+    } catch (_) {
+      rankDisplay = '#N/A';
+    }
+
+    const caption = `⬩Ｍ Ｕ Ｇ Ｅ Ｎ     Ｋ Ｉ Ｋ Ａ Ｉ⬩
+
+⬩╭────────────╮
+⬩                                ╰──────╯⬩
+▬▬▬▬▬▬▬▬▬▬▬ ⬩ 𝗬 𝗢 𝗨  
+❏ ɴᴀᴍᴇ: ${pushName}
+❏ ɢʀᴏᴜᴘ ᴛᴀɢ: @${sender.split('@')[0]}
+
+⬩╭────────────╮
+⬩                                ╰──────╯⬩
+▬▬▬▬▬▬▬ ⬩  𝗙 𝗜 𝗡 𝗔 𝗡 𝗖 𝗘
+
+❏ ᴡᴀʟʟᴇᴛ: 🪙 ${user.wallet.toLocaleString()}
+❏ ʙᴀɴᴋ: 🪙 ${user.bank.toLocaleString()}
+❏ ɴᴇᴛ ᴡᴏʀᴛʜ: 🪙 ${formatNetWorth(totalNet)}
+❏ ᴇᴄᴏɴᴏᴍʏ ʀᴀɴᴋ: ${rankDisplay} on Lb
+
+⬩╭────────────╮
+⬩                                ╰──────╯⬩`;
 
     try {
       const pfpUrl = await sock.profilePictureUrl(sender, 'image');
@@ -192,18 +234,14 @@ export const profileCommand: Command = {
           caption,
           mentions: [sender]
         });
-      } else {
-        await sock.sendMessage(from, {
-          text: caption,
-          mentions: [sender]
-        });
+        return;
       }
-    } catch (_) {
-      await sock.sendMessage(from, {
-        text: caption,
-        mentions: [sender]
-      });
-    }
+    } catch (_) {}
+
+    await sock.sendMessage(from, {
+      text: caption,
+      mentions: [sender]
+    });
   }
 };
 
