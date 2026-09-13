@@ -173,6 +173,30 @@ export const updatesCommand: Command = {
   }
 };
 
+// Helper to categorize net worth into economic scale tiers
+function getNetWorthTier(totalNet: number): string {
+  if (totalNet >= 1_000_000_000_000_000) return 'Quadrillions';
+  if (totalNet >= 1_000_000_000) return 'Billions';
+  if (totalNet >= 1_000_000) return 'Millions';
+  if (totalNet >= 10_000) return 'Tens of Thousands';
+  if (totalNet >= 1_000) return 'Thousands';
+  return 'Base Capital';
+}
+
+// Helper to find the user's true economy rank across ALL database records based on Bank balance
+async function getUserEconomyRank(userJid: string): Promise<string> {
+  const allUsers = await User.find({
+    bank: { $lt: Number.MAX_SAFE_INTEGER, $gt: 0 }
+  })
+  .sort({ bank: -1 })
+  .select('jid')
+  .exec();
+
+  const rankIndex = allUsers.findIndex(u => u.jid === userJid);
+  if (rankIndex === -1) return 'Unranked';
+  return `#${rankIndex + 1}`;
+}
+
 export const profileCommand: Command = {
   name: 'profile',
   description: 'View individual user record and bank account details',
@@ -181,30 +205,9 @@ export const profileCommand: Command = {
     const user = await User.getOrCreate(sender);
     const pushName = msg.pushName || 'Operative';
     const totalNet = user.wallet + user.bank;
-
-    // Helper function to format numbers into readable string notation
-    const formatNetWorth = (num: number): string => {
-      if (num >= 1e15) return `${(num / 1e15).toFixed(2)} Quadrillion`;
-      if (num >= 1e12) return `${(num / 1e12).toFixed(2)} Trillion`;
-      if (num >= 1e9) return `${(num / 1e9).toFixed(2)} Billion`;
-      if (num >= 1e6) return `${(num / 1e6).toFixed(2)} Million`;
-      if (num >= 1e4) return `${(num / 1e3).toFixed(1)} Tens of Thousands`;
-      if (num >= 1e3) return `${(num / 1e3).toFixed(1)} Thousands`;
-      return num.toLocaleString();
-    };
-
-    // Calculate actual global rank across the entire MongoDB database
-    let rankDisplay = 'Unranked';
-    try {
-      const usersAbove = await User.countDocuments({
-        $expr: {
-          $gt: [{ $add: ['$wallet', '$bank'] }, totalNet]
-        }
-      });
-      rankDisplay = `#${usersAbove + 1}`;
-    } catch (_) {
-      rankDisplay = '#N/A';
-    }
+    
+    const netTier = getNetWorthTier(totalNet);
+    const economyRank = await getUserEconomyRank(user.jid || sender);
 
     const caption = `⬩Ｍ Ｕ Ｇ Ｅ Ｎ     Ｋ Ｉ Ｋ Ａ Ｉ⬩
 
@@ -220,8 +223,8 @@ export const profileCommand: Command = {
 
 ❏ ᴡᴀʟʟᴇᴛ: 🪙 ${user.wallet.toLocaleString()}
 ❏ ʙᴀɴᴋ: 🪙 ${user.bank.toLocaleString()}
-❏ ɴᴇᴛ ᴡᴏʀᴛʜ: 🪙 ${formatNetWorth(totalNet)}
-❏ ᴇᴄᴏɴᴏᴍʏ ʀᴀɴᴋ: ${rankDisplay} on Lb
+❏ ɴᴇᴛ ᴡᴏʀᴛʜ: 🪙 ${totalNet.toLocaleString()} (${netTier})
+❏ ᴇᴄᴏɴᴏᴍʏ ʀᴀɴᴋ: ${economyRank} on Lb
 
 ⬩╭────────────╮
 ⬩                                ╰──────╯⬩`;
