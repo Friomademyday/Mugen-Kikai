@@ -1,4 +1,5 @@
 import fs from 'fs';
+import path from 'path';
 import { CommandContext } from '../index';
 import { getFormattedMenu, MENU_IMAGE_PATH } from '../utils/menuText';
 import { getSystemMetrics } from '../utils/system';
@@ -173,9 +174,9 @@ export const updatesCommand: Command = {
   }
 };
 
-// Helper to categorize net worth into economic scale tiers
 function getNetWorthTier(totalNet: number): string {
   if (totalNet >= 1_000_000_000_000_000) return 'Quadrillions';
+  if (totalNet >= 1_000_000_000_000) return 'Trillions'; // <--- Added Trillions
   if (totalNet >= 1_000_000_000) return 'Billions';
   if (totalNet >= 1_000_000) return 'Millions';
   if (totalNet >= 10_000) return 'Tens of Thousands';
