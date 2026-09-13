@@ -1,3 +1,5 @@
+import fs from 'fs';
+import path from 'path';
 import { Command } from '../types/command';
 import { User } from '../database/models/User';
 
@@ -57,14 +59,14 @@ export const leaderboardCommands: Command[] = [
       caption += `*─────────────────────────*\n`;
       caption += `✨ *Note:* Unlimited reserves are restricted from competition.`;
 
-      const leaderboardImagePath = './assets/lb.jpg';
+const leaderboardImagePath = path.join(process.cwd(), 'assets', 'lb.jpg');
 
-      try {
+      if (fs.existsSync(leaderboardImagePath)) {
         await ctx.sock.sendMessage(ctx.from, {
           image: { url: leaderboardImagePath },
           caption: caption
         }, { quoted: ctx.msg });
-      } catch (err) {
+      } else {
         await ctx.sock.sendMessage(ctx.from, {
           text: caption
         }, { quoted: ctx.msg });
