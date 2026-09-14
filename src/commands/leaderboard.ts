@@ -49,7 +49,7 @@ export const leaderboardCommands: Command[] = [
           caption += `     ⚔️  *${displayName}*\n`;
           caption += `     🏛️  Bank: *🪙${bankVal}*\n\n`;
         } else if (rank === 3) {
-          caption += `🥉  *─── 𝗡 𝗢 . 𝟯   𝗕 𝗥 𝗢 𝗡 𝗭 𝗘 ───*\n`;
+          caption += `🥉  *── 𝗡 𝗢 . 𝟯   𝗕 𝗥 𝗢 𝗡 𝗭 𝗘 ──*\n`;
           caption += `     🛡️  *${displayName}*\n`;
           caption += `     🏛️  Bank: *🪙${bankVal}*\n\n`;
         } else {
