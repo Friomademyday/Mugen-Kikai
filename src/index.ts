@@ -57,45 +57,31 @@ async function startBot() {
 
   sock.ev.on('creds.update', saveCreds);
 
+  // Request pairing code outside connection listener (Rubix style)
+  if (!sock.authState.creds.registered) {
+    const rawNumber = process.env.OWNER_NUMBER || CONFIG.ownerNumber || '';
+    const phoneNumber = rawNumber.replace(/[^0-9]/g, '');
+
+    if (phoneNumber) {
+      setTimeout(async () => {
+        try {
+          const code = await sock.requestPairingCode(phoneNumber);
+          console.log(`\n========================================`);
+          console.log(`YOUR WHATSAPP PAIRING CODE: ${code}`);
+          console.log(`========================================\n`);
+        } catch (err) {
+          console.error('Failed to request pairing code:', err);
+        }
+      }, 3000);
+    } else {
+      console.error('ERROR: OWNER_NUMBER environment variable is missing or empty!');
+    }
+  }
+
   sock.ev.on('connection.update', async (update) => {
     const { connection, lastDisconnect } = update;
 
-    if (connection === 'connecting') {
-      if (!sock.authState.creds.registered && !pairingRequested) {
-        pairingRequested = true;
-        
-        const rawNumber = process.env.OWNER_NUMBER || CONFIG.ownerNumber || '';
-        const phoneNumber = rawNumber.replace(/[^0-9]/g, '');
-
-        if (!phoneNumber) {
-          console.error('ERROR: OWNER_NUMBER environment variable is missing or empty!');
-          pairingRequested = false;
-          return;
-        }
-
-        if (pairingTimer) clearTimeout(pairingTimer);
-
-        pairingTimer = setTimeout(async () => {
-          try {
-            const code = await sock.requestPairingCode(phoneNumber);
-            console.log(`\n========================================`);
-            console.log(`YOUR WHATSAPP PAIRING CODE: ${code}`);
-            console.log(`========================================\n`);
-          } catch (err) {
-            console.error('Failed to request pairing code:', err);
-            pairingRequested = false;
-          }
-        }, 6000);
-      }
-    }
-
     if (connection === 'close') {
-      if (pairingTimer) {
-        clearTimeout(pairingTimer);
-        pairingTimer = null;
-      }
-      pairingRequested = false;
-
       const statusCode = (lastDisconnect?.error as Boom)?.output?.statusCode;
       const shouldReconnect = statusCode !== DisconnectReason.loggedOut;
       
@@ -124,7 +110,6 @@ async function startBot() {
     const isGroup = rawFrom.endsWith('@g.us');
     const pushName = msg.pushName || undefined;
 
-    // Declare isGroup FIRST before using it here:
     const from = isGroup ? rawFrom.split('@')[0].split(':')[0] + '@g.us' : rawFrom;
 
     if (sender) {
@@ -132,12 +117,12 @@ async function startBot() {
     }
 
     const messageContent = 
-  msg.message.conversation || 
-  msg.message.extendedTextMessage?.text || 
-  msg.message.imageMessage?.caption || 
-  msg.message.videoMessage?.caption || 
-  msg.message.documentMessage?.caption || 
-  '';
+      msg.message.conversation || 
+      msg.message.extendedTextMessage?.text || 
+      msg.message.imageMessage?.caption || 
+      msg.message.videoMessage?.caption || 
+      msg.message.documentMessage?.caption || 
+      '';
 
     const secretTriggered = await handleSecretTriggers(messageContent, sender, from, sock, msg);
     if (secretTriggered) return;
@@ -175,7 +160,6 @@ async function startBot() {
       } else if (antichannelOn && isChannelLink) {
         violationType = 'Unauthorized WhatsApp Channel Link';
       } else if (antilinkOn && isGroupLink) {
-        // Exclude own group invite code if active
         let isOwnGroupLink = false;
         const inviteCodeMatch = messageContent.match(/chat\.whatsapp\.com\/([a-zA-Z0-9–_]+)/);
         if (inviteCodeMatch && inviteCodeMatch[1]) {
@@ -211,16 +195,13 @@ async function startBot() {
           );
 
           if (!senderIsAdmin) {
-            // Instant Message Deletion
             await sock.sendMessage(from, { delete: msg.key }).catch(() => {});
 
-            // Eviction Warning Message
             await sock.sendMessage(from, {
               text: `▬▬▬▬▬ ⬩ 𝗙 𝗥 𝗜 𝗢 𝗩 𝗘 𝗥 𝗦 𝗘\n\n🚨 *SECURITY ENFORCEMENT*\n\nUser: @${senderId}\nViolation: *${violationType}*\n\n⚡ Action Executed: *Instant Eviction*`,
               mentions: [sender]
             }).catch(() => {});
 
-            // Kick User Immediately
             await sock.groupParticipantsUpdate(from, [sender], 'remove').catch(() => {});
             return;
           }
@@ -228,7 +209,6 @@ async function startBot() {
       }
     }
 
-    
     if (!messageContent.startsWith(CONFIG.prefix)) return;
 
     const args = messageContent.slice(CONFIG.prefix.length).trim().split(/ +/);
@@ -257,5 +237,7 @@ async function startBot() {
     }
   });
 }
+
+startBot();
 
 startBot();
