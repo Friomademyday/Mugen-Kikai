@@ -38,13 +38,13 @@ export const gambleCommands: Command[] = [
         user.wallet += bet;
         await user.save();
         await ctx.sock.sendMessage(ctx.from, {
-          text: `▬▬▬▬▬▬▬▬▬▬ ⬩ 𝗚 𝗔 𝗠 𝗕 𝗟 𝗜 𝗡 𝗚\n\n🎲 *RISK ARENA: VICTORY*\n\n📈 Profit: *+🪙${bet.toLocaleString()}*\n👛 Wallet: *🪙${user.wallet.toLocaleString()}*`
+          text: `▬▬▬▬▬ ⬩ 𝗚 𝗔 𝗠 𝗕 𝗟 𝗜 𝗡 𝗚\n\n🎲 *RISK ARENA: VICTORY*\n\n📈 Profit: *+🪙${bet.toLocaleString()}*\n👛 Wallet: *🪙${user.wallet.toLocaleString()}*`
         }, { quoted: ctx.msg });
       } else {
         user.wallet -= bet;
         await user.save();
         await ctx.sock.sendMessage(ctx.from, {
-          text: `▬▬▬▬▬▬▬▬▬▬ ⬩ 𝗚 𝗔 𝗠 𝗕 𝗟 𝗜 𝗡 𝗚\n\n🎲 *RISK ARENA: DEFEAT*\n\n📉 Lost: *-🪙${bet.toLocaleString()}*\n👛 Wallet: *🪙${user.wallet.toLocaleString()}*`
+          text: `▬▬▬▬▬ ⬩ 𝗚 𝗔 𝗠 𝗕 𝗟 𝗜 𝗡 𝗚\n\n🎲 *RISK ARENA: DEFEAT*\n\n📉 Lost: *-🪙${bet.toLocaleString()}*\n👛 Wallet: *🪙${user.wallet.toLocaleString()}*`
         }, { quoted: ctx.msg });
       }
     }
@@ -84,13 +84,13 @@ export const gambleCommands: Command[] = [
         user.wallet += bet;
         await user.save();
         await ctx.sock.sendMessage(ctx.from, {
-          text: `▬▬▬▬▬▬▬▬▬▬ ⬩ 𝗚 𝗔 𝗠 𝗕 𝗟 𝗜 𝗡 𝗚\n\n🪙 *COIN FLIP*\n\nResult: *${outcome.toUpperCase()}*\n✨ Prediction Matched!\n📈 Won: *+🪙${bet.toLocaleString()}*`
+          text: `▬▬▬▬▬ ⬩ 𝗚 𝗔 𝗠 𝗕 𝗟 𝗜 𝗡 𝗚\n\n🪙 *COIN FLIP*\n\nResult: *${outcome.toUpperCase()}*\n✨ Prediction Matched!\n📈 Won: *+🪙${bet.toLocaleString()}*`
         }, { quoted: ctx.msg });
       } else {
         user.wallet -= bet;
         await user.save();
         await ctx.sock.sendMessage(ctx.from, {
-          text: `▬▬▬▬▬▬▬▬▬▬ ⬩ 𝗚 𝗔 𝗠 𝗕 𝗟 𝗜 𝗡 𝗚\n\n🪙 *COIN FLIP*\n\nResult: *${outcome.toUpperCase()}*\n💥 Failed Prediction!\n📉 Lost: *-🪙${bet.toLocaleString()}*`
+          text: `▬▬▬▬▬ ⬩ 𝗚 𝗔 𝗠 𝗕 𝗟 𝗜 𝗡 𝗚\n\n🪙 *COIN FLIP*\n\nResult: *${outcome.toUpperCase()}*\n💥 Failed Prediction!\n📉 Lost: *-🪙${bet.toLocaleString()}*`
         }, { quoted: ctx.msg });
       }
     }
@@ -140,13 +140,13 @@ export const gambleCommands: Command[] = [
         user.wallet += reward;
         await user.save();
         await ctx.sock.sendMessage(ctx.from, {
-          text: `▬▬▬▬▬▬▬▬▬▬ ⬩ 𝗚 𝗔 𝗠 𝗕 𝗟 𝗜 𝗡 𝗚\n\n[ ${r1} | ${r2} | ${r3} ]\n\n🎉 *JACKPOT ALIGNMENT!*\nMultiplier: *${multiplier}x*\n📈 Won: *+🪙${reward.toLocaleString()}*`
+          text: `▬▬▬▬▬ ⬩ 𝗚 𝗔 𝗠 𝗕 𝗟 𝗜 𝗡 𝗚\n\n[ ${r1} | ${r2} | ${r3} ]\n\n🎉 *JACKPOT ALIGNMENT!*\nMultiplier: *${multiplier}x*\n📈 Won: *+🪙${reward.toLocaleString()}*`
         }, { quoted: ctx.msg });
       } else {
         user.wallet -= bet;
         await user.save();
         await ctx.sock.sendMessage(ctx.from, {
-          text: `▬▬▬▬▬▬▬▬▬▬ ⬩ 𝗚 𝗔 𝗠 𝗕 𝗟 𝗜 𝗡 𝗚\n\n[ ${r1} | ${r2} | ${r3} ]\n\n💥 *NO MATCH*\n📉 Lost: *-🪙${bet.toLocaleString()}*`
+          text: `▬▬▬▬▬ ⬩ 𝗚 𝗔 𝗠 𝗕 𝗟 𝗜 𝗡 𝗚\n\n[ ${r1} | ${r2} | ${r3} ]\n\n💥 *NO MATCH*\n📉 Lost: *-🪙${bet.toLocaleString()}*`
         }, { quoted: ctx.msg });
       }
     }
@@ -188,13 +188,13 @@ export const gambleCommands: Command[] = [
         user.wallet += bet;
         await user.save();
         await ctx.sock.sendMessage(ctx.from, {
-          text: `▬▬▬▬▬▬▬▬▬▬ ⬩ 𝗚 𝗔 𝗠 𝗕 𝗟 𝗜 𝗡 𝗚\n\n🎲 You: *${playerRoll}* | 🤖 House: *${botRoll}*\n\n📈 *VICTORY!*\nProfit: *+🪙${bet.toLocaleString()}*`
+          text: `▬▬▬▬▬ ⬩ 𝗚 𝗔 𝗠 𝗕 𝗟 𝗜 𝗡 𝗚\n\n🎲 You: *${playerRoll}* | 🤖 House: *${botRoll}*\n\n📈 *VICTORY!*\nProfit: *+🪙${bet.toLocaleString()}*`
         }, { quoted: ctx.msg });
       } else {
         user.wallet -= bet;
         await user.save();
         await ctx.sock.sendMessage(ctx.from, {
-          text: `▬▬▬▬▬▬▬▬▬▬ ⬩ 𝗚 𝗔 𝗠 𝗕 𝗟 𝗜 𝗡 𝗚\n\n🎲 You: *${playerRoll}* | 🤖 House: *${botRoll}*\n\n📉 *DEFEAT!*\nLost: *-🪙${bet.toLocaleString()}*`
+          text: `▬▬▬▬▬ ⬩ 𝗚 𝗔 𝗠 𝗕 𝗟 𝗜 𝗡 𝗚\n\n🎲 You: *${playerRoll}* | 🤖 House: *${botRoll}*\n\n📉 *DEFEAT!*\nLost: *-🪙${bet.toLocaleString()}*`
         }, { quoted: ctx.msg });
       }
     }
@@ -243,7 +243,7 @@ export const gambleCommands: Command[] = [
       }
 
       await user.save();
-      await ctx.sock.sendMessage(ctx.from, { text: `▬▬▬▬▬▬▬▬▬▬ ⬩ 𝗚 𝗔 𝗠 𝗕 𝗟 𝗜 𝗡 𝗚\n\n${msg}` }, { quoted: ctx.msg });
+      await ctx.sock.sendMessage(ctx.from, { text: `▬▬▬▬▬ ⬩ 𝗚 𝗔 𝗠 𝗕 𝗟 𝗜 𝗡 𝗚\n\n${msg}` }, { quoted: ctx.msg });
     }
   },
 
@@ -288,13 +288,13 @@ export const gambleCommands: Command[] = [
         user.wallet += reward;
         await user.save();
         await ctx.sock.sendMessage(ctx.from, {
-          text: `▬▬▬▬▬▬▬▬▬▬ ⬩ 𝗚 𝗔 𝗠 𝗕 𝗟 𝗜 𝗡 𝗚\n\n🎡 Wheel Landed: *${roll} (${landedColor.toUpperCase()})*\n\n🎯 *WINNER!*\nProfit: *+🪙${reward.toLocaleString()}*`
+          text: `▬▬▬▬▬ ⬩ 𝗚 𝗔 𝗠 𝗕 𝗟 𝗜 𝗡 𝗚\n\n🎡 Wheel Landed: *${roll} (${landedColor.toUpperCase()})*\n\n🎯 *WINNER!*\nProfit: *+🪙${reward.toLocaleString()}*`
         }, { quoted: ctx.msg });
       } else {
         user.wallet -= bet;
         await user.save();
         await ctx.sock.sendMessage(ctx.from, {
-          text: `▬▬▬▬▬▬▬▬▬▬ ⬩ 𝗚 𝗔 𝗠 𝗕 𝗟 𝗜 𝗡 𝗚\n\n🎡 Wheel Landed: *${roll} (${landedColor.toUpperCase()})*\n\n💥 *NO HIT*\nLost: *-🪙${bet.toLocaleString()}*`
+          text: `▬▬▬▬▬ ⬩ 𝗚 𝗔 𝗠 𝗕 𝗟 𝗜 𝗡 𝗚\n\n🎡 Wheel Landed: *${roll} (${landedColor.toUpperCase()})*\n\n💥 *NO HIT*\nLost: *-🪙${bet.toLocaleString()}*`
         }, { quoted: ctx.msg });
       }
     }
