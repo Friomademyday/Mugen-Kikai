@@ -120,10 +120,12 @@ async function startBot() {
     if (!msg.message || msg.key.fromMe) return;
 
     const rawFrom = msg.key.remoteJid || '';
-    const from = isGroup ? rawFrom.split('@')[0].split(':')[0] + '@g.us' : rawFrom;
     const sender = msg.key.participant || msg.key.remoteJid || '';
-    const isGroup = from.endsWith('@g.us');
+    const isGroup = rawFrom.endsWith('@g.us');
     const pushName = msg.pushName || undefined;
+
+    // Declare isGroup FIRST before using it here:
+    const from = isGroup ? rawFrom.split('@')[0].split(':')[0] + '@g.us' : rawFrom;
 
     if (sender) {
       await User.getOrCreate(sender, pushName);
