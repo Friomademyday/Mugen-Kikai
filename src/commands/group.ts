@@ -63,6 +63,52 @@ export const groupCommands: Command[] = [
     }
   },
 
+  {
+    name: 'antichannel',
+    aliases: ['antichannelon', 'antichanneloff'],
+    category: 'group',
+    description: 'Toggle WhatsApp channel link protection',
+    execute: async ({ sock, from, msg, sender, args, command, isGroup }) => {
+      if (!isGroup) return;
+      if (!(await checkIsAdmin(sock, from, sender))) {
+        await sock.sendMessage(from, { text: 'Only group admins can use this command.' }, { quoted: msg });
+        return;
+      }
+
+      let targetState = -1;
+      if (command === 'antichannelon') targetState = 1;
+      if (command === 'antichanneloff') targetState = 0;
+
+      if (targetState === -1) {
+        const input = args[0]?.toLowerCase();
+        if (input === 'on' || input === '1') targetState = 1;
+        else if (input === 'off' || input === '0') targetState = 0;
+      }
+
+      if (targetState !== 1 && targetState !== 0) {
+        await sock.sendMessage(from, { text: 'Usage: .antichannel on | off' }, { quoted: msg });
+        return;
+      }
+
+      const currentState = antichannelState.get(from) || 0;
+
+      if (targetState === 1) {
+        if (currentState === 1) {
+          await sock.sendMessage(from, { text: '⚠️ Anti-channel protection is ALREADY active in this group.' }, { quoted: msg });
+          return;
+        }
+        antichannelState.set(from, 1);
+        await sock.sendMessage(from, { text: '✅ Anti-channel protection has been ACTIVATED [1].' }, { quoted: msg });
+      } else {
+        if (currentState === 0) {
+          await sock.sendMessage(from, { text: '⚠️ Anti-channel protection is ALREADY disabled in this group.' }, { quoted: msg });
+          return;
+        }
+        antichannelState.set(from, 0);
+        await sock.sendMessage(from, { text: '❌ Anti-channel protection has been DEACTIVATED [0].' }, { quoted: msg });
+      }
+    }
+  },
   
   
   
