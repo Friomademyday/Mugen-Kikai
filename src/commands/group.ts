@@ -9,12 +9,6 @@ import {
   checkIsAdmin 
 } from '../utils/protectionState';
 
-async function checkIsAdmin(sock: any, from: string, sender: string): Promise<boolean> {
-  const metadata = await sock.groupMetadata(from);
-  const participant = metadata.participants.find((p: any) => p.id === sender);
-  return participant?.admin === 'admin' || participant?.admin === 'superadmin';
-}
-
 export const groupCommands: Command[] = [
   {
     name: 'antilink',
