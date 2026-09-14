@@ -137,7 +137,7 @@ export const pingCommand: Command = {
     const latency = Date.now() - start;
 
     await sock.sendMessage(from, {
-      text: `▬▬▬▬▬▬▬▬▬▬ ⬩ 𝗦 𝗬 𝗦 𝗧 𝗘 𝗠  𝗣 𝗜 𝗡 𝗚\n\n⚡ Latency Speed: *${latency}ms*`
+      text: `▬▬▬▬ ⬩ 𝗦 𝗬 𝗦 𝗧 𝗘 𝗠  𝗣 𝗜 𝗡 𝗚\n\n⚡ Latency Speed: *${latency}ms*`
     }, { quoted: sentMsg });
   }
 };
