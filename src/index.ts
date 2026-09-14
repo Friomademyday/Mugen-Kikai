@@ -13,6 +13,12 @@ import { User } from './database/models/User';
 import { handleSecretTriggers } from './utils/secret';
 import fs from 'fs';
 import path from 'path';
+import { 
+  antilinkState, 
+  antichannelState, 
+  antistatusState, 
+  antialllinkState 
+} from './utils/protectionState';
 
 export interface CommandContext {
   sock: WASocket;
