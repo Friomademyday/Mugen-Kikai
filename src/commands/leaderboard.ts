@@ -23,7 +23,7 @@ export const leaderboardCommands: Command[] = [
 
       if (!topUsers || topUsers.length === 0) {
         await ctx.sock.sendMessage(ctx.from, { 
-          text: `▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬\n\n🏛️  *𝗙 𝗥 𝗜 𝗢 𝗩 𝗘 𝗥 𝗦 𝗘   𝗩 𝗔 𝗨 𝗟 𝗧 𝗦*\n\nNo eligible accounts detected in the financial registry.` 
+          text: `▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬\n\n🏛️  *𝗙 𝗥 𝗜 𝗢 𝗩 𝗘 𝗥 𝗦 𝗘   𝗩 𝗔 𝗨 𝗟 𝗧 𝗦*\n\n> No eligible accounts detected in the financial registry.` 
         }, { quoted: ctx.msg });
         return;
       }
