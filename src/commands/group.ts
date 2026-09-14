@@ -109,9 +109,100 @@ export const groupCommands: Command[] = [
       }
     }
   },
-  
-  
-  
+
+  {
+    name: 'antistatus',
+    aliases: ['antistatuson', 'antistatusoff'],
+    category: 'group',
+    description: 'Toggle anti-status mention protection',
+    execute: async ({ sock, from, msg, sender, args, command, isGroup }) => {
+      if (!isGroup) return;
+      if (!(await checkIsAdmin(sock, from, sender))) {
+        await sock.sendMessage(from, { text: 'Only group admins can use this command.' }, { quoted: msg });
+        return;
+      }
+
+      let targetState = -1;
+      if (command === 'antistatuson') targetState = 1;
+      if (command === 'antistatusoff') targetState = 0;
+
+      if (targetState === -1) {
+        const input = args[0]?.toLowerCase();
+        if (input === 'on' || input === '1') targetState = 1;
+        else if (input === 'off' || input === '0') targetState = 0;
+      }
+
+      if (targetState !== 1 && targetState !== 0) {
+        await sock.sendMessage(from, { text: 'Usage: .antistatus on | off' }, { quoted: msg });
+        return;
+      }
+
+      const currentState = antistatusState.get(from) || 0;
+
+      if (targetState === 1) {
+        if (currentState === 1) {
+          await sock.sendMessage(from, { text: '⚠️ Anti-status protection is ALREADY active in this group.' }, { quoted: msg });
+          return;
+        }
+        antistatusState.set(from, 1);
+        await sock.sendMessage(from, { text: '✅ Anti-status protection has been ACTIVATED [1].' }, { quoted: msg });
+      } else {
+        if (currentState === 0) {
+          await sock.sendMessage(from, { text: '⚠️ Anti-status protection is ALREADY disabled in this group.' }, { quoted: msg });
+          return;
+        }
+        antistatusState.set(from, 0);
+        await sock.sendMessage(from, { text: '❌ Anti-status protection has been DEACTIVATED [0].' }, { quoted: msg });
+      }
+    }
+  },
+
+  {
+    name: 'antialllink',
+    aliases: ['antialllinkon', 'antialllinkoff', 'antiall', 'antialllinks'],
+    category: 'group',
+    description: 'Toggle protection against ALL URL links',
+    execute: async ({ sock, from, msg, sender, args, command, isGroup }) => {
+      if (!isGroup) return;
+      if (!(await checkIsAdmin(sock, from, sender))) {
+        await sock.sendMessage(from, { text: 'Only group admins can use this command.' }, { quoted: msg });
+        return;
+      }
+
+      let targetState = -1;
+      if (command === 'antialllinkon') targetState = 1;
+      if (command === 'antialllinkoff') targetState = 0;
+
+      if (targetState === -1) {
+        const input = args[0]?.toLowerCase();
+        if (input === 'on' || input === '1') targetState = 1;
+        else if (input === 'off' || input === '0') targetState = 0;
+      }
+
+      if (targetState !== 1 && targetState !== 0) {
+        await sock.sendMessage(from, { text: 'Usage: .antialllink on | off' }, { quoted: msg });
+        return;
+      }
+
+      const currentState = antialllinkState.get(from) || 0;
+
+      if (targetState === 1) {
+        if (currentState === 1) {
+          await sock.sendMessage(from, { text: '⚠️ Universal link protection is ALREADY active in this group.' }, { quoted: msg });
+          return;
+        }
+        antialllinkState.set(from, 1);
+        await sock.sendMessage(from, { text: '✅ Universal link protection has been ACTIVATED [1].' }, { quoted: msg });
+      } else {
+        if (currentState === 0) {
+          await sock.sendMessage(from, { text: '⚠️ Universal link protection is ALREADY disabled in this group.' }, { quoted: msg });
+          return;
+        }
+        antialllinkState.set(from, 0);
+        await sock.sendMessage(from, { text: '❌ Universal link protection has been DEACTIVATED [0].' }, { quoted: msg });
+      }
+    }
+  },    
   
   {
     name: 'kick',
