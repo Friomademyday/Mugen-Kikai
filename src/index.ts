@@ -62,11 +62,7 @@ async function startBot() {
     browser: Browsers.ubuntu('Chrome'),
     connectTimeoutMs: 60000,
     defaultQueryTimeoutMs: 0,
-    keepAliveIntervalMs: 30000,
-    retryRequestOptions: {
-      maxRetries: 5,
-      delayMs: 2000
-    }
+    keepAliveIntervalMs: 30000
   });
 
   sock.ev.on('creds.update', saveCreds);
