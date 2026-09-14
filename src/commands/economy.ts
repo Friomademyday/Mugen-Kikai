@@ -331,6 +331,65 @@ export const economyCommands: Command[] = [
   },
 
   {
+    name: 'payback',
+    aliases: ['repay'],
+    category: 'economy',
+    description: 'Repay your active loan',
+    execute: async (ctx) => {
+      const user = await User.getOrCreate(ctx.sender);
+      const debt = typeof user.custom02 === 'number' ? user.custom02 : (user.custom02 ? 5000 : 0);
+
+      if (!debt || debt <= 0) {
+        await ctx.sock.sendMessage(ctx.from, { text: `❌ You do not have any active loans to pay back!` }, { quoted: ctx.msg });
+        return;
+      }
+
+      const amountStr = ctx.args[0]?.toLowerCase();
+
+      if (!amountStr) {
+        await ctx.sock.sendMessage(ctx.from, { text: `Specify an amount or use *all*. Current debt: *🪙${debt.toLocaleString()}*` }, { quoted: ctx.msg });
+        return;
+      }
+
+      let paybackAmount = 0;
+      if (amountStr === 'all') {
+        paybackAmount = debt;
+      } else {
+        paybackAmount = parseInt(amountStr, 10);
+      }
+
+      if (isNaN(paybackAmount) || paybackAmount <= 0) {
+        await ctx.sock.sendMessage(ctx.from, { text: `❌ Invalid payback amount.` }, { quoted: ctx.msg });
+        return;
+      }
+
+      if (paybackAmount > debt) {
+        paybackAmount = debt;
+      }
+
+      if (user.wallet < paybackAmount) {
+        await ctx.sock.sendMessage(ctx.from, { text: `❌ Insufficient wallet balance to pay back 🪙${paybackAmount.toLocaleString()}!` }, { quoted: ctx.msg });
+        return;
+      }
+
+      user.wallet -= paybackAmount;
+      const remainingDebt = debt - paybackAmount;
+
+      if (remainingDebt <= 0) {
+        user.custom02 = 0;
+      } else {
+        user.custom02 = remainingDebt;
+      }
+
+      await user.save();
+
+      await ctx.sock.sendMessage(ctx.from, {
+        text: `▬▬▬▬▬ ⬩ 𝗘 𝗖 𝗢 𝗡 𝗢 𝗠 𝗬\n\n🏛️ *LOAN REPAYMENT*\n\n💳 Paid: *🪙${paybackAmount.toLocaleString()}*\n📌 Remaining Debt: *🪙${(remainingDebt <= 0 ? 0 : remainingDebt).toLocaleString()}*\n👛 Wallet Balance: *🪙${user.wallet.toLocaleString()}*`
+      }, { quoted: ctx.msg });
+    }
+  },
+
+  {
     name: 'loan',
     category: 'economy',
     description: 'Emergency liquidity reserve',
