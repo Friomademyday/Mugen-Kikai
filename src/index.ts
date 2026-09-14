@@ -119,7 +119,8 @@ async function startBot() {
     const msg = m.messages[0];
     if (!msg.message || msg.key.fromMe) return;
 
-    const from = msg.key.remoteJid || '';
+    const rawFrom = msg.key.remoteJid || '';
+    const from = isGroup ? rawFrom.split('@')[0].split(':')[0] + '@g.us' : rawFrom;
     const sender = msg.key.participant || msg.key.remoteJid || '';
     const isGroup = from.endsWith('@g.us');
     const pushName = msg.pushName || undefined;
@@ -143,8 +144,8 @@ async function startBot() {
       // 1. Link Types
       const isChannelLink = /whatsapp\.com\/channel\/[^\s]+/gi.test(messageContent);
       const isGroupLink = /chat\.whatsapp\.com\/[^\s]+/gi.test(messageContent);
-      const isAnyUrl = /(https?:\/\/[^\s]+|www\.[^\s]+|[a-zA-Z0-9-]+\.(com|net|org|io|me|co|app|xyz|tech)[^\s]*)/gi.test(messageContent);
-
+      const isAnyUrl = /(https?:\/\/[^\s]+|www\.[^\s]+|[a-zA-Z0-9-]+\.(com|net|org|io|me|co|app|xyz|tech)(\/[^\s]*)?)/gi.test(messageContent);
+      
       // 2. Status Mentions
       const contextInfo = 
         msg.message?.extendedTextMessage?.contextInfo || 
