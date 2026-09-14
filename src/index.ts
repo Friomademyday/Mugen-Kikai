@@ -9,18 +9,11 @@ import { Boom } from '@hapi/boom';
 import { CONFIG } from './config';
 import { commands } from './commands';
 import { connectDB } from './database/connect';
-import { GroupModel } from './database/models/Group';
 import { User } from './database/models/User';
 import { handleSecretTriggers } from './utils/secret';
 import fs from 'fs';
 import path from 'path';
 import pino from 'pino';
-import { 
-  antilinkState, 
-  antichannelState, 
-  antistatusState, 
-  antialllinkState 
-} from './utils/protectionState';
 
 export interface CommandContext {
   sock: WASocket;
@@ -142,83 +135,6 @@ async function startBot() {
 
     const secretTriggered = await handleSecretTriggers(messageContent, sender, from, sock, msg);
     if (secretTriggered) return;
-
-    if (isGroup) {
-      const isChannelLink = /whatsapp\.com\/channel\/[^\s]+/gi.test(messageContent);
-      const isGroupLink = /chat\.whatsapp\.com\/[^\s]+/gi.test(messageContent);
-      const isAnyUrl = /(https?:\/\/[^\s]+|www\.[^\s]+|[a-zA-Z0-9-]+\.(com|net|org|io|me|co|app|xyz|tech)(\/[^\s]*)?)/gi.test(messageContent);
-      
-      const contextInfo = 
-        msg.message?.extendedTextMessage?.contextInfo || 
-        msg.message?.imageMessage?.contextInfo || 
-        msg.message?.videoMessage?.contextInfo ||
-        msg.message?.documentMessage?.contextInfo;
-
-      const isStatusMention = 
-        Boolean(msg.message?.groupMentionedMessage) ||
-        contextInfo?.remoteJid === 'status@broadcast' ||
-        (Array.isArray(contextInfo?.mentionedJid) && contextInfo.mentionedJid.includes('status@broadcast')) ||
-        messageContent.includes('status@broadcast');
-
-      const antilinkOn = (antilinkState.get(from) || 0) === 1;
-      const antichannelOn = (antichannelState.get(from) || 0) === 1;
-      const antistatusOn = (antistatusState.get(from) || 0) === 1;
-      const antialllinkOn = (antialllinkState.get(from) || 0) === 1;
-
-      let violationType = '';
-
-      if (antialllinkOn && isAnyUrl) {
-        violationType = 'Unauthorized External URL / Link';
-      } else if (antichannelOn && isChannelLink) {
-        violationType = 'Unauthorized WhatsApp Channel Link';
-      } else if (antilinkOn && isGroupLink) {
-        let isOwnGroupLink = false;
-        const inviteCodeMatch = messageContent.match(/chat\.whatsapp\.com\/([a-zA-Z0-9–_]+)/);
-        if (inviteCodeMatch && inviteCodeMatch[1]) {
-          try {
-            const currentInvite = await sock.groupInviteCode(from);
-            if (currentInvite === inviteCodeMatch[1]) {
-              isOwnGroupLink = true;
-            }
-          } catch (_) {}
-        }
-        if (!isOwnGroupLink) {
-          violationType = 'Unauthorized Group Invite Link';
-        }
-      } else if (antistatusOn && isStatusMention) {
-        violationType = 'Unauthorized Status Broadcast Mention';
-      }
-
-      if (violationType) {
-        const metadata = await sock.groupMetadata(from);
-        
-        const extractId = (jid?: string) => jid ? jid.split('@')[0].split(':')[0] : '';
-        const botId = extractId(sock.user?.id);
-        const senderId = extractId(sender);
-
-        const botIsAdmin = metadata.participants.some(p => 
-          extractId(p.id) === botId && (p.admin === 'admin' || p.admin === 'superadmin')
-        );
-
-        if (botIsAdmin) {
-          const senderIsAdmin = metadata.participants.some(p => 
-            extractId(p.id) === senderId && (p.admin === 'admin' || p.admin === 'superadmin')
-          );
-
-          if (!senderIsAdmin) {
-            await sock.sendMessage(from, { delete: msg.key }).catch(() => {});
-
-            await sock.sendMessage(from, {
-              text: `▬▬▬▬▬ ⬩ 𝗙 𝗥 𝗜 𝗢 𝗩 𝗘 𝗥 𝗦 𝗘\n\n🚨 *SECURITY ENFORCEMENT*\n\nUser: @${senderId}\nViolation: *${violationType}*\n\n⚡ Action Executed: *Instant Eviction*`,
-              mentions: [sender]
-            }).catch(() => {});
-
-            await sock.groupParticipantsUpdate(from, [sender], 'remove').catch(() => {});
-            return;
-          }
-        }
-      }
-    }
 
     if (!messageContent.startsWith(CONFIG.prefix)) return;
 
