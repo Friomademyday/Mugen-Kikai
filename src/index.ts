@@ -123,32 +123,52 @@ async function startBot() {
     }
 
     const messageContent = 
-      msg.message.conversation || 
-      msg.message.extendedTextMessage?.text || 
-      '';
+  msg.message.conversation || 
+  msg.message.extendedTextMessage?.text || 
+  msg.message.imageMessage?.caption || 
+  msg.message.videoMessage?.caption || 
+  msg.message.documentMessage?.caption || 
+  '';
 
     const secretTriggered = await handleSecretTriggers(messageContent, sender, from, sock, msg);
     if (secretTriggered) return;
 
     if (isGroup) {
-      const isLink = /(https?:\/\/[^\s]+|chat\.whatsapp\.com\/[^\s]+|wa\.me\/[^\s]+)/gi.test(messageContent);
-      const isChannelLink = /(whatsapp\.com\/channel\/[^\s]+)/gi.test(messageContent);
-      const isStatusMention = msg.message?.groupMentionedMessage || 
-        msg.message?.extendedTextMessage?.contextInfo?.remoteJid === 'status@broadcast' ||
+      // 1. Separate regular links from channel links cleanly
+      const isChannelLink = /whatsapp\.com\/channel\/[^\s]+/gi.test(messageContent);
+      const isStandardLink = /(https?:\/\/[^\s]+|chat\.whatsapp\.com\/[^\s]+|wa\.me\/[^\s]+)/gi.test(messageContent) && !isChannelLink;
+      
+      // 2. Comprehensive check for status mentions
+      const contextInfo = msg.message?.extendedTextMessage?.contextInfo || msg.message?.imageMessage?.contextInfo || msg.message?.videoMessage?.contextInfo;
+      const isStatusMention = 
+        Boolean(msg.message?.groupMentionedMessage) ||
+        contextInfo?.remoteJid === 'status@broadcast' ||
+        (Array.isArray(contextInfo?.mentionedJid) && contextInfo.mentionedJid.includes('status@broadcast')) ||
         messageContent.includes('status@broadcast');
 
-      if (isLink || isChannelLink || isStatusMention) {
+      if (isStandardLink || isChannelLink || isStatusMention) {
         const metadata = await sock.groupMetadata(from);
-        const botJid = sock.user?.id.split(':')[0] + '@s.whatsapp.net';
-        const botIsAdmin = metadata.participants.some(p => (p.id === botJid || p.id === sock.user?.id) && (p.admin === 'admin' || p.admin === 'superadmin'));
+        
+        // Helper to normalize JIDs (strip device identifiers like :1 or :2)
+        const normalizeJid = (jid?: string) => jid ? jid.split('@')[0].split(':')[0] + '@s.whatsapp.net' : '';
+
+        const rawBotJid = sock.user?.id;
+        const normalizedBotJid = normalizeJid(rawBotJid);
+        const normalizedSender = normalizeJid(sender);
+
+        const botIsAdmin = metadata.participants.some(p => 
+          normalizeJid(p.id) === normalizedBotJid && (p.admin === 'admin' || p.admin === 'superadmin')
+        );
 
         if (botIsAdmin) {
-          const senderIsAdmin = metadata.participants.some(p => p.id === sender && (p.admin === 'admin' || p.admin === 'superadmin'));
+          const senderIsAdmin = metadata.participants.some(p => 
+            normalizeJid(p.id) === normalizedSender && (p.admin === 'admin' || p.admin === 'superadmin')
+          );
 
           if (!senderIsAdmin) {
             let isOwnGroupLink = false;
-            if (isLink && !isChannelLink) {
-              const inviteCodeMatch = messageContent.match(/chat\.whatsapp\.com\/([a-zA-Z0-29–_]+)/);
+            if (isStandardLink) {
+              const inviteCodeMatch = messageContent.match(/chat\.whatsapp\.com\/([a-zA-Z0-9–_]+)/);
               if (inviteCodeMatch && inviteCodeMatch[1]) {
                 try {
                   const currentInvite = await sock.groupInviteCode(from);
@@ -164,19 +184,22 @@ async function startBot() {
               if (groupSettings) {
                 let violationType = '';
 
-                if (groupSettings.antilink && isLink && !isChannelLink) violationType = 'Unauthorized External Group/Site Link';
+                if (groupSettings.antilink && isStandardLink) violationType = 'Unauthorized External Group/Site Link';
                 if (groupSettings.custom01 && isChannelLink) violationType = 'Unauthorized WhatsApp Channel Link Promotion';
                 if (groupSettings.antistatus && isStatusMention) violationType = 'Unauthorized Status Broadcast Mention';
 
                 if (violationType) {
-                  sock.sendMessage(from, { delete: msg.key }).catch(() => {});
+                  // Delete violating message
+                  await sock.sendMessage(from, { delete: msg.key }).catch(() => {});
                   
+                  // Send notice
                   await sock.sendMessage(from, {
-                    text: `▬▬▬▬▬▬▬▬▬▬ ⬩ 𝗙 𝗥 𝗜 𝗢 𝗩 𝗘 𝗥 𝗦 𝗘\n\n🚨 *SECURITY ENFORCEMENT*\n\nUser: @${sender.split('@')[0]}\nViolation: *${violationType}*\n\n⚡ Action Executed: *Instant Eviction*\n\nNotice: This action was triggered automatically by the Frioverse Security Core. The bot does not retain manual re-entry privileges. If you believe this was an error, contact a human group administrator directly—do NOT message this automated terminal.`,
+                    text: `▬▬▬▬▬ ⬩ 𝗙 𝗥 𝗜 𝗢 𝗩 𝗘 𝗥 𝗦 𝗘\n\n🚨 *SECURITY ENFORCEMENT*\n\nUser: @${normalizedSender.split('@')[0]}\nViolation: *${violationType}*\n\n⚡ Action Executed: *Instant Eviction*\n\nNotice: This action was triggered automatically by the Frioverse Security Core. The bot does not retain manual re-entry privileges. If you believe this was an error, contact a human group administrator directly—do NOT message this automated terminal.`,
                     mentions: [sender]
                   });
 
-                  await sock.groupParticipantsUpdate(from, [sender], 'remove');
+                  // Remove member
+                  await sock.groupParticipantsUpdate(from, [sender], 'remove').catch(() => {});
                   return;
                 }
               }
@@ -186,6 +209,7 @@ async function startBot() {
       }
     }
 
+    
     if (!messageContent.startsWith(CONFIG.prefix)) return;
 
     const args = messageContent.slice(CONFIG.prefix.length).trim().split(/ +/);
