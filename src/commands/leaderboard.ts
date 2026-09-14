@@ -59,7 +59,7 @@ export const leaderboardCommands: Command[] = [
       }
 
       caption += `*────────────────────*\n`;
-      caption += `✨ *Note:* Unlimited reserves are restricted from competition.`;
+      caption += `> ✨ *Note:* Unlimited reserves are restricted from competition.`;
 
 const leaderboardImagePath = path.join(process.cwd(), 'assets', 'lb.jpg');
 
