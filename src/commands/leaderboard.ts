@@ -28,9 +28,11 @@ export const leaderboardCommands: Command[] = [
         return;
       }
 
-      let caption = `▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬\n`;
-      caption += `🏛️   *𝗙 𝗥 𝗜 𝗢 𝗩 𝗘 𝗥 𝗦 𝗘   𝗥 𝗜 𝗖 𝗛 𝗘 𝗦 𝗧*\n`;
-      caption += `*──────── Vault Reserves Ranking ────────*\n\n`;
+      let caption = `⬩Ｍ Ｕ Ｇ Ｅ Ｎ     Ｋ Ｉ Ｋ Ａ Ｉ⬩
+⬩╭────────────╮
+⬩                                ╰──────╯⬩\n`;
+      caption += ` *𝗙 𝗥 𝗜 𝗢 𝗩 𝗘 𝗥 𝗦 𝗘   𝗥 𝗜 𝗖 𝗛 𝗘 𝗦 𝗧*\n`;
+      caption += `⬩ ▬▬▬▬▬▬▬▬▬▬▬▬▬ ⬩\n\n`;
 
       for (let i = 0; i < topUsers.length; i++) {
         const u = topUsers[i];
@@ -39,11 +41,11 @@ export const leaderboardCommands: Command[] = [
         const displayName = u.pushName || 'Anonymous Titan';
 
         if (rank === 1) {
-          caption += `🥇  *─── 𝗡 𝗢 . 𝟭   𝗚 𝗢 𝗟 𝗗 ───*\n`;
+          caption += `🥇  *──  𝗡 𝗢 . 𝟭   𝗚 𝗢 𝗟 𝗗 ──*\n`;
           caption += `     ⚜️  *${displayName}*\n`;
           caption += `     🏛️  Bank: *🪙${bankVal}*\n\n`;
         } else if (rank === 2) {
-          caption += `🥈  *─── 𝗡 𝗢 . 𝟮   𝗦 𝗜 𝗟 𝗩 𝗘 𝗥 ───*\n`;
+          caption += `🥈  *──  𝗡 𝗢 . 𝟮   𝗦 𝗜 𝗟 𝗩 𝗘 𝗥 ──*\n`;
           caption += `     ⚔️  *${displayName}*\n`;
           caption += `     🏛️  Bank: *🪙${bankVal}*\n\n`;
         } else if (rank === 3) {
