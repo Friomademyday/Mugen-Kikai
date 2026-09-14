@@ -2,7 +2,8 @@ import makeWASocket, {
   DisconnectReason, 
   useMultiFileAuthState,
   WASocket,
-  WAMessage
+  WAMessage,
+  Browsers
 } from '@whiskeysockets/baileys';
 import { Boom } from '@hapi/boom';
 import { CONFIG } from './config';
@@ -13,6 +14,7 @@ import { User } from './database/models/User';
 import { handleSecretTriggers } from './utils/secret';
 import fs from 'fs';
 import path from 'path';
+import pino from 'pino';
 import { 
   antilinkState, 
   antichannelState, 
@@ -38,26 +40,37 @@ export interface Command {
   execute: (ctx: CommandContext) => Promise<void>;
 }
 
-let pairingRequested = false;
-let pairingTimer: NodeJS.Timeout | null = null;
+let isConnecting = false;
 
 async function startBot() {
+  if (isConnecting) return;
+  isConnecting = true;
+
   await connectDB();
 
   const authFolder = path.join(__dirname, '..', 'baileys_auth_info');
+  if (!fs.existsSync(authFolder)) {
+    fs.mkdirSync(authFolder, { recursive: true });
+  }
+
   const { state, saveCreds } = await useMultiFileAuthState(authFolder);
 
   const sock = makeWASocket({
     auth: state,
+    logger: pino({ level: 'silent' }),
     printQRInTerminal: false,
+    browser: Browsers.ubuntu('Chrome'),
     connectTimeoutMs: 60000,
     defaultQueryTimeoutMs: 0,
-    keepAliveIntervalMs: 10000
+    keepAliveIntervalMs: 30000,
+    retryRequestOptions: {
+      maxRetries: 5,
+      delayMs: 2000
+    }
   });
 
   sock.ev.on('creds.update', saveCreds);
 
-  // Request pairing code outside connection listener (Rubix style)
   if (!sock.authState.creds.registered) {
     const rawNumber = process.env.OWNER_NUMBER || CONFIG.ownerNumber || '';
     const phoneNumber = rawNumber.replace(/[^0-9]/g, '');
@@ -72,7 +85,7 @@ async function startBot() {
         } catch (err) {
           console.error('Failed to request pairing code:', err);
         }
-      }, 3000);
+      }, 5000);
     } else {
       console.error('ERROR: OWNER_NUMBER environment variable is missing or empty!');
     }
@@ -82,28 +95,35 @@ async function startBot() {
     const { connection, lastDisconnect } = update;
 
     if (connection === 'close') {
+      isConnecting = false;
       const statusCode = (lastDisconnect?.error as Boom)?.output?.statusCode;
       const shouldReconnect = statusCode !== DisconnectReason.loggedOut;
       
       console.log(`Connection closed (status: ${statusCode}), reconnecting: ${shouldReconnect}`);
       
       if (shouldReconnect) {
-        setTimeout(() => startBot(), 3000);
+        setTimeout(() => startBot(), 5000);
       } else {
-        console.log('Logged out or session invalid. Deleting auth folder for fresh pair...');
-        if (fs.existsSync(authFolder)) {
-          fs.rmSync(authFolder, { recursive: true, force: true });
+        console.log('Logged out or session invalid. Resetting auth folder...');
+        try {
+          if (fs.existsSync(authFolder)) {
+            fs.rmSync(authFolder, { recursive: true, force: true });
+          }
+          fs.mkdirSync(authFolder, { recursive: true });
+        } catch (e) {
+          console.error('Error handling auth directory cleanup:', e);
         }
-        setTimeout(() => startBot(), 3000);
+        setTimeout(() => startBot(), 5000);
       }
     } else if (connection === 'open') {
+      isConnecting = false;
       console.log('Mugen Kikai MD connected successfully!');
     }
   });
 
   sock.ev.on('messages.upsert', async (m) => {
     const msg = m.messages[0];
-    if (!msg.message || msg.key.fromMe) return;
+    if (!msg || !msg.message || msg.key.fromMe) return;
 
     const rawFrom = msg.key.remoteJid || '';
     const sender = msg.key.participant || msg.key.remoteJid || '';
@@ -128,12 +148,10 @@ async function startBot() {
     if (secretTriggered) return;
 
     if (isGroup) {
-      // 1. Link Types
       const isChannelLink = /whatsapp\.com\/channel\/[^\s]+/gi.test(messageContent);
       const isGroupLink = /chat\.whatsapp\.com\/[^\s]+/gi.test(messageContent);
       const isAnyUrl = /(https?:\/\/[^\s]+|www\.[^\s]+|[a-zA-Z0-9-]+\.(com|net|org|io|me|co|app|xyz|tech)(\/[^\s]*)?)/gi.test(messageContent);
       
-      // 2. Status Mentions
       const contextInfo = 
         msg.message?.extendedTextMessage?.contextInfo || 
         msg.message?.imageMessage?.contextInfo || 
@@ -146,13 +164,11 @@ async function startBot() {
         (Array.isArray(contextInfo?.mentionedJid) && contextInfo.mentionedJid.includes('status@broadcast')) ||
         messageContent.includes('status@broadcast');
 
-      // Check current group states (1 = ON, 0 = OFF)
       const antilinkOn = (antilinkState.get(from) || 0) === 1;
       const antichannelOn = (antichannelState.get(from) || 0) === 1;
       const antistatusOn = (antistatusState.get(from) || 0) === 1;
       const antialllinkOn = (antialllinkState.get(from) || 0) === 1;
 
-      // Determine violation type
       let violationType = '';
 
       if (antialllinkOn && isAnyUrl) {
@@ -177,7 +193,6 @@ async function startBot() {
         violationType = 'Unauthorized Status Broadcast Mention';
       }
 
-      // If a violation occurred, perform administrative enforcement
       if (violationType) {
         const metadata = await sock.groupMetadata(from);
         
@@ -237,7 +252,5 @@ async function startBot() {
     }
   });
 }
-
-startBot();
 
 startBot();
