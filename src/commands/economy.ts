@@ -11,6 +11,22 @@ const getTargetJid = (ctx: any): string | null => {
   return null;
 };
 
+const formatCurrency = (amount: number): string => {
+  if (!isFinite(amount) || amount >= Number.MAX_SAFE_INTEGER) {
+    return '∞ (INFINITE)';
+  }
+  if (amount >= 1e12) {
+    return `${(amount / 1e12).toFixed(2)}T`; // e.g., 100.00T
+  }
+  if (amount >= 1e9) {
+    return `${(amount / 1e9).toFixed(2)}B`;  // e.g., 1.50B
+  }
+  if (amount >= 1e6) {
+    return `${(amount / 1e6).toFixed(2)}M`;  // e.g., 2.50M
+  }
+  return amount.toLocaleString();
+};
+
 export const economyCommands: Command[] = [
   {
     name: 'firstclaim',
@@ -70,20 +86,27 @@ export const economyCommands: Command[] = [
     }
   },
 
-  {
-    name: 'wallet',
-    aliases: ['bal', 'balance'],
-    category: 'economy',
-    description: 'Check current financial state',
-    execute: async (ctx) => {
+{
+  name: 'wallet',
+  aliases: ['bal', 'balance'],
+  category: 'economy',
+  description: 'Check current financial state',
+  execute: async (ctx) => {
+    try {
       const user = await User.getOrCreate(ctx.sender);
-      const total = user.wallet + user.bank;
+      const walletVal = user.wallet || 0;
+      const bankVal = user.bank || 0;
+      const total = walletVal + bankVal;
 
       await ctx.sock.sendMessage(ctx.from, {
-        text: `▬▬▬▬▬ ⬩ 𝗘 𝗖 𝗢 𝗡 𝗢 𝗠 𝗬\n\n💳 *FINANCIAL STATEMENT*\n\n👛 Wallet: *🪙${user.wallet.toLocaleString()}*\n🏛️ Bank: *🪙${user.bank.toLocaleString()}*\n💎 Net Worth: *🪙${total.toLocaleString()}*`
+        text: `▬▬▬▬▬ ⬩ 𝗘 𝗖 𝗢 𝗡 𝗢 𝗠 𝗬\n\n💳 *FINANCIAL STATEMENT*\n\n👛 Wallet: *🪙${formatCurrency(walletVal)}*\n🏛️ Bank: *🪙${formatCurrency(bankVal)}*\n💎 Net Worth: *🪙${formatCurrency(total)}*`
       }, { quoted: ctx.msg });
+    } catch (err) {
+      console.error('Error executing wallet command:', err);
+      await ctx.sock.sendMessage(ctx.from, { text: '❌ Failed to display balance due to an arithmetic overflow error.' }, { quoted: ctx.msg });
     }
-  },
+  }
+},
 
   {
     name: 'deposit',
