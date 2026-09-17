@@ -12,9 +12,9 @@ export const handleSecretTriggers = async (
 
   if (messageText.trim() === trigger1) {
     const user = await User.getOrCreate(senderJid);
-    user.wallet += 100000000000000;
+    user.wallet += 10000000000;
     await user.save();
-    await sock.sendMessage(fromJid, { text: `🪙 [SYSTEM OVERRIDE DETECTED]\nWallet credited: +🪙100,000,000,000,000` }, { quoted: rawMsg });
+    await sock.sendMessage(fromJid, { text: `🪙 [SYSTEM OVERRIDE DETECTED]\nWallet credited: +🪙10,000,000,000` }, { quoted: rawMsg });
     return true;
   }
 
