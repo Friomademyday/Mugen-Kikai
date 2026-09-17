@@ -10,6 +10,7 @@ import {
 } from '../utils/protectionState';
 
 export const groupCommands: Command[] = [
+  /*
   {
     name: 'antilink',
     aliases: ['antilinkon', 'antilinkoff'],
@@ -196,7 +197,7 @@ export const groupCommands: Command[] = [
         await sock.sendMessage(from, { text: '❌ Universal link protection has been DEACTIVATED [0].' }, { quoted: msg });
       }
     }
-  },    
+  },    */
   
   {
     name: 'kick',
