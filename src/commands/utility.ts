@@ -90,30 +90,7 @@ export const helpCommand: Command = {
 ❏ *blackjack* / *bj* - Single-hand instant blackjack card duel
 ❏ *roulette* - Bet on wheel sector targets for massive multiplier
 
-
-⬩╭────────────╮ 
-⬩                                ╰──────╯⬩
-▬▬▬▬▬▬▬▬ ⬩ 𝗚 𝗥 𝗢 𝗨 𝗣
-❏ *antilink* - Toggle automated external group link enforcement
-❏ *antistatus* - Toggle anti-status broadcast mention protection
-❏ *kick* - Evict target participant from active group sector
-❏ *promote* - Escalate target participant to sector administrator
-❏ *demote* - Revoke administrative clearance from target user
-❏ *mute* - Restrict messaging rights exclusively to admins
-❏ *unmute* - Restore standard group communication channels
-❏ *tagall* - Issue broadcast mention to every sector member
-❏ *hidetag* - Broadcast silent system message mentioning all
-
-
-⬩╭────────────╮ 
-⬩                                ╰──────╯⬩
-▬▬▬▬▬▬▬ ⬩ 𝗦 𝗘 𝗖 𝗨 𝗥 𝗜 𝗧 𝗬
-❏ *antilinkon* - Enable strict group link deletion and kick protocols
-❏ *antilinkoff* - Disable group link enforcement core
-❏ *antichannelon* - Enable WhatsApp channel link eviction rules
-❏ *antichanneloff* - Disable channel link enforcement core
-❏ *antistatuson* - Enable automated status broadcast mention eviction
-❏ *antistatusoff* - Disable status broadcast mention eviction`; 
+> created by Frio`; 
 
     const helpImagePath = path.join(process.cwd(), 'assets', 'mugenhelp.jpg');
 
