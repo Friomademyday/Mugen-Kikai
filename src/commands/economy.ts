@@ -234,12 +234,17 @@ export const economyCommands: Command[] = [
     }
   },
 
-  {
+{
     name: 'rob',
     category: 'economy',
     description: 'Attempt standard robbery',
     execute: async (ctx) => {
       const robber = await User.getOrCreate(ctx.sender);
+      if (robber.custom03) {
+        await ctx.sock.sendMessage(ctx.from, { text: `❌ Your wallet is frozen during election voting!` }, { quoted: ctx.msg });
+        return;
+      }
+
       const victimJid = getTargetJid(ctx);
 
       if (!victimJid) {
@@ -283,6 +288,7 @@ export const economyCommands: Command[] = [
       } else {
         const penalty = Math.floor(robber.wallet * 0.45);
         robber.wallet -= penalty;
+        await processRobberyPenaltyToHOS(penalty);
         await robber.save();
 
         await ctx.sock.sendMessage(ctx.from, {
@@ -291,14 +297,19 @@ export const economyCommands: Command[] = [
       }
     }
   },
-
-  {
+  
+{
     name: 'heavyrob',
     aliases: ['highrob'],
     category: 'economy',
     description: 'High stakes robbery',
     execute: async (ctx) => {
       const robber = await User.getOrCreate(ctx.sender);
+      if (robber.custom03) {
+        await ctx.sock.sendMessage(ctx.from, { text: `❌ Your wallet is frozen during election voting!` }, { quoted: ctx.msg });
+        return;
+      }
+
       const victimJid = getTargetJid(ctx);
 
       if (!victimJid) {
@@ -344,6 +355,7 @@ export const economyCommands: Command[] = [
         const penalty = Math.floor(robber.wallet * penaltyPercent);
 
         robber.wallet -= penalty;
+        await processRobberyPenaltyToHOS(penalty);
         await robber.save();
 
         await ctx.sock.sendMessage(ctx.from, {
