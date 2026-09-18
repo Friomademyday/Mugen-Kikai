@@ -1,11 +1,13 @@
 import fs from 'fs';
 import path from 'path';
-import { Command } from '../index';
+import { Command } from '../types/command';
 import { utilityCommands } from './utility';
 import { groupCommands } from './group';
 import { economyCommands } from './economy';
 import { gambleCommands } from './gamble';
 import { leaderboardCommands } from './leaderboard';
+import { electionCommands } from './election';
+import { politicsCommands } from './politics';
 
 export const commands = new Map<string, Command>();
 
@@ -14,7 +16,9 @@ const allCommands: Command[] = [
   ...groupCommands,
   ...economyCommands,
   ...gambleCommands,
-  ...leaderboardCommands
+  ...leaderboardCommands,
+  ...electionCommands,
+  ...politicsCommands
 ];
 
 for (const cmd of allCommands) {
@@ -26,9 +30,6 @@ for (const cmd of allCommands) {
   }
 }
 
-/**
- * Utility function to safely get local asset buffers for messages with images (e.g. menu, leaderboard)
- */
 export function getAssetBuffer(filename: string): Buffer | null {
   try {
     const assetPath = path.join(process.cwd(), 'assets', filename);
