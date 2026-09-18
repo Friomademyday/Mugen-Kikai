@@ -3,9 +3,9 @@ import { User } from '../database/models/User';
 import { PoliticalState } from '../database/models/PoliticalState';
 
 const FORM_PRICES = {
-  PRESIDENT: 500000,
-  HOS: 250000,
-  GOVERNOR: 100000
+  PRESIDENT: 100000000,
+  HOS: 70000000,
+  GOVERNOR: 50000000
 };
 
 const VOTE_PRICES = {
