@@ -1,28 +1,67 @@
+import fs from 'fs';
+import path from 'path';
 import { Command } from '../types/command';
 import { User } from '../database/models/User';
 import { PoliticalState } from '../database/models/PoliticalState';
 import { Treasury } from '../database/models/Treasury';
 
 export const politicsCommands: Command[] = [
+  
   {
     name: 'hierarchy',
-    aliases: ['politics', 'government'],
+    aliases: ['power', 'leaders', 'government', 'politics'],
     category: 'politics',
-    description: 'Display active state officials and governors',
+    description: 'Displays the current government structure and leadership.',
     execute: async (ctx) => {
+      const getNameFromJid = async (jid?: string | null) => {
+        if (!jid) return 'Vacant';
+        const user = await User.findOne({ where: { jid } });
+        return user?.pushName || 'Anonymous Leader';
+      };
+
+      const formatCountdown = (targetDate: Date | null | undefined): string => {
+        if (!targetDate) return '00d 00h 00m 00s';
+        const now = new Date().getTime();
+        const diff = targetDate.getTime() - now;
+
+        if (diff <= 0) return '00d 00h 00m 00s';
+
+        const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+        const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+        const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+
+        const pad = (n: number) => n.toString().padStart(2, '0');
+        return `${pad(days)}d ${pad(hours)}h ${pad(minutes)}m ${pad(seconds)}s`;
+      };
+
       const state = await PoliticalState.getSystemState();
 
-      const pres = state.presidentJid ? `@${state.presidentJid.split('@')[0]}` : 'Vacant';
-      const vp = state.vicePresidentJid ? `@${state.vicePresidentJid.split('@')[0]}` : 'Vacant';
-      const hos = state.hosJid ? `@${state.hosJid.split('@')[0]}` : 'Vacant';
+      const presidentName = await getNameFromJid(state.presidentJid);
+      const vicePresidentName = await getNameFromJid(state.vicePresidentJid);
+      const hosName = await getNameFromJid(state.hosJid);
 
-      const govJid = state.governors.get(ctx.from);
-      const gov = govJid ? `@${govJid.split('@')[0]}` : 'Vacant';
+      const localGovJid = state.governors?.get ? state.governors.get(ctx.from) : null;
+      const governorName = await getNameFromJid(localGovJid);
 
-      const text = `⬩ 🏛️ 𝗣𝗢𝗟𝗜𝗧𝗜𝗖𝗔𝗟 𝗛𝗜𝗘𝗥𝗔𝗥𝗖𝗛𝗬\n\n👑 President: ${pres}\n🎖️ Vice President: ${vp}\n🛡️ Head of Security: ${hos}\n\n🏛️ Local Governor: ${gov}`;
-      const mentions = [state.presidentJid, state.vicePresidentJid, state.hosJid, govJid].filter(Boolean) as string[];
+      const nextElectionDate = null;
+      const countdownStr = formatCountdown(nextElectionDate);
 
-      await ctx.sock.sendMessage(ctx.from, { text, mentions }, { quoted: ctx.msg });
+      const caption = 
+`blank`;
+
+      const hierarchyImagePath = path.join(process.cwd(), 'assets', 'hierarchy.jpg');
+
+      if (fs.existsSync(hierarchyImagePath)) {
+        await ctx.sock.sendMessage(ctx.from, {
+          image: { url: hierarchyImagePath },
+          caption: caption
+        }, { quoted: ctx.msg });
+      } else {
+        await ctx.sock.sendMessage(ctx.from, {
+          text: caption
+        }, { quoted: ctx.msg });
+      }
     }
   },
 
