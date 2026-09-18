@@ -38,7 +38,7 @@ export const gambleCommands: Command[] = [
         return;
       }
 
-      const win = Math.random() < 0.37;
+      const win = Math.random() < 0.5;
       
       if (win) {
         const totalPayout = await processGambleTaxes(ctx.from, bet, true, 2);
@@ -91,7 +91,7 @@ export const gambleCommands: Command[] = [
         return;
       }
 
-      const win = Math.random() < 0.37;
+      const win = Math.random() < 0.5;
       const outcome = win ? choice : (choice === 'heads' ? 'tails' : 'heads');
 
       if (win) {
@@ -139,7 +139,7 @@ export const gambleCommands: Command[] = [
       }
 
       const items = ['🎰', '💎', '👑', '7️⃣', '🔥', '💥'];
-      const isWin = Math.random() < 0.37;
+      const isWin = Math.random() < 0.5;
       
       let r1: string, r2: string, r3: string;
       let multiplier = 0;
@@ -202,7 +202,7 @@ export const gambleCommands: Command[] = [
         return;
       }
 
-      const isWin = Math.random() < 0.37;
+      const isWin = Math.random() < 0.5;
       let playerRoll: number, botRoll: number;
 
       if (isWin) {
@@ -258,7 +258,7 @@ export const gambleCommands: Command[] = [
         return;
       }
 
-      const isWin = Math.random() < 0.37;
+      const isWin = Math.random() < 0.5;
       let pScore: number, dScore: number;
 
       if (isWin) {
@@ -318,7 +318,7 @@ export const gambleCommands: Command[] = [
         return;
       }
 
-      const isWin = Math.random() < 0.37;
+      const isWin = Math.random() < 0.5;
       let landedColor = color;
       let roll = 10;
 
