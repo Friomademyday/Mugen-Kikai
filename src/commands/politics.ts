@@ -48,7 +48,33 @@ export const politicsCommands: Command[] = [
       const countdownStr = formatCountdown(nextElectionDate);
 
       const caption = 
-`blank`;
+`⬩Ｍ Ｕ Ｇ Ｅ Ｎ     Ｋ Ｉ Ｋ Ａ Ｉ⬩
+⬩╭────────────╮
+⬩                                ╰──────╯⬩
+⬩ 𝑫𝒆𝒎𝒐𝒄𝒓𝒂𝒄𝒚 𝒊𝒔 𝒕𝒉𝒆 𝒘𝒐𝒓𝒔𝒕 𝒇𝒐𝒓𝒎 𝒐𝒇
+ 𝒈𝒐𝒗𝒆𝒓𝒏𝒎𝒆𝒏𝒕 𝒆𝒙𝒄𝒆𝒑𝒕 𝒇𝒐𝒓 𝒂𝒍𝒍 𝒕𝒉𝒆 𝒐𝒕𝒉𝒆𝒓
+ 𝒇𝒐𝒓𝒎𝒔 𝒕𝒉𝒂𝒕 𝒉𝒂𝒗𝒆 𝒃𝒆𝒆𝒏 𝒕𝒓𝒊𝒆𝒅.     ~_wc_ ⬩
+
+⬩╭─────────────────╮⬩
+
+🏛️  *──────  𝗣 𝗥 𝗘 𝗦 𝗜 𝗗 𝗘 𝗡 𝗧*
+      *${presidentName}*
+
+🏛️  *─  𝗩 𝗜 𝗖 𝗘   𝗣 𝗥 𝗘 𝗦 𝗜 𝗗 𝗘 𝗡 𝗧*
+(_Appointed by President_)
+      *${vicePresidentName}*
+
+🛡️  *──────────── 𝗛 • 𝗢 • 𝗦*
+(_Head of Security_)
+      *${hosName}*
+
+🏢  *─────── 𝗚 𝗢 𝗩 𝗘 𝗥 𝗡 𝗢 𝗥*
+      *${governorName}*
+
+⬩╭────────────╮
+⬩                                ╰──────╯⬩
+> ⏱️ Next Election:
+> ${countdownStr}`;
 
       const hierarchyImagePath = path.join(process.cwd(), 'assets', 'hierarchy.jpg');
 
