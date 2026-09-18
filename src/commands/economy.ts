@@ -190,13 +190,19 @@ export const economyCommands: Command[] = [
     }
   },
 
-  {
+{
     name: 'give',
     aliases: ['pay', 'transfer'],
     category: 'economy',
     description: 'Transfer cash to a target user',
     execute: async (ctx) => {
       const senderUser = await User.getOrCreate(ctx.sender);
+
+      if (senderUser.custom03) {
+        await ctx.sock.sendMessage(ctx.from, { text: `❌ Your wallet is frozen during election voting to prevent bribery!` }, { quoted: ctx.msg });
+        return;
+      }
+
       const targetJid = getTargetJid(ctx);
 
       if (!targetJid) {
@@ -240,11 +246,6 @@ export const economyCommands: Command[] = [
     description: 'Attempt standard robbery',
     execute: async (ctx) => {
       const robber = await User.getOrCreate(ctx.sender);
-      if (robber.custom03) {
-        await ctx.sock.sendMessage(ctx.from, { text: `❌ Your wallet is frozen during election voting!` }, { quoted: ctx.msg });
-        return;
-      }
-
       const victimJid = getTargetJid(ctx);
 
       if (!victimJid) {
@@ -297,19 +298,14 @@ export const economyCommands: Command[] = [
       }
     }
   },
-  
-{
+
+  {
     name: 'heavyrob',
     aliases: ['highrob'],
     category: 'economy',
     description: 'High stakes robbery',
     execute: async (ctx) => {
       const robber = await User.getOrCreate(ctx.sender);
-      if (robber.custom03) {
-        await ctx.sock.sendMessage(ctx.from, { text: `❌ Your wallet is frozen during election voting!` }, { quoted: ctx.msg });
-        return;
-      }
-
       const victimJid = getTargetJid(ctx);
 
       if (!victimJid) {
@@ -364,7 +360,7 @@ export const economyCommands: Command[] = [
       }
     }
   },
-
+  
   {
     name: 'payback',
     aliases: ['repay'],
