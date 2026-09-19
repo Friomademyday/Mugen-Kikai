@@ -288,8 +288,13 @@ export const profileCommand: Command = {
     try {
       const pfpUrl = await sock.profilePictureUrl(sender, 'image');
       if (pfpUrl) {
+        const response = await fetch(pfpUrl);
+        const imageBuffer = Buffer.from(await response.arrayBuffer());
+
         await sock.sendMessage(from, {
-          image: { url: pfpUrl },
+          image: imageBuffer,
+          mimetype: 'image/jpeg',
+          jpegThumbnail: imageBuffer.toString('base64'),
           caption,
           mentions: [sender]
         });
@@ -300,7 +305,7 @@ export const profileCommand: Command = {
     await sock.sendMessage(from, {
       text: caption,
       mentions: [sender]
-    });
+    });  
   }
 };
 
