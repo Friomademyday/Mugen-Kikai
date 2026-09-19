@@ -278,8 +278,6 @@ export const profileCommand: Command = {
 
         await sock.sendMessage(from, {
           image: imageBuffer,
-          mimetype: 'image/jpeg',
-          jpegThumbnail: imageBuffer.toString('base64'),
           caption,
           mentions: [sender]
         });
