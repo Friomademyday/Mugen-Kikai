@@ -50,7 +50,7 @@ export async function processUserMessageAndRank(
   msg: WAMessage,
   pushName?: string 
 ): Promise<IUser> {
-  const user = await User.getOrCreate(senderJid);
+  const user = await User.getOrCreate(senderJid, pushName);
   user.xp = (user.xp || 0) + 1;
 
   const currentRankTier = getCurrentRank(user.xp);
