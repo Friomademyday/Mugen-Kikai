@@ -5,6 +5,7 @@ export interface CommandContext {
   msg: proto.IWebMessageInfo;
   from: string;
   sender: string;
+  pushName?: string;
   args: string[];
   command: string;
   text: string;
