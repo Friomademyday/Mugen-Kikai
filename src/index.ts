@@ -15,6 +15,7 @@ import fs from 'fs';
 import path from 'path';
 import pino from 'pino';
 import { checkAndProcessElections } from './services/electionScheduler';
+import { processUserMessageAndRank } from './services/rankService';
 
 export interface CommandContext {
   sock: WASocket;
