@@ -14,6 +14,7 @@ import { handleSecretTriggers } from './utils/secret';
 import fs from 'fs';
 import path from 'path';
 import pino from 'pino';
+import { checkAndProcessElections } from './services/electionScheduler';
 
 export interface CommandContext {
   sock: WASocket;
@@ -34,6 +35,7 @@ export interface Command {
 }
 
 let isConnecting = false;
+let electionInterval: NodeJS.Timeout | null = null;
 
 async function startBot() {
   if (isConnecting) return;
@@ -85,6 +87,10 @@ async function startBot() {
 
     if (connection === 'close') {
       isConnecting = false;
+      if (electionInterval) {
+        clearInterval(electionInterval);
+        electionInterval = null;
+      }
       const statusCode = (lastDisconnect?.error as Boom)?.output?.statusCode;
       const shouldReconnect = statusCode !== DisconnectReason.loggedOut;
       
@@ -107,6 +113,14 @@ async function startBot() {
     } else if (connection === 'open') {
       isConnecting = false;
       console.log('Mugen Kikai MD connected successfully!');
+
+      if (!electionInterval) {
+        electionInterval = setInterval(() => {
+          checkAndProcessElections(sock).catch((err) => {
+            console.error('Error running election check loop:', err);
+          });
+        }, 10000);
+      }
     }
   });
 
