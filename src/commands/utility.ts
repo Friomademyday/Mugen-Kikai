@@ -315,6 +315,7 @@ export const utilityCommands = [
   pingCommand,
   runtimeCommand,
   ownerCommand,
+  whatsNewCommand,
   updatesCommand,
   profileCommand
 ];
