@@ -23,12 +23,15 @@ export const rankCommands: Command[] = [
 
       const text = 
 `⬩Ｍ Ｕ Ｇ Ｅ Ｎ     Ｋ Ｉ Ｋ Ａ Ｉ⬩
-▬▬▬▬▬ ⬩ 𝑹𝑨𝑵𝑲 𝑷𝑑𝑶𝑭𝑰𝑳𝑬
+⬩╭────────────╮ 
+⬩                                ╰──────╯⬩
+⬩ 𝑹𝑨𝑵𝑲:
 
-👤 User: @${ctx.sender.split('@')[0]}
-💬 Total Messages (XP): *${userXp.toLocaleString()}*
-🎖️ Current Rank: *${currentRankName}*
-⏩ Next Rank: *${nextRankInfo}*`;
+▬ ⬩ @${ctx.sender.split('@')[0]}
+▬ ⬩ ${userXp.toLocaleString()}
+▬ ⬩ ${currentRankName}
+
+> Next rank ⬩ ${nextRankInfo}`;
 
       /*
        * DYNAMIC IMAGE SELECTION FOR .rank COMMAND:
