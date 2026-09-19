@@ -185,20 +185,11 @@ The President now has executive powers to appoint and dismiss, and every office 
       const imageBuffer = fs.readFileSync(whatsNewImagePath);
       await sock.sendMessage(from, {
         image: imageBuffer,
-        mimetype: 'image/jpeg',
-        jpegThumbnail: imageBuffer.toString('base64'),
         caption
       });
     } else {
       await sock.sendMessage(from, { text: caption });
     }
-
-  
-  
-  
-  
-  
-  
   }
 };
 
