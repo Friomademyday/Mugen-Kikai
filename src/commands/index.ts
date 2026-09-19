@@ -8,6 +8,7 @@ import { gambleCommands } from './gamble';
 import { leaderboardCommands } from './leaderboard';
 import { electionCommands } from './election';
 import { politicsCommands } from './politics';
+import { rankCommands } from './rank';
 
 export const commands = new Map<string, Command>();
 
