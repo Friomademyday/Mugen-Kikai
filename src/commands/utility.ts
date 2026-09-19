@@ -130,7 +130,7 @@ export const pingCommand: Command = {
     const latency = Date.now() - start;
 
     await sock.sendMessage(from, {
-      text: `▬▬▬▬ ⬩ 𝗦 𝗬 𝗦 𝗧 𝗘 𝗠  𝗣 𝗜 𝗡 𝗚\n\n⚡ Latency Speed: *${latency}ms*`
+      text: `⬩Ｍ Ｕ Ｇ Ｅ Ｎ     Ｋ Ｉ Ｋ Ａ Ｉ⬩\n▬▬▬▬ ⬩ 𝗦 𝗬 𝗦 𝗧 𝗘 𝗠  𝗣 𝗜 𝗡 𝗚\n\n⚡ Latency Speed: *${latency}ms*`
     }, { quoted: sentMsg });
   }
 };
@@ -142,7 +142,7 @@ export const runtimeCommand: Command = {
   execute: async ({ sock, from }: CommandContext) => {
     const metrics = await getSystemMetrics();
     await sock.sendMessage(from, {
-      text: `▬▬▬▬▬▬▬ ⬩ 𝗥 𝗨 𝗡 𝗧 𝗜 𝗠 𝗘\n\n⏱️ Active System Duration: *${metrics.runtime}*\n🧠 Memory Reserve: *${metrics.ramUsage}*`
+      text: `⬩Ｍ Ｕ Ｇ Ｅ Ｎ     Ｋ Ｉ Ｋ Ａ Ｉ⬩\n▬▬▬▬▬▬▬ ⬩ 𝗥 𝗨 𝗡 𝗧 𝗜 𝗠 𝗘\n\n⏱️ Active System Duration: *${metrics.runtime}*\n🧠 Memory Reserve: *${metrics.ramUsage}*`
     });
   }
 };
@@ -152,7 +152,7 @@ export const ownerCommand: Command = {
   description: 'Display bot owner contact details',
   aliases: ['creator', 'developer'],
   execute: async ({ sock, from }: CommandContext) => {
-    const ownerText = `▬▬▬▬▬▬▬ ⬩ 𝗢 𝗪 𝗡 𝗘 𝗥\n\n👨‍💻 Creator: *frio*\n🐙 GitHub: *@Friomademyday*\n💬 Discord: https://discord.gg/kUSvNJ3M\n\n⚡ Mugen Kikai MD Core Operations`;
+    const ownerText = `⬩Ｍ Ｕ Ｇ Ｅ Ｎ     Ｋ Ｉ Ｋ Ａ Ｉ⬩\n▬▬▬▬▬▬▬ ⬩ 𝗢 𝗪 𝗡 𝗘 𝗥\n\n👨‍💻 Creator: *frio*\n🐙 GitHub: *@Friomademyday*\n💬 Discord: https://discord.gg/kUSvNJ3M\n\n⚡ Mugen Kikai MD Core Operations`;
     await sock.sendMessage(from, { text: ownerText });
   }
 };
