@@ -30,6 +30,7 @@ export async function getFormattedMenu(): Promise<string> {
  ❏ ᴘɪɴɢ
  ❏ ʜᴇʟᴘ
  ❏ ᴍᴇɴᴜ 
+ ❏ ᴡʜᴀᴛsɴᴇᴡ
 
 
 ⬩╭────────────╮ 
