@@ -23,8 +23,6 @@ export const menuCommand: Command = {
       const imageBuffer = fs.readFileSync(MENU_IMAGE_PATH);
       await sock.sendMessage(from, {
         image: imageBuffer,
-        mimetype: 'image/jpeg',
-        jpegThumbnail: imageBuffer.toString('base64'),
         caption
       });
     } else {
@@ -115,8 +113,6 @@ export const helpCommand: Command = {
       const imageBuffer = fs.readFileSync(helpImagePath);
       await sock.sendMessage(from, {
         image: imageBuffer,
-        mimetype: 'image/jpeg',
-        jpegThumbnail: imageBuffer.toString('base64'),
         caption: helpText
       });
     } else {
@@ -196,6 +192,13 @@ The President now has executive powers to appoint and dismiss, and every office 
     } else {
       await sock.sendMessage(from, { text: caption });
     }
+
+  
+  
+  
+  
+  
+  
   }
 };
 
