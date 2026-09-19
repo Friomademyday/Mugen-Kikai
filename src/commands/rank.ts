@@ -71,7 +71,7 @@ export const rankCommands: Command[] = [
     execute: async (ctx) => {
       const topUsers = await User.find({ xp: { $gt: 0 } })
         .sort({ xp: -1 })
-        .limit(10)
+        .limit(5)
         .exec();
 
       if (!topUsers || topUsers.length === 0) {
@@ -83,25 +83,28 @@ export const rankCommands: Command[] = [
         return;
       }
 
-      let caption = `⬩Ｍ Ｕ Ｇ Ｅ Ｎ     Ｋ Ｉ Ｋ Ａ I⬩\n`;
-      caption += ` ⛩️ *Ｒ Ａ Ｎ Ｋ     Ｈ Ｉ Ｅ Ｒ Ａ Ｒ Ｃ Ｈ Ｙ*\n`;
-      caption += `⬩ ▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬ ⬩\n\n`;
+      let caption = `⬩Ｍ Ｕ Ｇ Ｅ Ｎ     Ｋ Ｉ Ｋ Ａ Ｉ⬩\n`;
+      caption += `⬩╭────────────╮ \n`;
+      caption += `⬩                                ╰──────╯⬩\n`;
+      caption += `⬩        Ｒ Ａ Ｎ Ｋ Ｉ Ｎ Ｇ Ｓ        ⬩\n\n`;
 
       for (let i = 0; i < topUsers.length; i++) {
         const u = topUsers[i];
-        const position = (i + 1).toString().padStart(2, '0');
         const xpVal = (u.xp || 0).toLocaleString();
         const displayName = u.pushName || 'Anonymous Shinobi';
         const tier = getCurrentRank(u.xp || 0);
-        const rankTitle = tier ? tier.japanese : '初心者 - SHOSHINSHA';
 
-        caption += `*#${position}* │ *${displayName}*\n`;
-        caption += `        ⛩️ *${rankTitle}*\n`;
-        caption += `        💬 *${xpVal}* XP\n\n`;
+        const japaneseTitle = tier ? tier.japanese : '初心者 SHOSHINSHA';
+        const englishTitle = tier ? tier.name : 'Beginner';
+
+        caption += `*▬▬▬▬▬▬▬ ⬩ ${japaneseTitle}*\n`;
+        caption += `❏ \`NAME:\` ${displayName}\n`;
+        caption += `❏ \`XP:\` ${xpVal}\n`;
+        caption += `❏ \`RANK:\` ${englishTitle}\n\n`;
       }
 
       caption += `*────────────────────*\n`;
-      caption += `> ✨ *Universal Message Hierarchy*`;
+      caption += `> _1xp = 1MSG_`;
 
       const leaderboardImagePath = path.join(process.cwd(), 'assets', 'ranktop.jpg');
 
@@ -124,5 +127,6 @@ export const rankCommands: Command[] = [
       }
     }
   }
+          
 
 ];
