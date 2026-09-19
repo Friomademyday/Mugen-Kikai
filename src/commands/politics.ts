@@ -88,6 +88,9 @@ export const politicsCommands: Command[] = [
           text: caption
         }, { quoted: ctx.msg });
       }
+
+
+      
     }
   },
 
