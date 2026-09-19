@@ -166,6 +166,7 @@ async function startBot() {
           msg,
           from,
           sender,
+          pushName,
           args,
           command: commandName,
           text: args.join(' '),
