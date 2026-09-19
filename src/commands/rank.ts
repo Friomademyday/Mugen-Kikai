@@ -62,6 +62,7 @@ export const rankCommands: Command[] = [
     }
   },
 
+
   {
     name: 'rankleaderboard',
     aliases: ['ranktop', 'xptop'],
@@ -82,45 +83,26 @@ export const rankCommands: Command[] = [
         return;
       }
 
-      let caption = `⬩Ｍ Ｕ Ｇ Ｅ Ｎ     Ｋ Ｉ Ｋ Ａ Ｉ⬩
-⬩╭────────────╮
-⬩                                ╰──────╯⬩\n`;
-      caption += ` *𝑼 𝑵 𝑰 𝑽 𝑬 𝑹 𝑺 𝑨 𝑳   𝑳 𝑬 𝑨 𝑫 𝑬 𝑹 𝑩 𝑶 𝑨 𝑹 𝑫*\n`;
-      caption += `⬩ ▬▬▬▬▬▬▬▬▬▬▬▬▬ ⬩\n\n`;
+      let caption = `⬩Ｍ Ｕ Ｇ Ｅ Ｎ     Ｋ Ｉ Ｋ Ａ I⬩\n`;
+      caption += ` ⛩️ *Ｒ Ａ Ｎ Ｋ     Ｈ Ｉ Ｅ Ｒ Ａ Ｒ Ｃ Ｈ Ｙ*\n`;
+      caption += `⬩ ▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬ ⬩\n\n`;
 
       for (let i = 0; i < topUsers.length; i++) {
         const u = topUsers[i];
-        const rankNum = i + 1;
+        const position = (i + 1).toString().padStart(2, '0');
         const xpVal = (u.xp || 0).toLocaleString();
-        const displayName = u.pushName || 'Anonymous Titan';
+        const displayName = u.pushName || 'Anonymous Shinobi';
         const tier = getCurrentRank(u.xp || 0);
-        const rankTitle = tier ? tier.japanese : 'Unranked';
+        const rankTitle = tier ? tier.japanese : '初心者 - SHOSHINSHA';
 
-        if (rankNum === 1) {
-          caption += `🥇  *──  𝗡 𝗢 . 𝟭   𝗚 𝗢 𝗟 𝗗 ──*\n`;
-          caption += `     ⚜️  *${displayName}*\n`;
-          caption += `     💬 Messages: *${xpVal}* | Rank: *${rankTitle}*\n\n`;
-        } else if (rankNum === 2) {
-          caption += `🥈  *──  𝗡 𝗢 . 𝟮   𝗦 𝗜 𝗟 𝗩 𝗘 𝗥 ──*\n`;
-          caption += `     ⚔️  *${displayName}*\n`;
-          caption += `     💬 Messages: *${xpVal}* | Rank: *${rankTitle}*\n\n`;
-        } else if (rankNum === 3) {
-          caption += `🥉  *── 𝗡 𝗢 . 𝟯   𝗕 𝗥 𝗢 𝗡 𝗭 𝗘 ──*\n`;
-          caption += `     🛡️  *${displayName}*\n`;
-          caption += `     💬 Messages: *${xpVal}* | Rank: *${rankTitle}*\n\n`;
-        } else {
-          caption += `*#0${rankNum}* │ *${displayName}*\n`;
-          caption += `        💬 Messages: *${xpVal}* | Rank: *${rankTitle}*\n\n`;
-        }
+        caption += `*#${position}* │ *${displayName}*\n`;
+        caption += `        ⛩️ *${rankTitle}*\n`;
+        caption += `        💬 *${xpVal}* XP\n\n`;
       }
 
       caption += `*────────────────────*\n`;
-      caption += `> ✨ *Note:* Ranking data reflects universal message activity.`;
+      caption += `> ✨ *Universal Message Hierarchy*`;
 
-      /*
-       * SINGLE LEADERBOARD IMAGE RESOLUTION:
-       * Checks for assets/ranktop.jpg or assets/rankleaderboard.jpg
-      */
       const leaderboardImagePath = path.join(process.cwd(), 'assets', 'ranktop.jpg');
 
       if (fs.existsSync(leaderboardImagePath)) {
@@ -142,4 +124,5 @@ export const rankCommands: Command[] = [
       }
     }
   }
+
 ];
