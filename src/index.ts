@@ -137,7 +137,7 @@ async function startBot() {
     const from = isGroup ? rawFrom.split('@')[0].split(':')[0] + '@g.us' : rawFrom;
 
     if (sender) {
-      await User.getOrCreate(sender, pushName);
+  await processUserMessageAndRank(sender, from, sock, msg, pushName);
     }
 
     const messageContent = 
