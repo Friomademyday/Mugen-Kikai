@@ -20,8 +20,11 @@ export const menuCommand: Command = {
     const caption = await getFormattedMenu();
 
     if (MENU_IMAGE_PATH && fs.existsSync(MENU_IMAGE_PATH)) {
+      const imageBuffer = fs.readFileSync(MENU_IMAGE_PATH);
       await sock.sendMessage(from, {
-        image: { url: MENU_IMAGE_PATH },
+        image: imageBuffer,
+        mimetype: 'image/jpeg',
+        jpegThumbnail: imageBuffer.toString('base64'),
         caption
       });
     } else {
