@@ -179,13 +179,26 @@ The President now has executive powers to appoint and dismiss, and every office 
   }
 };
 
+export const updatesImagePath = path.join(process.cwd(), 'assets', 'updates.jpg');
+
 export const updatesCommand: Command = {
   name: 'updates',
   description: 'Display system patch log and version status',
   aliases: ['version', 'changelog'],
   execute: async ({ sock, from }: CommandContext) => {
     const updateText = `blank`;
-    await sock.sendMessage(from, { text: updateText });
+
+    if (fs.existsSync(updatesImagePath)) {
+      const imageBuffer = fs.readFileSync(updatesImagePath);
+      await sock.sendMessage(from, {
+        image: imageBuffer,
+        mimetype: 'image/jpeg',
+        jpegThumbnail: imageBuffer.toString('base64'),
+        caption: updateText
+      });
+    } else {
+      await sock.sendMessage(from, { text: updateText });
+    }
   }
 };
 
