@@ -14,7 +14,7 @@ export interface CommandContext {
 
 export interface Command {
   name: string;
-  category: string;
+  category?: string;
   aliases?: string[];
   description: string;
   execute: (ctx: CommandContext) => Promise<void>;
