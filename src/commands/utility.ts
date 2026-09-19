@@ -141,6 +141,44 @@ export const ownerCommand: Command = {
   }
 };
 
+export const whatsNewImagePath = path.join(process.cwd(), 'assets', 'whatsnew.jpg');
+
+export const whatsNewCommand: Command = {
+  name: 'whatsnew',
+  description: 'Display new updates and changes on the bot',
+  aliases: ['wn'],
+  execute: async ({ sock, from }: CommandContext) => {
+    const caption = `⬩Ｍ Ｕ Ｇ Ｅ Ｎ     Ｋ Ｉ Ｋ Ａ Ｉ⬩
+⬩╭────────────╮ 
+⬩                                ╰──────╯⬩
+
+𝑰𝒏𝒕𝒓𝒐𝒅𝒖𝒄𝒆𝒔:
+⬩     *Ｄ Ｅ Ｍ Ｏ Ｃ Ｒ Ａ Ｃ Ｙ*    ⬩
+⬩╭────────────╮ 
+⬩                                ╰──────╯⬩
+
+This patch introduces a complete *political economy*. 
+The system now runs on a *timed election cycle* that moves from locked to registration to voting. Players can *purchase candidacy forms with in-game currency* with *limited slots per office*, campaign, and voters can fund votes directly from their wallet.
+
+Once elected, a *full government hierarchy is activated with President, Vice President, Head of Security, and per-group Governors*. 
+The President now has executive powers to appoint and dismiss, and every office now controls its own state treasury with a reserve-lock security to prevent total drain. 
+
+> More details on "help`;
+
+    if (fs.existsSync(whatsNewImagePath)) {
+      const imageBuffer = fs.readFileSync(whatsNewImagePath);
+      await sock.sendMessage(from, {
+        image: imageBuffer,
+        mimetype: 'image/jpeg',
+        jpegThumbnail: imageBuffer.toString('base64'),
+        caption
+      });
+    } else {
+      await sock.sendMessage(from, { text: caption });
+    }
+  }
+};
+
 export const updatesCommand: Command = {
   name: 'updates',
   description: 'Display system patch log and version status',
