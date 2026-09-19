@@ -131,7 +131,7 @@ export const politicsCommands: Command[] = [
       await state.save();
 
       await ctx.sock.sendMessage(ctx.from, {
-        text: `⬩ 🏛️ 𝗦𝗧𝗔𝗧𝗘 𝗔𝗣𝗣𝗢𝗜𝗡𝗧𝗠𝗘𝗡𝗧\n\n🎖️ *@${targetJid.split('@')[0]}* has been appointed Vice President!`,
+        text: `⬩Ｍ Ｕ Ｇ Ｅ Ｎ     Ｋ Ｉ Ｋ Ａ Ｉ⬩\n⬩ 🏛️ 𝗦𝗧𝗔𝗧𝗘 𝗔𝗣𝗣𝗢𝗜𝗡𝗧𝗠𝗘𝗡𝗧\n\n🎖️ *@${targetJid.split('@')[0]}* has been appointed Vice President!`,
         mentions: [targetJid]
       }, { quoted: ctx.msg });
     }
@@ -160,7 +160,7 @@ export const politicsCommands: Command[] = [
       await state.save();
 
       await ctx.sock.sendMessage(ctx.from, {
-        text: `⬩ 🏛️ 𝗦𝗧𝗔𝗧𝗘 𝗗𝗜𝗦𝗠𝗜𝗦𝗦𝗔𝗟\n\n🚨 *@${dismissed.split('@')[0]}* was removed from Vice President.\n⏳ 15-Hour Appointment Cooldown Initiated.`,
+        text: `⬩Ｍ Ｕ Ｇ Ｅ Ｎ     Ｋ Ｉ Ｋ Ａ Ｉ⬩\n⬩ 🏛️ 𝗦𝗧𝗔𝗧𝗘 𝗗𝗜𝗦𝗠𝗜𝗦𝗦𝗔𝗟\n\n🚨 *@${dismissed.split('@')[0]}* was removed from Vice President.\n⏳ 15-Hour Appointment Cooldown Initiated.`,
         mentions: [dismissed]
       }, { quoted: ctx.msg });
     }
@@ -198,7 +198,7 @@ export const politicsCommands: Command[] = [
       const withdrawable = Math.max(0, treasury.balance - reserve);
 
       await ctx.sock.sendMessage(ctx.from, {
-        text: `⬩ 🏛️ 𝗦𝗧𝗔𝗧𝗘 𝗧𝗥𝗘𝗔𝗦𝗨𝗥𝗬\n\n🏛️ Office: *${type}*\n💰 Total Balance: *🪙${treasury.balance.toLocaleString()}*\n🔒 Reserve Lock (20% Net Worth): *🪙${reserve.toLocaleString()}*\n💸 Withdrawable: *🪙${withdrawable.toLocaleString()}*`
+        text: `⬩Ｍ Ｕ Ｇ Ｅ Ｎ     Ｋ Ｉ Ｋ Ａ Ｉ⬩\n⬩ 🏛️ 𝗦𝗧𝗔𝗧𝗘 𝗧𝗥𝗘𝗔𝗦𝗨𝗥𝗬\n\n🏛️ Office: *${type}*\n💰 Total Balance: *🪙${treasury.balance.toLocaleString()}*\n🔒 Reserve Lock (20% Net Worth): *🪙${reserve.toLocaleString()}*\n💸 Withdrawable: *🪙${withdrawable.toLocaleString()}*`
       }, { quoted: ctx.msg });
     }
   },
@@ -253,7 +253,7 @@ export const politicsCommands: Command[] = [
       await official.save();
 
       await ctx.sock.sendMessage(ctx.from, {
-        text: `⬩ 🏛️ 𝗧𝗥𝗘𝗔𝗦𝗨𝗥𝗬 𝗪𝗜𝗧𝗛𝗗𝗥𝗔𝗪𝗔𝗟\n\n💸 Withdrawn: *🪙${amount.toLocaleString()}*\n👛 Wallet: *🪙${official.wallet.toLocaleString()}*\n🏛️ Remaining Treasury: *🪙${treasury.balance.toLocaleString()}*`
+        text: `⬩Ｍ Ｕ Ｇ Ｅ Ｎ     Ｋ Ｉ Ｋ Ａ Ｉ⬩\n⬩ 🏛️ 𝗧𝗥𝗘𝗔𝗦𝗨𝗥𝗬 𝗪𝗜𝗧𝗛𝗗𝗥𝗔𝗪𝗔𝗟\n\n💸 Withdrawn: *🪙${amount.toLocaleString()}*\n👛 Wallet: *🪙${official.wallet.toLocaleString()}*\n🏛️ Remaining Treasury: *🪙${treasury.balance.toLocaleString()}*`
       }, { quoted: ctx.msg });
     }
   }
