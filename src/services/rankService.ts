@@ -47,7 +47,8 @@ export async function processUserMessageAndRank(
   senderJid: string,
   fromJid: string,
   sock: WASocket,
-  msg: WAMessage
+  msg: WAMessage,
+  pushName?: string 
 ): Promise<IUser> {
   const user = await User.getOrCreate(senderJid);
   user.xp = (user.xp || 0) + 1;
