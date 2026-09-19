@@ -63,12 +63,13 @@ export const leaderboardCommands: Command[] = [
 
 const leaderboardImagePath = path.join(process.cwd(), 'assets', 'lb.jpg');
 
-      if (fs.existsSync(leaderboardImagePath)) {
-        await ctx.sock.sendMessage(ctx.from, {
-          image: { url: leaderboardImagePath },
-          caption: caption
-        }, { quoted: ctx.msg });
-      } else {
+if (fs.existsSync(leaderboardImagePath)) {
+  const imageBuffer = fs.readFileSync(leaderboardImagePath);
+  await ctx.sock.sendMessage(ctx.from, {
+    image: imageBuffer,
+    caption: caption
+  }, { quoted: ctx.msg });
+} else {
         await ctx.sock.sendMessage(ctx.from, {
           text: caption
         }, { quoted: ctx.msg });
