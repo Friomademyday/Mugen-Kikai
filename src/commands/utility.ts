@@ -193,14 +193,21 @@ The President now has executive powers to appoint and dismiss, and every office 
   }
 };
 
-export const updatesImagePath = path.join(process.cwd(), 'assets', 'updates.jpg');
+export const updatesImagePath = path.join(process.cwd(), 'assets', 'mugenupdate.jpg');
 
 export const updatesCommand: Command = {
   name: 'updates',
   description: 'Display system patch log and version status',
   aliases: ['version', 'changelog'],
   execute: async ({ sock, from }: CommandContext) => {
-    const updateText = `  blank `;
+    const updateText = `⬩Ｍ Ｕ Ｇ Ｅ Ｎ     Ｋ Ｉ Ｋ Ａ Ｉ⬩
+> _2nd Generation (v.2)_
+
+This update focuses on stability, speed, and systems. Core commands were optimized for faster response time, economy balances were adjusted, and several bug fixes were pushed to prevent spam and command locks.
+
+New systems have been added to expand gameplay and interaction, with improved database handling and cleaner UI responses. More features and quality-of-life improvements are in testing and will ship in the next cycle.
+
+> Use _wn_/_whatsnew_ to see what's new`;
 
     if (fs.existsSync(updatesImagePath)) {
       const imageBuffer = fs.readFileSync(updatesImagePath);
