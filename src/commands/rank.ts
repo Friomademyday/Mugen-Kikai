@@ -84,8 +84,8 @@ export const rankCommands: Command[] = [
       }
 
       let caption = `⬩Ｍ Ｕ Ｇ Ｅ Ｎ     Ｋ Ｉ Ｋ Ａ Ｉ⬩\n`;
-      caption += `⬩╭────────────╮ \n`;
-      caption += `⬩                                ╰──────╯⬩\n`;
+      caption += `⬩╭────────────╮ 
+⬩                                ╰──────╯⬩\n`;
       caption += `⬩        Ｒ Ａ Ｎ Ｋ Ｉ Ｎ Ｇ Ｓ        ⬩\n\n`;
 
       for (let i = 0; i < topUsers.length; i++) {
@@ -127,6 +127,4 @@ export const rankCommands: Command[] = [
       }
     }
   }
-          
-
 ];
