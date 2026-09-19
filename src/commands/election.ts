@@ -24,7 +24,7 @@ export const electionCommands: Command[] = [
       const state = await PoliticalState.getSystemState();
       const now = new Date();
 
-      let text = `⬩ 🗳️ 𝗘𝗟𝗘𝗖𝗧𝗜𝗢𝗡 𝗜𝗡𝗙𝗢\n\n`;
+      let text = `⬩Ｍ Ｕ Ｇ Ｅ Ｎ     Ｋ Ｉ Ｋ Ａ Ｉ⬩\n⬩ 🗳️ 𝗘𝗟𝗘𝗖𝗧𝗜𝗢𝗡 𝗜𝗡𝗙𝗢\n\n`;
       text += `📍 Phase: *${state.electionPhase}*\n`;
 
       if (state.electionPhase === 'LOCKED') {
@@ -118,7 +118,7 @@ export const electionCommands: Command[] = [
       await state.save();
 
       await ctx.sock.sendMessage(ctx.from, {
-        text: `⬩ 🗳️ 𝗙𝗢𝗥𝗠 𝗣𝗨𝗥𝗖𝗛𝗔𝗦𝗘𝗗\n\n🎉 Candidate: *@${ctx.sender.split('@')[0]}*\n📜 Role: *${role}*\n💰 Paid: *🪙${price.toLocaleString()}*`,
+        text: `⬩Ｍ Ｕ Ｇ Ｅ Ｎ     Ｋ Ｉ Ｋ Ａ Ｉ⬩\n⬩ 🗳️ 𝗙𝗢𝗥𝗠 𝗣𝗨𝗥𝗖𝗛𝗔𝗦𝗘𝗗\n\n🎉 Candidate: *@${ctx.sender.split('@')[0]}*\n📜 Role: *${role}*\n💰 Paid: *🪙${price.toLocaleString()}*`,
         mentions: [ctx.sender]
       }, { quoted: ctx.msg });
     }
@@ -137,7 +137,7 @@ export const electionCommands: Command[] = [
         return;
       }
 
-      let text = `⬩ 🗳️ 𝗖𝗔𝗡𝗗𝗜𝗗𝗔𝗧𝗘 𝗥𝗘𝗚𝗜𝗦𝗧𝗥𝗬\n\n`;
+      let text = `⬩Ｍ Ｕ Ｇ Ｅ Ｎ     Ｋ Ｉ Ｋ Ａ Ｉ⬩\n⬩ 🗳️ 𝗖𝗔𝗡𝗗𝗜𝗗𝗔𝗧𝗘 𝗥𝗘𝗚𝗜𝗦𝗧𝗥𝗬\n\n`;
 
       const pres = state.candidates.filter(c => c.role === 'PRESIDENT');
       const hos = state.candidates.filter(c => c.role === 'HOS');
@@ -218,7 +218,7 @@ export const electionCommands: Command[] = [
       await state.save();
 
       await ctx.sock.sendMessage(ctx.from, {
-        text: `⬩ 🗳️ 𝗩𝗢𝗧𝗘 𝗖𝗔𝗦𝗧\n\n🎯 Candidate: *@${targetJid.split('@')[0]}*\n📥 Votes Added: *+${voteCount.toLocaleString()}*\n💰 Total Cost: *🪙${totalCost.toLocaleString()}*`,
+        text: `⬩Ｍ Ｕ Ｇ Ｅ Ｎ     Ｋ Ｉ Ｋ Ａ Ｉ⬩\n⬩ 🗳️ 𝗩𝗢𝗧𝗘 𝗖𝗔𝗦𝗧\n\n🎯 Candidate: *@${targetJid.split('@')[0]}*\n📥 Votes Added: *+${voteCount.toLocaleString()}*\n💰 Total Cost: *🪙${totalCost.toLocaleString()}*`,
         mentions: [targetJid]
       }, { quoted: ctx.msg });
     }
