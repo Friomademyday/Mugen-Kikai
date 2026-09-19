@@ -77,13 +77,13 @@ export async function processUserMessageAndRank(
 `⬩Ｍ Ｕ Ｇ Ｅ Ｎ     Ｋ Ｉ Ｋ Ａ Ｉ⬩
 ⬩╭────────────╮ 
 ⬩                                ╰──────╯⬩
-▬▬▬▬ ⬩ *${user.xp.toLocaleString()} MESSAGES* 
+▬▬▬ ⬩ \`${user.xp.toLocaleString()} MESSAGES\` 
 ⬩    𝑵𝑬𝑾 𝑹𝑨𝑵𝑲: *${currentRankTier.japanese}*    ⬩
 
 ▬ ⬩ ${senderTag}
-▬ ⬩ Previous: ${oldRankText}
-▬ ⬩ Current: ${currentRankTier.japanese}
-▬ ⬩ Reward: +🪙${currentRankTier.bonus.toLocaleString()} _ranking bonus_
+▬ ⬩ ${oldRankText}
+▬ ⬩ ${currentRankTier.japanese}
+▬ ⬩ _reward:_ + ${currentRankTier.bonus.toLocaleString()} 🪙
 
 > Next rank ⬩ ${nextRankText}`;
 
