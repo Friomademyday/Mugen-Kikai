@@ -1,6 +1,8 @@
 import { Command } from '../types/command';
 import { User } from '../database/models/User';
 import { getCurrentRank, getNextRank, RANK_TIERS } from '../services/rankService';
+import fs from 'fs';
+import path from 'path';
 
 export const rankCommands: Command[] = [
   {
@@ -14,10 +16,10 @@ export const rankCommands: Command[] = [
       const currentTier = getCurrentRank(userXp);
       const nextTier = getNextRank(userXp);
 
-      const currentRankName = currentTier ? currentTier.japanese : 'None';
+      const currentRankName = currentTier ? currentTier.japanese : 'Unranked (初心者)';
       const nextRankInfo = nextTier
         ? `${nextTier.japanese} (${nextTier.requiredXp.toLocaleString()} messages)`
-        : 'MAX RANK REACHED';
+        : 'MAX RANK REACHED (無限)';
 
       const text = 
 `⬩Ｍ Ｕ Ｇ Ｅ Ｎ     Ｋ Ｉ Ｋ Ａ Ｉ⬩
@@ -28,7 +30,32 @@ export const rankCommands: Command[] = [
 🎖️ Current Rank: *${currentRankName}*
 ⏩ Next Rank: *${nextRankInfo}*`;
 
-      await ctx.sock.sendMessage(ctx.from, { text, mentions: [ctx.sender] }, { quoted: ctx.msg });
+      /*
+       * DYNAMIC IMAGE SELECTION FOR .rank COMMAND:
+       * If user has a rank tier, load assets/rank{tier.id}.jpg.
+       * If unranked (below 50 messages), fallback to assets/rank1.jpg.
+      */
+      const rankTierId = currentTier ? currentTier.id : 1;
+      const imagePath = path.join(process.cwd(), 'assets', `rank${rankTierId}.jpg`);
+
+      if (fs.existsSync(imagePath)) {
+        const imageBuffer = fs.readFileSync(imagePath);
+        await ctx.sock.sendMessage(
+          ctx.from,
+          {
+            image: imageBuffer,
+            caption: text,
+            mentions: [ctx.sender]
+          },
+          { quoted: ctx.msg }
+        );
+      } else {
+        await ctx.sock.sendMessage(
+          ctx.from,
+          { text, mentions: [ctx.sender] },
+          { quoted: ctx.msg }
+        );
+      }
     }
   },
 
@@ -46,7 +73,7 @@ export const rankCommands: Command[] = [
       if (!topUsers || topUsers.length === 0) {
         await ctx.sock.sendMessage(
           ctx.from,
-          { text: `⬩Ｍ Ｕ Ｇ Ｅ Ｎ     Ｋ Ｉ Ｋ Ａ I⬩\n\nNo rank records found in registry.` },
+          { text: `⬩Ｍ Ｕ Ｇ Ｅ Ｎ     Ｋ Ｉ Ｋ Ａ Ｉ⬩\n\nNo rank records found in registry.` },
           { quoted: ctx.msg }
         );
         return;
@@ -55,7 +82,7 @@ export const rankCommands: Command[] = [
       let caption = `⬩Ｍ Ｕ Ｇ Ｅ Ｎ     Ｋ Ｉ Ｋ Ａ Ｉ⬩
 ⬩╭────────────╮
 ⬩                                ╰──────╯⬩\n`;
-      caption += ` *𝑼 𝑵 𝑰 𝑽 𝑬 𝑑 𝑺 𝑨 𝑳   𝑑 𝑨 𝑵  any   𝑳 𝑬 𝑨 𝑫 𝑬 𝑑 𝑞 𝑶 𝑨 𝑑 𝑫*\n`;
+      caption += ` *𝑼 𝑵 𝑰 𝑽 𝑬 𝑹 𝑺 𝑨 𝑳   𝑳 𝑬 𝑨 𝑫 𝑬 𝑹 𝑩 𝑶 𝑨 𝑹 𝑫*\n`;
       caption += `⬩ ▬▬▬▬▬▬▬▬▬▬▬▬▬ ⬩\n\n`;
 
       for (let i = 0; i < topUsers.length; i++) {
@@ -87,7 +114,29 @@ export const rankCommands: Command[] = [
       caption += `*────────────────────*\n`;
       caption += `> ✨ *Note:* Ranking data reflects universal message activity.`;
 
-      await ctx.sock.sendMessage(ctx.from, { text: caption }, { quoted: ctx.msg });
+      /*
+       * SINGLE LEADERBOARD IMAGE RESOLUTION:
+       * Checks for assets/ranktop.jpg or assets/rankleaderboard.jpg
+      */
+      const leaderboardImagePath = path.join(process.cwd(), 'assets', 'ranktop.jpg');
+
+      if (fs.existsSync(leaderboardImagePath)) {
+        const imageBuffer = fs.readFileSync(leaderboardImagePath);
+        await ctx.sock.sendMessage(
+          ctx.from,
+          {
+            image: imageBuffer,
+            caption
+          },
+          { quoted: ctx.msg }
+        );
+      } else {
+        await ctx.sock.sendMessage(
+          ctx.from,
+          { text: caption },
+          { quoted: ctx.msg }
+        );
+      }
     }
   }
 ];
