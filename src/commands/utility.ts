@@ -104,6 +104,7 @@ export const helpCommand: Command = {
 ❏ *dice* / *roll* - High-low dice wagering against system house
 ❏ *blackjack* / *bj* - Single-hand instant blackjack card duel
 ❏ *roulette* - Bet on wheel sector targets for massive multiplier
+❏ *odds* - Custom risk multiplier wagering. Bet any amount and choose your target multiplier from 2x to 5x
 
 > created by Frio`; 
 
