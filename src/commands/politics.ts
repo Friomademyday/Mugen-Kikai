@@ -79,18 +79,16 @@ export const politicsCommands: Command[] = [
       const hierarchyImagePath = path.join(process.cwd(), 'assets', 'hierarchy.jpg');
 
       if (fs.existsSync(hierarchyImagePath)) {
+        const imageBuffer = fs.readFileSync(hierarchyImagePath);
         await ctx.sock.sendMessage(ctx.from, {
-          image: { url: hierarchyImagePath },
+          image: imageBuffer,
           caption: caption
         }, { quoted: ctx.msg });
       } else {
         await ctx.sock.sendMessage(ctx.from, {
           text: caption
         }, { quoted: ctx.msg });
-      }
-
-
-      
+      }  
     }
   },
 
