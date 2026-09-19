@@ -184,7 +184,7 @@ export const updatesCommand: Command = {
   description: 'Display system patch log and version status',
   aliases: ['version', 'changelog'],
   execute: async ({ sock, from }: CommandContext) => {
-    const updateText = `▬▬▬▬▬▬▬ ⬩ 𝗨 𝗣 𝗗 𝗔 𝗧 𝗘 𝗦\n\n🤖 Core Bot: *Mugen Kikai*\n🔖 Current Version: *v3.0*\n\n📋 *Patch Notes:*\n• Security Core enforcement fully integrated.\n• Complete economy and gambling matrix operational.\n\n🚀 *Future Pushes:*\n• Expanded economic commands, market systems, and specialized RPG structures coming in upcoming builds.`;
+    const updateText = `blank`;
     await sock.sendMessage(from, { text: updateText });
   }
 };
