@@ -177,6 +177,74 @@ export const gambleCommands: Command[] = [
   },
 
   {
+    name: 'odds',
+    aliases: ['multiplier', 'mult'],
+    category: 'gamble',
+    description: 'Custom risk multiplier wagering (2x to 5x)',
+    execute: async (ctx) => {
+      const user = await User.getOrCreate(ctx.sender);
+      if (user.custom03) {
+        await ctx.sock.sendMessage(ctx.from, { text: `❌ Your wallet is frozen during election voting!` }, { quoted: ctx.msg });
+        return;
+      }
+
+      const amountStr = ctx.args[0]?.toLowerCase();
+      const multStr = ctx.args[1]?.toLowerCase().replace('x', '');
+
+      if (!amountStr || !multStr) {
+        await ctx.sock.sendMessage(ctx.from, { text: `Usage: *${ctx.command} <amount|all> <2|3|4|5>*` }, { quoted: ctx.msg });
+        return;
+      }
+
+      let bet = 0;
+      if (amountStr === 'all') {
+        bet = user.wallet;
+      } else {
+        bet = parseInt(amountStr, 10);
+      }
+
+      if (isNaN(bet) || bet <= 0 || user.wallet < bet) {
+        await ctx.sock.sendMessage(ctx.from, { text: `❌ Invalid or insufficient wallet funds!` }, { quoted: ctx.msg });
+        return;
+      }
+
+      const targetMultiplier = parseInt(multStr, 10);
+
+      const oddsMap: Record<number, number> = {
+        2: 0.5,
+        3: 0.4,
+        4: 0.3,
+        5: 0.2
+      };
+
+      if (!oddsMap[targetMultiplier]) {
+        await ctx.sock.sendMessage(ctx.from, { text: `❌ Invalid multiplier! Choose between *2*, *3*, *4*, or *5*.` }, { quoted: ctx.msg });
+        return;
+      }
+
+      const winChance = oddsMap[targetMultiplier];
+      const win = Math.random() < winChance;
+
+      if (win) {
+        const totalPayout = await processGambleTaxes(ctx.from, bet, true, targetMultiplier);
+        const profit = totalPayout - bet;
+        user.wallet += profit;
+        await user.save();
+        await ctx.sock.sendMessage(ctx.from, {
+          text: `⬩Ｍ Ｕ Ｇ Ｅ Ｎ     Ｋ Ｉ Ｋ Ａ Ｉ⬩\n▬▬▬▬▬ ⬩ 𝗚 𝗔 𝗠 𝗕 𝗟 𝗜 𝗡 𝗚\n\n🎯 *MULTIPLIER ARENA: VICTORY*\n\n🔥 Multiplier: *${targetMultiplier}x*\n🎲 Odds Cleared: *${(winChance * 100).toFixed(0)}%*\n📈 Profit (After Tax): *+🪙${profit.toLocaleString()}*\n👛 Wallet: *🪙${user.wallet.toLocaleString()}*`
+        }, { quoted: ctx.msg });
+      } else {
+        user.wallet -= bet;
+        await processGambleTaxes(ctx.from, bet, false);
+        await user.save();
+        await ctx.sock.sendMessage(ctx.from, {
+          text: `⬩Ｍ Ｕ Ｇ Ｅ Ｎ     Ｋ Ｉ Ｋ Ａ Ｉ⬩\n▬▬▬▬▬ ⬩ 𝗚 𝗔 𝗠 𝗕 𝗟 𝗜 𝗡 𝗚\n\n🎯 *MULTIPLIER ARENA: DEFEAT*\n\n🔥 Multiplier Targeted: *${targetMultiplier}x*\n📉 Lost: *-🪙${bet.toLocaleString()}*\n👛 Wallet: *🪙${user.wallet.toLocaleString()}*`
+        }, { quoted: ctx.msg });
+      }
+    }
+  },
+
+  {
     name: 'dice',
     aliases: ['roll'],
     category: 'gamble',
