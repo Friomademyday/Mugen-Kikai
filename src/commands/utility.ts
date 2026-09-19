@@ -40,8 +40,11 @@ export const helpCommand: Command = {
     const helpImagePath = path.join(process.cwd(), 'assets', 'mugenhelp.jpg');
 
     if (fs.existsSync(helpImagePath)) {
+      const imageBuffer = fs.readFileSync(helpImagePath);
       await sock.sendMessage(from, {
-        image: { url: helpImagePath },
+        image: imageBuffer,
+        mimetype: 'image/jpeg',
+        jpegThumbnail: imageBuffer.toString('base64'),
         caption: helpText
       });
     } else {
