@@ -19,7 +19,8 @@ const allCommands: Command[] = [
   ...gambleCommands,
   ...leaderboardCommands,
   ...electionCommands,
-  ...politicsCommands
+  ...politicsCommands,
+  ...rankCommands
 ];
 
 for (const cmd of allCommands) {
