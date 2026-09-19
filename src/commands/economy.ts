@@ -1,6 +1,18 @@
 import { Command } from '../types/command';
 import { User } from '../database/models/User';
 
+const processRobberyPenaltyToHOS = async (penalty: number): Promise<void> => {
+  try {
+    const hosUser = await User.findOne({ isHOS: true });
+    if (hosUser) {
+      hosUser.wallet += penalty;
+      await hosUser.save();
+    }
+  } catch (err) {
+    console.error('Failed to route penalty to HOS:', err);
+  }
+};
+
 const getTargetJid = (ctx: any): string | null => {
   if (ctx.msg.message?.extendedTextMessage?.contextInfo?.mentionedJid?.length) {
     return ctx.msg.message.extendedTextMessage.contextInfo.mentionedJid[0];
