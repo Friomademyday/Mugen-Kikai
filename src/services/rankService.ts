@@ -1,5 +1,7 @@
 import { WASocket, WAMessage } from '@whiskeysockets/baileys';
 import { User, IUser } from '../database/models/User';
+import fs from 'fs';
+import path from 'path';
 
 export interface RankTier {
   id: number;
@@ -48,7 +50,7 @@ export async function processUserMessageAndRank(
   fromJid: string,
   sock: WASocket,
   msg: WAMessage,
-  pushName?: string 
+  pushName?: string
 ): Promise<IUser> {
   const user = await User.getOrCreate(senderJid, pushName);
   user.xp = (user.xp || 0) + 1;
@@ -75,27 +77,46 @@ export async function processUserMessageAndRank(
 `⬩Ｍ Ｕ Ｇ Ｅ Ｎ     Ｋ Ｉ Ｋ Ａ Ｉ⬩
 ⬩╭────────────╮ 
 ⬩                                ╰──────╯⬩
-▬▬▬▬ ⬩ \`${user.xp.toLocaleString()} MESSAGES\` 
+▬▬▬▬ ⬩ *${user.xp.toLocaleString()} MESSAGES* 
 ⬩    𝑵𝑬𝑾 𝑹𝑨𝑵𝑲: *${currentRankTier.japanese}*    ⬩
 
 ▬ ⬩ ${senderTag}
-▬ ⬩ ${oldRankText}
-▬ ⬩ ${currentRankTier.japanese}
-▬ ⬩ +🪙${currentRankTier.bonus.toLocaleString()} _ranking bonus_
+▬ ⬩ Previous: ${oldRankText}
+▬ ⬩ Current: ${currentRankTier.japanese}
+▬ ⬩ Reward: +🪙${currentRankTier.bonus.toLocaleString()} _ranking bonus_
 
 > Next rank ⬩ ${nextRankText}`;
 
-    await sock.sendMessage(
-      fromJid,
-      {
-        text: announcementText,
-        mentions: [senderJid]
-      },
-      { quoted: msg }
-    );
+    /*
+     * DYNAMIC IMAGE RESOLUTION FOR LEVEL UP:
+     * Checks for assets/rank1.jpg up to assets/rank10.jpg based on currentRankTier.id
+    */
+    const rankImagePath = path.join(process.cwd(), 'assets', `rank${currentRankTier.id}.jpg`);
+
+    if (fs.existsSync(rankImagePath)) {
+      const imageBuffer = fs.readFileSync(rankImagePath);
+      await sock.sendMessage(
+        fromJid,
+        {
+          image: imageBuffer,
+          caption: announcementText,
+          mentions: [senderJid]
+        },
+        { quoted: msg }
+      );
+    } else {
+      await sock.sendMessage(
+        fromJid,
+        {
+          text: announcementText,
+          mentions: [senderJid]
+        },
+        { quoted: msg }
+      );
+    }
   } else {
     await user.save();
   }
 
   return user;
-   }
+    }
