@@ -64,6 +64,8 @@ export const helpCommand: Command = {
 ⬩                                ╰──────╯⬩
 ▬▬▬▬▬▬▬▬▬ ⬩ 𝗨 𝗦 𝗘 𝗥
 ❏ *profile* - Fetch target operative details and bank account state
+❏ *rank* - Check your current rank and universal message progress with XP count, Japanese title, and next rank requirement.
+❏ *rankleaderboard* - Displays top 5 users with the highest message counts universally.
 
 
 ⬩╭────────────╮ 
