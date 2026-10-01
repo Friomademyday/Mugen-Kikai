@@ -1,6 +1,7 @@
 {
   "character_name": "Monkey D. Luffy",
   "character_id": "luffy",
+  "character_type": "offense",
   "total_forms": 9,
   "forms": [
     {
