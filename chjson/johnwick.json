@@ -1,0 +1,35 @@
+{
+  "character_id": "john-wick",
+  "character_name": "John Wick",
+  "character_type": "offense",
+  "tier": "common",
+  "price": 12600000,
+  "max_level": 5,
+  "moves": [
+    {
+      "move_id": "off-center-axis-relock-shot",
+      "move_name": "CAR Stance Pistol Double Tap",
+      "base_points": 8
+    },
+    {
+      "move_id": "off-pencil-kill",
+      "move_name": "Improvised Pencil Vital Thrust",
+      "base_points": 24
+    },
+    {
+      "move_id": "off-judo-hip-throw-shoot",
+      "move_name": "Judo Takedown & Headshot",
+      "base_points": 40
+    },
+    {
+      "move_id": "off-benelli-shotgun-blast",
+      "move_name": "Benelli M4 Combat Shotgun Blast",
+      "base_points": 58
+    },
+    {
+      "move_id": "off-baba-yaga-clearing",
+      "move_name": "Baba Yaga Room Clearance Flurry",
+      "base_points": 78
+    }
+  ]
+}
