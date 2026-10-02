@@ -1,0 +1,100 @@
+{
+  "character_id": "goku",
+  "character_name": "Son Goku",
+  "character_type": "offense",
+  "tier": "legendary",
+  "price": 45000000,
+  "max_level": 5,
+  "moves": [
+    {
+      "move_id": "off-rock-scissors-paper",
+      "move_name": "Jan Ken Pon",
+      "base_points": 30
+    },
+    {
+      "move_id": "off-kamehameha",
+      "move_name": "Kamehameha",
+      "base_points": 45
+    },
+    {
+      "move_id": "off-kaio-ken-attack",
+      "move_name": "Kaio-ken Finish",
+      "base_points": 60
+    },
+    {
+      "move_id": "off-kaio-ken-x20-kamehameha",
+      "move_name": "Kaio-ken x20 Kamehameha",
+      "base_points": 78
+    },
+    {
+      "move_id": "off-spirit-bomb",
+      "move_name": "Genki Dama",
+      "base_points": 95
+    },
+    {
+      "move_id": "off-super-saiyan-kamehameha",
+      "move_name": "Super Saiyan Kamehameha",
+      "base_points": 115
+    },
+    {
+      "move_id": "off-angry-kamehameha",
+      "move_name": "Angry Kamehameha",
+      "base_points": 132
+    },
+    {
+      "move_id": "off-instant-transmission-kamehameha",
+      "move_name": "Shunkan Ido Kamehameha",
+      "base_points": 150
+    },
+    {
+      "move_id": "off-super-saiyan-3-dragon-fist",
+      "move_name": "Ryuken (Dragon Fist)",
+      "base_points": 172
+    },
+    {
+      "move_id": "off-super-spirit-bomb",
+      "move_name": "Chou Genki Dama",
+      "base_points": 195
+    },
+    {
+      "move_id": "off-god-kamehameha",
+      "move_name": "Super Saiyan God Kamehameha",
+      "base_points": 218
+    },
+    {
+      "move_id": "off-god-bind-strike",
+      "move_name": "God Bind Burst",
+      "base_points": 235
+    },
+    {
+      "move_id": "off-10x-god-kamehameha",
+      "move_name": "10x God Kamehameha",
+      "base_points": 255
+    },
+    {
+      "move_id": "off-blue-kaio-ken-kamehameha",
+      "move_name": "SSGSS Kaio-ken Kamehameha",
+      "base_points": 280
+    },
+    {
+      "move_id": "off-ultra-instinct-sign-kamehameha",
+      "move_name": "Divine Kamehameha",
+      "base_points": 310
+    },
+    {
+      "move_id": "off-silver-dragon-flash",
+      "move_name": "Autonomous Ultra Instinct Barrage",
+      "base_points": 340
+    },
+    {
+      "move_id": "off-ui-supreme-kamehameha",
+      "move_name": "Supreme Kamehameha",
+      "base_points": 365
+    },
+    {
+      "move_id": "off-true-ui-avatar-strike",
+      "move_name": "Ki Avatar Susanoo Strike",
+      "base_points": 410
+    }
+  ]
+}
