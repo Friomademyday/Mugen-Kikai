@@ -1,0 +1,30 @@
+{
+  "character_id": "sasuke",
+  "character_name": "Sasuke Uchiha",
+  "character_type": "defense",
+  "tier": "epic",
+  "price": 36000000,
+  "max_level": 5,
+  "moves": [
+    {
+      "move_id": "def-susanoo-skeletal-wall",
+      "move_name": "Susanoo Stage 1: Ribcage Guard",
+      "base_points": 390
+    },
+    {
+      "move_id": "def-susanoo-humanoid-shield",
+      "move_name": "Susanoo Stage 2: Humanoid Guard",
+      "base_points": 480
+    },
+    {
+      "move_id": "def-susanoo-armored-deflection",
+      "move_name": "Susanoo Stage 3: Armored Shield",
+      "base_points": 570
+    },
+    {
+      "move_id": "def-perfect-susanoo-barrier",
+      "move_name": "Complete Body: Perfect Susanoo Fortress",
+      "base_points": 650
+    }
+  ]
+}
