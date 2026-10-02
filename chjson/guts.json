@@ -1,0 +1,40 @@
+{
+  "character_id": "guts",
+  "character_name": "Guts",
+  "character_type": "offense",
+  "tier": "rare",
+  "price": 25200000,
+  "max_level": 5,
+  "moves": [
+    {
+      "move_id": "off-dragonslayer-overhead",
+      "move_name": "Dragonslayer Overhead Smash",
+      "base_points": 20
+    },
+    {
+      "move_id": "off-repeating-crossbow-barrage",
+      "move_name": "Repeated Crossbow Volley",
+      "base_points": 42
+    },
+    {
+      "move_id": "off-arm-cannon-blast",
+      "move_name": "Prosthetic Arm Cannon Blast",
+      "base_points": 68
+    },
+    {
+      "move_id": "off-dragonslayer-360-spin",
+      "move_name": "Dragonslayer Whirlwind Cleave",
+      "base_points": 92
+    },
+    {
+      "move_id": "off-berserker-frenzy-slash",
+      "move_name": "Berserker Armor Unchecked Slash",
+      "base_points": 118
+    },
+    {
+      "move_id": "off-berserker-cannon-combo",
+      "move_name": "Berserker Cannon Point-Blank",
+      "base_points": 146
+    }
+  ]
+}
