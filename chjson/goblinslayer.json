@@ -1,0 +1,40 @@
+{
+  "character_id": "goblin-slayer",
+  "character_name": "Goblin Slayer",
+  "character_type": "offense",
+  "tier": "rare",
+  "price": 25200000,
+  "max_level": 5,
+  "moves": [
+    {
+      "move_id": "off-shortsword-thrust",
+      "move_name": "Shortsword Throat Thrust",
+      "base_points": 15
+    },
+    {
+      "move_id": "off-throwing-dagger-strike",
+      "move_name": "Scavenged Dagger Throw",
+      "base_points": 30
+    },
+    {
+      "move_id": "off-torch-burn-strike",
+      "move_name": "Improvised Torch Burn Strike",
+      "base_points": 52
+    },
+    {
+      "move_id": "off-poisoned-blade-slash",
+      "move_name": "Poisoned Blade Ambush Slash",
+      "base_points": 78
+    },
+    {
+      "move_id": "off-scroll-water-cannon",
+      "move_name": "Gate Scroll High-Pressure Water Blast",
+      "base_points": 112
+    },
+    {
+      "move_id": "off-ruthless-efficiency-finisher",
+      "move_name": "Ruthless Decapitation Finisher",
+      "base_points": 138
+    }
+  ]
+}
