@@ -1,0 +1,20 @@
+{
+  "character_id": "bartolomeo",
+  "character_name": "Bartolomeo",
+  "character_type": "defense",
+  "tier": "epic",
+  "price": 36000000,
+  "max_level": 5,
+  "moves": [
+    {
+      "move_id": "def-barrier-shield",
+      "move_name": "Bari Bari no Mi: Standard Barrier",
+      "base_points": 450
+    },
+    {
+      "move_id": "def-homage-shinken-barrier",
+      "move_name": "Bari Bari no Mi: Barrier Bull Sphere",
+      "base_points": 665
+    }
+  ]
+}
