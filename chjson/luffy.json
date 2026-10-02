@@ -1,344 +1,110 @@
 {
+  "character_id": "luffy",
   "character_name": "Monkey D. Luffy",
-  "character_id": "luffy", 
   "character_type": "offense",
   "tier": "legendary",
   "price": 45000000,
-  "total_forms": 9,
-  "forms": [
+  "max_level": 5,
+  "moves": [
     {
-      "form_id": "luffy_pre_east_blue_arlong",
-      "form_name": "Base Luffy (Pre-Arlong Park)",
-      "moves": [
-        {
-          "move_id": "off-gg-pistol",
-          "move_name": "Gomu Gomu no Pistol",
-          "ap": 50
-        },
-        {
-          "move_id": "off-gg-rocket",
-          "move_name": "Gomu Gomu no Rocket",
-          "ap": 55
-        },
-        {
-          "move_id": "off-gg-bazooka",
-          "move_name": "Gomu Gomu no Bazooka",
-          "ap": 85
-        },
-        {
-          "move_id": "off-gg-gatling",
-          "move_name": "Gomu Gomu no Gatling",
-          "ap": 100
-        },
-        {
-          "move_id": "off-gg-whip",
-          "move_name": "Gomu Gomu no Whip",
-          "ap": 60
-        },
-        {
-          "move_id": "off-gg-spear",
-          "move_name": "Gomu Gomu no Spear",
-          "ap": 65
-        },
-        {
-          "move_id": "off-gg-axe",
-          "move_name": "Gomu Gomu no Axe",
-          "ap": 90
-        },
-        {
-          "move_id": "off-gg-bullet",
-          "move_name": "Gomu Gomu no Bullet",
-          "ap": 70
-        },
-        {
-          "move_id": "off-gg-scythe",
-          "move_name": "Gomu Gomu no Scythe",
-          "ap": 60
-        }
-      ]
+      "move_id": "off-gg-pistol",
+      "move_name": "Gomu Gomu no Pistol",
+      "base_points": 50
     },
     {
-      "form_id": "luffy_pre_timeskip_paradise",
-      "form_name": "Base Luffy (Grand Line - Marineford)",
-      "moves": [
-        {
-          "move_id": "off-gg-stamp",
-          "move_name": "Gomu Gomu no Stamp",
-          "ap": 110
-        },
-        {
-          "move_id": "off-gg-storm",
-          "move_name": "Gomu Gomu no Storm",
-          "ap": 180
-        },
-        {
-          "move_id": "off-gg-firecracker",
-          "move_name": "Gomu Gomu no Hanabi (Firecracker)",
-          "ap": 130
-        },
-        {
-          "move_id": "off-gg-boh",
-          "move_name": "Gomu Gomu no Boh (Dazed)",
-          "ap": 100
-        },
-        {
-          "move_id": "off-gg-cannon",
-          "move_name": "Gomu Gomu no Cannon",
-          "ap": 160
-        }
-      ]
+      "move_id": "off-gg-rocket",
+      "move_name": "Gomu Gomu no Rocket",
+      "base_points": 55
     },
     {
-      "form_id": "luffy_gear_2",
-      "form_name": "Gear Second (Enies Lobby / Pre-Timeskip)",
-      "moves": [
-        {
-          "move_id": "off-gg-jet-pistol",
-          "move_name": "Gomu Gomu no Jet Pistol",
-          "ap": 250
-        },
-        {
-          "move_id": "off-gg-jet-gatling",
-          "move_name": "Gomu Gomu no Jet Gatling",
-          "ap": 400
-        },
-        {
-          "move_id": "off-gg-jet-bazooka",
-          "move_name": "Gomu Gomu no Jet Bazooka",
-          "ap": 350
-        },
-        {
-          "move_id": "off-gg-jet-whip",
-          "move_name": "Gomu Gomu no Jet Whip",
-          "ap": 280
-        },
-        {
-          "move_id": "off-gg-jet-bullet",
-          "move_name": "Gomu Gomu no Jet Bullet",
-          "ap": 300
-        },
-        {
-          "move_id": "off-gg-jet-stamp",
-          "move_name": "Gomu Gomu no Jet Stamp",
-          "ap": 320
-        },
-        {
-          "move_id": "off-gg-twin-jet-pistol",
-          "move_name": "Gomu Gomu no Twin Jet Pistol",
-          "ap": 380
-        }
-      ]
+      "move_id": "off-gg-scythe",
+      "move_name": "Gomu Gomu no Scythe",
+      "base_points": 60
     },
     {
-      "form_id": "luffy_gear_3",
-      "form_name": "Gear Third (Enies Lobby / Pre-Timeskip)",
-      "moves": [
-        {
-          "move_id": "off-gg-gigant-pistol",
-          "move_name": "Gomu Gomu no Gigant Pistol",
-          "ap": 500
-        },
-        {
-          "move_id": "off-gg-gigant-axe",
-          "move_name": "Gomu Gomu no Gigant Axe",
-          "ap": 550
-        },
-        {
-          "move_id": "off-gg-gigant-whip",
-          "move_name": "Gomu Gomu no Gigant Whip",
-          "ap": 520
-        },
-        {
-          "move_id": "off-gg-gigant-bazooka",
-          "move_name": "Gomu Gomu no Gigant Bazooka",
-          "ap": 600
-        },
-        {
-          "move_id": "off-gg-gigant-stamp",
-          "move_name": "Gomu Gomu no Gigant Stamp",
-          "ap": 530
-        }
-      ]
+      "move_id": "off-gg-whip",
+      "move_name": "Gomu Gomu no Whip",
+      "base_points": 60
     },
     {
-      "form_id": "luffy_post_timeskip_base",
-      "form_name": "Base Luffy (Post-Timeskip / Haki Enhanced)",
-      "moves": [
-        {
-          "move_id": "off-gg-red-hawk",
-          "move_name": "Gomu Gomu no Red Hawk",
-          "ap": 800
-        },
-        {
-          "move_id": "off-gg-elephant-gun",
-          "move_name": "Gomu Gomu no Elephant Gun",
-          "ap": 750
-        },
-        {
-          "move_id": "off-gg-elephant-gatling",
-          "move_name": "Gomu Gomu no Elephant Gatling",
-          "ap": 950
-        },
-        {
-          "move_id": "off-gg-hawk-rifle",
-          "move_name": "Gomu Gomu no Hawk Rifle",
-          "ap": 820
-        },
-        {
-          "move_id": "off-gg-hawk-gatling",
-          "move_name": "Gomu Gomu no Hawk Gatling",
-          "ap": 900
-        },
-        {
-          "move_id": "off-gg-hawk-whip",
-          "move_name": "Gomu Gomu no Hawk Whip",
-          "ap": 780
-        },
-        {
-          "move_id": "off-gg-grizzly-magnum",
-          "move_name": "Gomu Gomu no Grizzly Magnum",
-          "ap": 1000
-        },
-        {
-          "move_id": "off-gg-thor-elephant-gun",
-          "move_name": "Gomu Gomu no Thor Elephant Gun",
-          "ap": 1100
-        }
-      ]
+      "move_id": "off-gg-spear",
+      "move_name": "Gomu Gomu no Spear",
+      "base_points": 65
     },
     {
-      "form_id": "luffy_gear_4_boundman",
-      "form_name": "Gear Fourth (Boundman)",
-      "moves": [
-        {
-          "move_id": "off-gg-kong-gun",
-          "move_name": "Gomu Gomu no Kong Gun",
-          "ap": 1300
-        },
-        {
-          "move_id": "off-gg-kong-gatling",
-          "move_name": "Gomu Gomu no Kong Gatling",
-          "ap": 1800
-        },
-        {
-          "move_id": "off-gg-rhino-schneider",
-          "move_name": "Gomu Gomu no Rhino Schneider",
-          "ap": 1350
-        },
-        {
-          "move_id": "off-gg-culverin",
-          "move_name": "Gomu Gomu no Culverin",
-          "ap": 1400
-        },
-        {
-          "move_id": "off-gg-double-culverin",
-          "move_name": "Gomu Gomu no Double Culverin",
-          "ap": 1500
-        },
-        {
-          "move_id": "off-gg-king-kong-gun",
-          "move_name": "Gomu Gomu no King Kong Gun",
-          "ap": 2200
-        },
-        {
-          "move_id": "off-gg-king-kong-gatling",
-          "move_name": "Gomu Gomu no King Kong Gatling",
-          "ap": 2600
-        },
-        {
-          "move_id": "off-gg-over-king-kong-gun",
-          "move_name": "Gomu Gomu no Over King Kong Gun",
-          "ap": 3000
-        }
-      ]
+      "move_id": "off-gg-bullet",
+      "move_name": "Gomu Gomu no Bullet",
+      "base_points": 70
     },
     {
-      "form_id": "luffy_gear_4_tankman",
-      "form_name": "Gear Fourth (Tankman - Stuffed Version)",
-      "moves": [
-        {
-          "move_id": "off-gg-cannonball",
-          "move_name": "Gomu Gomu no Cannonball",
-          "ap": 1600
-        }
-      ]
+      "move_id": "off-gg-bazooka",
+      "move_name": "Gomu Gomu no Bazooka",
+      "base_points": 80
     },
     {
-      "form_id": "luffy_gear_4_snakeman",
-      "form_name": "Gear Fourth (Snakeman)",
-      "moves": [
-        {
-          "move_id": "off-gg-jet-culverin",
-          "move_name": "Gomu Gomu no Jet Culverin",
-          "ap": 1600
-        },
-        {
-          "move_id": "off-gg-black-mamba",
-          "move_name": "Gomu Gomu no Black Mamba",
-          "ap": 1900
-        },
-        {
-          "move_id": "off-gg-king-cobra",
-          "move_name": "Gomu Gomu no King Cobra",
-          "ap": 2400
-        },
-        {
-          "move_id": "off-gg-hydra",
-          "move_name": "Gomu Gomu no Hydra",
-          "ap": 2700
-        }
-      ]
+      "move_id": "off-gg-axe",
+      "move_name": "Gomu Gomu no Axe",
+      "base_points": 85
     },
     {
-      "form_id": "luffy_gear_5_elbaf",
-      "form_name": "Gear Fifth (Wano / Egghead / Elbaf)",
-      "moves": [
-        {
-          "move_id": "off-gg-kaminari",
-          "move_name": "Gomu Gomu no Kaminari (Lightning)",
-          "ap": 3600
-        },
-        {
-          "move_id": "off-gg-bajrang-gun",
-          "move_name": "Gomu Gomu no Bajrang Gun",
-          "ap": 5000
-        },
-        {
-          "move_id": "off-gg-dawn-whip",
-          "move_name": "Gomu Gomu no Dawn Whip",
-          "ap": 3800
-        },
-        {
-          "move_id": "off-gg-dawn-rocket",
-          "move_name": "Gomu Gomu no Dawn Rocket",
-          "ap": 4000
-        },
-        {
-          "move_id": "off-gg-dawn-stamp",
-          "move_name": "Gomu Gomu no Dawn Stamp",
-          "ap": 3700
-        },
-        {
-          "move_id": "off-gg-dawn-gatling",
-          "move_name": "Gomu Gomu no Dawn Gatling",
-          "ap": 4500
-        },
-        {
-          "move_id": "off-gg-dawn-cymbal",
-          "move_name": "Gomu Gomu no Dawn Cymbal",
-          "ap": 4200
-        },
-        {
-          "move_id": "off-gg-giant",
-          "move_name": "Gomu Gomu no Giant",
-          "ap": 4100
-        },
-        {
-          "move_id": "off-gg-star-gun",
-          "move_name": "Gomu Gomu no White Star Gun",
-          "ap": 4800
-        }
-      ]
+      "move_id": "off-gg-gatling",
+      "move_name": "Gomu Gomu no Gatling",
+      "base_points": 90
+    },
+    {
+      "move_id": "off-gg-jet-pistol",
+      "move_name": "Gomu Gomu no Jet Pistol",
+      "base_points": 95
+    },
+    {
+      "move_id": "off-gg-jet-gatling",
+      "move_name": "Gomu Gomu no Jet Gatling",
+      "base_points": 105
+    },
+    {
+      "move_id": "off-gg-gigant-axe",
+      "move_name": "Gomu Gomu no Gigant Axe",
+      "base_points": 110
+    },
+    {
+      "move_id": "off-gg-red-hawk",
+      "move_name": "Gomu Gomu no Red Hawk",
+      "base_points": 120
+    },
+    {
+      "move_id": "off-gg-elephant-gatling",
+      "move_name": "Gomu Gomu no Elephant Gatling",
+      "base_points": 130
+    },
+    {
+      "move_id": "off-gg-kong-gun",
+      "move_name": "Gomu Gomu no Kong Gun",
+      "base_points": 140
+    },
+    {
+      "move_id": "off-gg-king-cobra",
+      "move_name": "Gomu Gomu no King Cobra",
+      "base_points": 150
+    },
+    {
+      "move_id": "off-gg-king-kong-gun",
+      "move_name": "Gomu Gomu no King Kong Gun",
+      "base_points": 190
+    },
+    {
+      "move_id": "off-gg-dawn-rocket",
+      "move_name": "Gomu Gomu no Dawn Rocket",
+      "base_points": 279
+    },
+    {
+      "move_id": "off-gg-star-gun",
+      "move_name": "Gomu Gomu no White Star Gun",
+      "base_points": 320
+    },
+    {
+      "move_id": "off-gg-bajrang-gun",
+      "move_name": "Gomu Gomu no Bajrang Gun",
+      "base_points": 450
     }
   ]
-        }
+}
