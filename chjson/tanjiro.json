@@ -1,0 +1,60 @@
+{
+  "character_id": "tanjiro",
+  "character_name": "Tanjiro Kamado",
+  "character_type": "offense",
+  "tier": "epic",
+  "price": 36000000,
+  "max_level": 5,
+  "moves": [
+    {
+      "move_id": "off-water-slash",
+      "move_name": "First Form: Water Surface Slash",
+      "base_points": 28
+    },
+    {
+      "move_id": "off-water-wheel",
+      "move_name": "Second Form: Water Wheel",
+      "base_points": 40
+    },
+    {
+      "move_id": "off-flowing-dance",
+      "move_name": "Third Form: Flowing Dance",
+      "base_points": 55
+    },
+    {
+      "move_id": "off-striking-tide",
+      "move_name": "Fourth Form: Striking Tide",
+      "base_points": 72
+    },
+    {
+      "move_id": "off-water-fall-basin",
+      "move_name": "Eighth Form: Waterfall Basin",
+      "base_points": 90
+    },
+    {
+      "move_id": "off-dragon-sun-halo-dance",
+      "move_name": "Dragon Sun Halo Head Dance",
+      "base_points": 115
+    },
+    {
+      "move_id": "off-hinokami-kagura-clear-blue-sky",
+      "move_name": "Hinokami Kagura: Clear Blue Sky",
+      "base_points": 140
+    },
+    {
+      "move_id": "off-hinokami-kagura-burning-sun",
+      "move_name": "Hinokami Kagura: Burning Sun",
+      "base_points": 165
+    },
+    {
+      "move_id": "off-hinokami-kagura-solar-heat-mist",
+      "move_name": "Hinokami Kagura: Solar Heat Mist",
+      "base_points": 195
+    },
+    {
+      "move_id": "off-sun-breathing-thirteenth-form",
+      "move_name": "Sun Breathing: Thirteenth Form Continuous",
+      "base_points": 230
+    }
+  ]
+}
