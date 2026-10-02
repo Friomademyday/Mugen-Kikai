@@ -1,0 +1,35 @@
+{
+  "character_id": "mikey",
+  "character_name": "Manjiro Sano (Mikey)",
+  "character_type": "offense",
+  "tier": "common",
+  "price": 12600000,
+  "max_level": 5,
+  "moves": [
+    {
+      "move_id": "off-jab-combo",
+      "move_name": "Brawler Jab-Hook Combo",
+      "base_points": 6
+    },
+    {
+      "move_id": "off-flying-knee",
+      "move_name": "Leaping High Knee",
+      "base_points": 20
+    },
+    {
+      "move_id": "off-nuclear-roundhouse",
+      "move_name": "Invincible High Roundhouse Kick",
+      "base_points": 38
+    },
+    {
+      "move_id": "off-dark-impulse-flurry",
+      "move_name": "Dark Impulse Ground Thrash",
+      "base_points": 56
+    },
+    {
+      "move_id": "off-one-hit-knockout",
+      "move_name": "Instant Knockout Axe Kick",
+      "base_points": 75
+    }
+  ]
+}
