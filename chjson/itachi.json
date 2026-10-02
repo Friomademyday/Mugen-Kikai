@@ -1,0 +1,20 @@
+{
+  "character_id": "itachi",
+  "character_name": "Itachi Uchiha",
+  "character_type": "defense",
+  "tier": "epic",
+  "price": 36000000,
+  "max_level": 5,
+  "moves": [
+    {
+      "move_id": "def-susanoo-ribcage",
+      "move_name": "Skeletal Susanoo Ribcage",
+      "base_points": 410
+    },
+    {
+      "move_id": "def-yata-mirror-guard",
+      "move_name": "Armored Susanoo: Yata Mirror Guard",
+      "base_points": 645
+    }
+  ]
+}
