@@ -1,0 +1,20 @@
+{
+  "character_id": "tetsutetsu",
+  "character_name": "Tetsutetsu Tetsutetsu",
+  "character_type": "defense",
+  "tier": "epic",
+  "price": 36000000,
+  "max_level": 5,
+  "moves": [
+    {
+      "move_id": "def-steel-body",
+      "move_name": "Steel Iron Guard",
+      "base_points": 355
+    },
+    {
+      "move_id": "def-white-hot-steel",
+      "move_name": "White-Hot Steel Overdrive Defense",
+      "base_points": 595
+    }
+  ]
+}
