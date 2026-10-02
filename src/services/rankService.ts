@@ -13,15 +13,15 @@ export interface RankTier {
 
 export const RANK_TIERS: RankTier[] = [
   { id: 1, name: 'Beginner', japanese: '初心者 - SHOSHINSHA', requiredXp: 10, bonus: 50000 },
-  { id: 2, name: 'Rookie', japanese: '新人 - SHINJIN', requiredXp: 30, bonus: 100000 },
-  { id: 3, name: 'Regular', japanese: '常連 - JŌREN', requiredXp: 70, bonus: 250000 },
-  { id: 4, name: 'Veteran', japanese: '熟練者 - JUKUREN-SHA', requiredXp: 150, bonus: 500000 },
-  { id: 5, name: 'Adept', japanese: '達人 - TATSUJIN', requiredXp: 300, bonus: 1000000 },
-  { id: 6, name: 'Master', japanese: '師範 - SHIHAN', requiredXp: 600, bonus: 5000000 },
-  { id: 7, name: 'Saint', japanese: '聖者 - SEIJA', requiredXp: 1000, bonus: 10000000 },
-  { id: 8, name: 'Demigod', japanese: '半神 - HANSHIN', requiredXp: 2000, bonus: 50000000 },
-  { id: 9, name: 'Godlike', japanese: '神格 - SHINKAKU', requiredXp: 4000, bonus: 100000000 },
-  { id: 10, name: 'Infinite', japanese: '無限 - MUGEN', requiredXp: 10000, bonus: 500000000 }
+  { id: 2, name: 'Rookie', japanese: '新人 - SHINJIN', requiredXp: 20, bonus: 100000 },
+  { id: 3, name: 'Regular', japanese: '常連 - JŌREN', requiredXp: 40, bonus: 250000 },
+  { id: 4, name: 'Veteran', japanese: '熟練者 - JUKUREN-SHA', requiredXp: 60, bonus: 500000 },
+  { id: 5, name: 'Adept', japanese: '達人 - TATSUJIN', requiredXp: 80, bonus: 1000000 },
+  { id: 6, name: 'Master', japanese: '師範 - SHIHAN', requiredXp: 100, bonus: 5000000 },
+  { id: 7, name: 'Saint', japanese: '聖者 - SEIJA', requiredXp: 140, bonus: 10000000 },
+  { id: 8, name: 'Demigod', japanese: '半神 - HANSHIN', requiredXp: 180, bonus: 25000000 },
+  { id: 9, name: 'Godlike', japanese: '神格 - SHINKAKU', requiredXp: 320, bonus: 50000000 },
+  { id: 10, name: 'Infinite', japanese: '無限 - MUGEN', requiredXp: 640, bonus: 250000000 }
 ];
 
 export function getCurrentRank(xp: number): RankTier | null {
@@ -75,15 +75,15 @@ export async function addDuelWinAndCheckRank(
 `⬩Ｍ Ｕ Ｇ Ｅ Ｎ     Ｋ Ｉ Ｋ Ａ Ｉ⬩
 ⬩╭────────────╮ 
 ⬩                                ╰──────╯⬩
-▬▬▬ ⬩ ${user.xp.toLocaleString()} COMBAT XP 
-⬩    𝑵𝑬𝑾 𝑹𝑨𝑵𝑲: ${currentRankTier.japanese}    ⬩
+▬▬▬ ⬩ \`${user.xp.toLocaleString()} BATTLE-XP\` 
+⬩    𝑵𝑬𝑾 𝑹𝑨𝑵𝑲: *${currentRankTier.japanese}*    ⬩
 
 ▬ ⬩ ${senderTag}
 ▬ ⬩ ${oldRankText}
 ▬ ⬩ ${currentRankTier.japanese}
-▬ ⬩ REWARD: + 🪙${currentRankTier.bonus.toLocaleString()}
+▬ ⬩ _reward:_ + ${currentRankTier.bonus.toLocaleString()} 🪙
 
-Next Rank ⬩ ${nextRankText}`;
+> Next rank ⬩ ${nextRankText}`;
 
     const rankImagePath = path.join(process.cwd(), 'assets', `rank${currentRankTier.id}.jpg`);
 
