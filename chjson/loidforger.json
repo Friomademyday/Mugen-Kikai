@@ -1,0 +1,35 @@
+{
+  "character_id": "loid-forger",
+  "character_name": "Loid Forger (Agent Twilight)",
+  "character_type": "offense",
+  "tier": "common",
+  "price": 12600000,
+  "max_level": 5,
+  "moves": [
+    {
+      "move_id": "off-cqc-disarm-strike",
+      "move_name": "CQC Disarm & Strike",
+      "base_points": 7
+    },
+    {
+      "move_id": "off-silenced-pistol-shot",
+      "move_name": "Suppressed Pistol Precision Shot",
+      "base_points": 22
+    },
+    {
+      "move_id": "off-concealed-blade-slash",
+      "move_name": "Concealed Knife Slash",
+      "base_points": 36
+    },
+    {
+      "move_id": "off-tactical-flashbang-combo",
+      "move_name": "Flashbang Takedown Combo",
+      "base_points": 54
+    },
+    {
+      "move_id": "off-wise-assassination-strike",
+      "move_name": "WISE Operative Vital Strike",
+      "base_points": 72
+    }
+  ]
+}
