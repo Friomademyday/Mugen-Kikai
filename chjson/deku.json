@@ -1,0 +1,55 @@
+{
+  "character_id": "deku",
+  "character_name": "Izuku Midoriya",
+  "character_type": "offense",
+  "tier": "epic",
+  "price": 36000000,
+  "max_level": 5,
+  "moves": [
+    {
+      "move_id": "off-detroit-smash-100",
+      "move_name": "Bone-Break Detroit Smash",
+      "base_points": 30
+    },
+    {
+      "move_id": "off-delaware-smash",
+      "move_name": "Delaware Smash Air Whip",
+      "base_points": 48
+    },
+    {
+      "move_id": "off-full-cowl-5-percent",
+      "move_name": "Full Cowl 5% Shoot Style",
+      "base_points": 68
+    },
+    {
+      "move_id": "off-full-cowl-20-percent",
+      "move_name": "Manchester Smash 20%",
+      "base_points": 95
+    },
+    {
+      "move_id": "off-blackwhip-wyvern-strike",
+      "move_name": "Blackwhip Reinforcement Strike",
+      "base_points": 125
+    },
+    {
+      "move_id": "off-st-louis-smash",
+      "move_name": "St. Louis Smash 45%",
+      "base_points": 150
+    },
+    {
+      "move_id": "off-fajin-boosted-smash",
+      "move_name": "Fa Jin Overdrive Smash",
+      "base_points": 180
+    },
+    {
+      "move_id": "off-gear-shift-overdrive",
+      "move_name": "Gearshift Low Gear Impact",
+      "base_points": 210
+    },
+    {
+      "move_id": "off-1000000-percent-delaware-detroit",
+      "move_name": "1,000,000% Delaware Detroit Smash",
+      "base_points": 248
+    }
+  ]
+}
