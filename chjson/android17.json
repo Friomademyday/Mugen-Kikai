@@ -1,0 +1,20 @@
+{
+  "character_id": "android-17",
+  "character_name": "Android 17",
+  "character_type": "defense",
+  "tier": "epic",
+  "price": 36000000,
+  "max_level": 5,
+  "moves": [
+    {
+      "move_id": "def-android-energy-field",
+      "move_name": "Android Energy Barrier",
+      "base_points": 440
+    },
+    {
+      "move_id": "def-super-energy-dome",
+      "move_name": "Multi-Layered Energy Barrier Fortress",
+      "base_points": 655
+    }
+  ]
+}
