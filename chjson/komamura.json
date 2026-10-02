@@ -1,0 +1,20 @@
+{
+  "character_id": "komamura",
+  "character_name": "Sajin Komamura",
+  "character_type": "defense",
+  "tier": "epic",
+  "price": 36000000,
+  "max_level": 5,
+  "moves": [
+    {
+      "move_id": "def-kokujo-tengen-myoo-guard",
+      "move_name": "Bankai: Kokujo Tengen Myoo Armored Parry",
+      "base_points": 470
+    },
+    {
+      "move_id": "def-dangai-joe-immortality",
+      "move_name": "Bankai: Kokujo Tengen Myoo - Dangai Joe Immortality",
+      "base_points": 640
+    }
+  ]
+}
