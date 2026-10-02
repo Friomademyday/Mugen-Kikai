@@ -12,16 +12,16 @@ export interface RankTier {
 }
 
 export const RANK_TIERS: RankTier[] = [
-  { id: 1, name: 'Beginner', japanese: '初心者 - SHOSHINSHA', requiredXp: 50, bonus: 50000 },
-  { id: 2, name: 'Rookie', japanese: '新人 - SHINJIN', requiredXp: 100, bonus: 100000 },
-  { id: 3, name: 'Regular', japanese: '常連 - JŌREN', requiredXp: 250, bonus: 250000 },
-  { id: 4, name: 'Veteran', japanese: '熟練者 - JUKUREN-SHA', requiredXp: 400, bonus: 500000 },
-  { id: 5, name: 'Adept', japanese: '達人 - TATSUJIN', requiredXp: 800, bonus: 1000000 },
-  { id: 6, name: 'Master', japanese: '師範 - SHIHAN', requiredXp: 1600, bonus: 5000000 },
-  { id: 7, name: 'Saint', japanese: '聖者 - SEIJA', requiredXp: 2500, bonus: 10000000 },
-  { id: 8, name: 'Demigod', japanese: '半神 - HANSHIN', requiredXp: 5000, bonus: 50000000 },
-  { id: 9, name: 'Godlike', japanese: '神格 - SHINKAKU', requiredXp: 10000, bonus: 100000000 },
-  { id: 10, name: 'Infinite', japanese: '無限 - MUGEN', requiredXp: 25000, bonus: 500000000 }
+  { id: 1, name: 'Beginner', japanese: '初心者 - SHOSHINSHA', requiredXp: 10, bonus: 50000 },
+  { id: 2, name: 'Rookie', japanese: '新人 - SHINJIN', requiredXp: 30, bonus: 100000 },
+  { id: 3, name: 'Regular', japanese: '常連 - JŌREN', requiredXp: 70, bonus: 250000 },
+  { id: 4, name: 'Veteran', japanese: '熟練者 - JUKUREN-SHA', requiredXp: 150, bonus: 500000 },
+  { id: 5, name: 'Adept', japanese: '達人 - TATSUJIN', requiredXp: 300, bonus: 1000000 },
+  { id: 6, name: 'Master', japanese: '師範 - SHIHAN', requiredXp: 600, bonus: 5000000 },
+  { id: 7, name: 'Saint', japanese: '聖者 - SEIJA', requiredXp: 1000, bonus: 10000000 },
+  { id: 8, name: 'Demigod', japanese: '半神 - HANSHIN', requiredXp: 2000, bonus: 50000000 },
+  { id: 9, name: 'Godlike', japanese: '神格 - SHINKAKU', requiredXp: 4000, bonus: 100000000 },
+  { id: 10, name: 'Infinite', japanese: '無限 - MUGEN', requiredXp: 10000, bonus: 500000000 }
 ];
 
 export function getCurrentRank(xp: number): RankTier | null {
@@ -45,15 +45,13 @@ export function getNextRank(xp: number): RankTier | null {
   return null;
 }
 
-export async function processUserMessageAndRank(
-  senderJid: string,
+export async function addDuelWinAndCheckRank(
+  winnerJid: string,
   fromJid: string,
-  sock: WASocket,
-  msg: WAMessage,
-  pushName?: string
-): Promise<IUser> {
-  const user = await User.getOrCreate(senderJid, pushName);
-  user.xp = (user.xp || 0) + 1;
+  sock: WASocket
+): Promise<void> {
+  const user = await User.getOrCreate(winnerJid);
+  user.xp = (user.xp || 0) + 2;
 
   const currentRankTier = getCurrentRank(user.xp);
   const lastProcessedRankId = typeof user.custom04 === 'number' ? user.custom04 : 0;
@@ -68,29 +66,25 @@ export async function processUserMessageAndRank(
 
     const nextRankTier = getNextRank(user.xp);
     const nextRankText = nextRankTier
-      ? `${nextRankTier.japanese} (${nextRankTier.requiredXp.toLocaleString()})`
+      ? `${nextRankTier.japanese} (${nextRankTier.requiredXp.toLocaleString()} XP)`
       : 'MAX RANK (無限)';
 
-    const senderTag = `@${senderJid.split('@')[0]}`;
+    const senderTag = `@${winnerJid.split('@')[0]}`;
 
     const announcementText =
 `⬩Ｍ Ｕ Ｇ Ｅ Ｎ     Ｋ Ｉ Ｋ Ａ Ｉ⬩
 ⬩╭────────────╮ 
 ⬩                                ╰──────╯⬩
-▬▬▬ ⬩ \`${user.xp.toLocaleString()} MESSAGES\` 
-⬩    𝑵𝑬𝑾 𝑹𝑨𝑵𝑲: *${currentRankTier.japanese}*    ⬩
+▬▬▬ ⬩ ${user.xp.toLocaleString()} COMBAT XP 
+⬩    𝑵𝑬𝑾 𝑹𝑨𝑵𝑲: ${currentRankTier.japanese}    ⬩
 
 ▬ ⬩ ${senderTag}
 ▬ ⬩ ${oldRankText}
 ▬ ⬩ ${currentRankTier.japanese}
-▬ ⬩ _reward:_ + ${currentRankTier.bonus.toLocaleString()} 🪙
+▬ ⬩ REWARD: + 🪙${currentRankTier.bonus.toLocaleString()}
 
-> Next rank ⬩ ${nextRankText}`;
+Next Rank ⬩ ${nextRankText}`;
 
-    /*
-     * DYNAMIC IMAGE RESOLUTION FOR LEVEL UP:
-     * Checks for assets/rank1.jpg up to assets/rank10.jpg based on currentRankTier.id
-    */
     const rankImagePath = path.join(process.cwd(), 'assets', `rank${currentRankTier.id}.jpg`);
 
     if (fs.existsSync(rankImagePath)) {
@@ -100,23 +94,19 @@ export async function processUserMessageAndRank(
         {
           image: imageBuffer,
           caption: announcementText,
-          mentions: [senderJid]
-        },
-        { quoted: msg }
+          mentions: [winnerJid]
+        }
       );
     } else {
       await sock.sendMessage(
         fromJid,
         {
           text: announcementText,
-          mentions: [senderJid]
-        },
-        { quoted: msg }
+          mentions: [winnerJid]
+        }
       );
     }
   } else {
     await user.save();
   }
-
-  return user;
-    }
+}
