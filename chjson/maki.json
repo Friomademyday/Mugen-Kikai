@@ -1,0 +1,40 @@
+{
+  "character_id": "maki-zenin",
+  "character_name": "Maki Zenin",
+  "character_type": "offense",
+  "tier": "rare",
+  "price": 25200000,
+  "max_level": 5,
+  "moves": [
+    {
+      "move_id": "off-naginata-thrust",
+      "move_name": "Cursed Tool Naginata Thrust",
+      "base_points": 17
+    },
+    {
+      "move_id": "off-playful-cloud-strike",
+      "move_name": "Playful Cloud Three-Section Strike",
+      "base_points": 40
+    },
+    {
+      "move_id": "off-playful-cloud-heavy-smash",
+      "move_name": "Playful Cloud Kinetic Smash",
+      "base_points": 66
+    },
+    {
+      "move_id": "off-dragon-bone-slash",
+      "move_name": "Dragon Bone Kinetic Blade Release",
+      "base_points": 94
+    },
+    {
+      "move_id": "off-heavenly-restriction-blitz",
+      "move_name": "Heavenly Restriction Speed Blitz",
+      "base_points": 122
+    },
+    {
+      "move_id": "off-soul-split-katana-slice",
+      "move_name": "Soul Split Katana Soul Cleave",
+      "base_points": 149
+    }
+  ]
+}
