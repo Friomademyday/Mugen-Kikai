@@ -1,0 +1,110 @@
+{
+  "character_id": "naruto",
+  "character_name": "Naruto Uzumaki",
+  "character_type": "offense",
+  "tier": "legendary",
+  "price": 45000000,
+  "max_level": 5,
+  "moves": [
+    {
+      "move_id": "off-uzumaki-barrage",
+      "move_name": "Uzumaki Naruto Rendan",
+      "base_points": 35
+    },
+    {
+      "move_id": "off-rasengan",
+      "move_name": "Rasengan",
+      "base_points": 48
+    },
+    {
+      "move_id": "off-oodama-rasengan",
+      "move_name": "Oodama Rasengan",
+      "base_points": 60
+    },
+    {
+      "move_id": "off-rasenrengan",
+      "move_name": "Rasenrengan",
+      "base_points": 72
+    },
+    {
+      "move_id": "off-wind-rasengan",
+      "move_name": "Fuuton: Rasengan",
+      "base_points": 85
+    },
+    {
+      "move_id": "off-rasenshuriken",
+      "move_name": "Fuuton: Rasenshuriken",
+      "base_points": 100
+    },
+    {
+      "move_id": "off-sage-rasenshuriken",
+      "move_name": "Senpo: Rasenshuriken",
+      "base_points": 115
+    },
+    {
+      "move_id": "off-cho-oodama-rasengan",
+      "move_name": "Senpo: Cho Oodama Rasengan",
+      "base_points": 130
+    },
+    {
+      "move_id": "off-mini-rasenshuriken",
+      "move_name": "Mini Rasenshuriken",
+      "base_points": 142
+    },
+    {
+      "move_id": "off-planetary-rasengan",
+      "move_name": "Wakusei Rasengan",
+      "base_points": 158
+    },
+    {
+      "move_id": "off-tailed-beast-shockwave",
+      "move_name": "Bijuu Shockwave",
+      "base_points": 170
+    },
+    {
+      "move_id": "off-bijuu-dama",
+      "move_name": "Bijuu Dama",
+      "base_points": 188
+    },
+    {
+      "move_id": "off-sage-bijuu-dama",
+      "move_name": "Senpo: Bijuu Dama",
+      "base_points": 205
+    },
+    {
+      "move_id": "off-lava-rasenshuriken",
+      "move_name": "Senpo: Youton Rasenshuriken",
+      "base_points": 225
+    },
+    {
+      "move_id": "off-magnet-rasengan",
+      "move_name": "Senpo: Jiton Rasengan",
+      "base_points": 240
+    },
+    {
+      "move_id": "off-bijuu-dama-rasenshuriken",
+      "move_name": "Bijuu Dama Rasenshuriken",
+      "base_points": 260
+    },
+    {
+      "move_id": "off-super-tailed-beast-rasenshuriken",
+      "move_name": "Chou Houton Rasenshuriken",
+      "base_points": 285
+    },
+    {
+      "move_id": "off-six-paths-rasenshuriken",
+      "move_name": "Rikudou: Chooedama Rasenshuriken",
+      "base_points": 310
+    },
+    {
+      "move_id": "off-baryon-tail-strike",
+      "move_name": "Baryon Mode Tail Strike",
+      "base_points": 330
+    },
+    {
+      "move_id": "off-baryon-rasengan",
+      "move_name": "Baryon Rasengan",
+      "base_points": 350
+    }
+  ]
+}
