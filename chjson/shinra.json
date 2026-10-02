@@ -1,0 +1,45 @@
+{
+  "character_id": "shinra",
+  "character_name": "Shinra Kusakabe",
+  "character_type": "offense",
+  "tier": "epic",
+  "price": 36000000,
+  "max_level": 5,
+  "moves": [
+    {
+      "move_id": "off-devil-kick",
+      "move_name": "Devil's Footprints Kick",
+      "base_points": 30
+    },
+    {
+      "move_id": "off-hellfire-kick",
+      "move_name": "Hellfire Dropkick",
+      "base_points": 58
+    },
+    {
+      "move_id": "off-rapid-hand-sign-kick",
+      "move_name": "Rapid: Hand Sign Ignition Kick",
+      "base_points": 92
+    },
+    {
+      "move_id": "off-corna-fire",
+      "move_name": "Corna Fire Impact",
+      "base_points": 135
+    },
+    {
+      "move_id": "off-superfire-kick",
+      "move_name": "Superfire Overdrive Kick",
+      "base_points": 178
+    },
+    {
+      "move_id": "off-adolla-burst-lightspeed",
+      "move_name": "Adolla Grace Lightspeed Kick",
+      "base_points": 215
+    },
+    {
+      "move_id": "off-relativistic-particle-kick",
+      "move_name": "Relativistic Time-Rewind Kick",
+      "base_points": 245
+    }
+  ]
+}
