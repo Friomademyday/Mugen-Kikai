@@ -1,0 +1,45 @@
+{
+  "character_id": "yuji-itadori",
+  "character_name": "Yuji Itadori",
+  "character_type": "offense",
+  "tier": "epic",
+  "price": 36000000,
+  "max_level": 5,
+  "moves": [
+    {
+      "move_id": "off-divergent-fist",
+      "move_name": "Divergent Fist",
+      "base_points": 32
+    },
+    {
+      "move_id": "off-black-flash",
+      "move_name": "Black Flash (Koku Sen)",
+      "base_points": 65
+    },
+    {
+      "move_id": "off-blood-manipulation-piercing-blood",
+      "move_name": "Blood Manipulation: Piercing Blood",
+      "base_points": 105
+    },
+    {
+      "move_id": "off-blood-manipulation-super-nova",
+      "move_name": "Blood Manipulation: Supernova",
+      "base_points": 145
+    },
+    {
+      "move_id": "off-soul-striking-black-flash",
+      "move_name": "Soul-Striking Black Flash Combo",
+      "base_points": 190
+    },
+    {
+      "move_id": "off-soul-dismantle",
+      "move_name": "Soul-Targeting Dismantle",
+      "base_points": 225
+    },
+    {
+      "move_id": "off-domain-expansion-soul-bound",
+      "move_name": "Domain Expansion: Soul Sealing Strike",
+      "base_points": 248
+    }
+  ]
+}
