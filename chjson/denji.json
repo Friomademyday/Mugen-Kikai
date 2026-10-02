@@ -1,0 +1,45 @@
+{
+  "character_id": "denji",
+  "character_name": "Denji",
+  "character_type": "offense",
+  "tier": "epic",
+  "price": 36000000,
+  "max_level": 5,
+  "moves": [
+    {
+      "move_id": "off-starter-cut",
+      "move_name": "Cord Pull Chainsaw Rip",
+      "base_points": 28
+    },
+    {
+      "move_id": "off-head-chainsaw-thrust",
+      "move_name": "Chainsaw Head Thrust",
+      "base_points": 50
+    },
+    {
+      "move_id": "off-quad-chainsaw-slash",
+      "move_name": "Full Chainsaw Quad Slash",
+      "base_points": 85
+    },
+    {
+      "move_id": "off-chainsaw-leg-ride",
+      "move_name": "Leg Chainsaw Roller Slash",
+      "base_points": 120
+    },
+    {
+      "move_id": "off-intestine-entangle-slash",
+      "move_name": "Intestine Whip Cleave",
+      "base_points": 158
+    },
+    {
+      "move_id": "off-blood-chainsaw-slash",
+      "move_name": "Power's Blood Chainsaw Cut",
+      "base_points": 200
+    },
+    {
+      "move_id": "off-hero-of-hell-black-chainsaw",
+      "move_name": "Hero of Hell: True Devil Chainsaw Slash",
+      "base_points": 240
+    }
+  ]
+}
