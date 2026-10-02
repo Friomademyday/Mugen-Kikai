@@ -1,0 +1,50 @@
+{
+  "character_id": "gon",
+  "character_name": "Gon Freecss",
+  "character_type": "offense",
+  "tier": "epic",
+  "price": 36000000,
+  "max_level": 5,
+  "moves": [
+    {
+      "move_id": "off-fishing-rod-strike",
+      "move_name": "Fishing Rod Strike",
+      "base_points": 25
+    },
+    {
+      "move_id": "off-ren-strike",
+      "move_name": "Enhanced Ren Punch",
+      "base_points": 42
+    },
+    {
+      "move_id": "off-ko-punch",
+      "move_name": "Ko Focused Strike",
+      "base_points": 65
+    },
+    {
+      "move_id": "off-ja-janken-scissors",
+      "move_name": "Jajanken: Scissors",
+      "base_points": 92
+    },
+    {
+      "move_id": "off-ja-janken-paper",
+      "move_name": "Jajanken: Paper",
+      "base_points": 120
+    },
+    {
+      "move_id": "off-ja-janken-rock",
+      "move_name": "Jajanken: Rock",
+      "base_points": 155
+    },
+    {
+      "move_id": "off-double-ja-janken",
+      "move_name": "Feint Twin Jajanken",
+      "base_points": 188
+    },
+    {
+      "move_id": "off-adult-gon-jan-ken",
+      "move_name": "Limiter Removal Jajanken: Rock",
+      "base_points": 245
+    }
+  ]
+}
