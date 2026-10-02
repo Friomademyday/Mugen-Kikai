@@ -1,0 +1,45 @@
+{
+  "character_id": "trevor-belmont",
+  "character_name": "Trevor Belmont",
+  "character_type": "offense",
+  "tier": "rare",
+  "price": 25200000,
+  "max_level": 5,
+  "moves": [
+    {
+      "move_id": "off-vampire-killer-strike",
+      "move_name": "Vampire Killer Whip Crack",
+      "base_points": 16
+    },
+    {
+      "move_id": "off-throwing-dagger-flurry",
+      "move_name": "Silver Dagger Triple Throw",
+      "base_points": 32
+    },
+    {
+      "move_id": "off-shortsword-cleave",
+      "move_name": "Shortsword Dual Spin Cleave",
+      "base_points": 50
+    },
+    {
+      "move_id": "off-holy-water-burst",
+      "move_name": "Consecrated Holy Water Flask",
+      "base_points": 72
+    },
+    {
+      "move_id": "off-morning-star-whip-sweep",
+      "move_name": "Morning Star Explosive Sweep",
+      "base_points": 98
+    },
+    {
+      "move_id": "off-consecrated-blade-strike",
+      "move_name": "Consecrated Cross Blade Strike",
+      "base_points": 124
+    },
+    {
+      "move_id": "off-morning-star-overdrive",
+      "move_name": "Morning Star Whip Decimation",
+      "base_points": 148
+    }
+  ]
+}
