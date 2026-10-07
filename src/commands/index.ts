@@ -10,6 +10,7 @@ import { electionCommands } from './election';
 import { politicsCommands } from './politics';
 import { rankCommands } from './rank';
 import { duelCommands } from './duel';
+import { cardCommands } from './card';
 
 export const commands = new Map<string, Command>();
 
@@ -21,7 +22,9 @@ const allCommands: Command[] = [
   ...leaderboardCommands,
   ...electionCommands,
   ...politicsCommands,
-  ...rankCommands
+  ...rankCommands,
+  ...duelCommands,
+  ...cardCommands
 ];
 
 for (const cmd of allCommands) {
