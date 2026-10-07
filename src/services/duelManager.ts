@@ -19,6 +19,7 @@ export interface PlayerCombatState {
 }
 
 export interface ActiveDuel {
+  duelId: string;
   groupId: string;
   challengerJid: string;
   challengedJid: string;
@@ -35,19 +36,23 @@ export interface ActiveDuel {
 class DuelManager {
   private activeDuels: Map<string, ActiveDuel> = new Map();
 
-  public getDuel(groupId: string): ActiveDuel | undefined {
-    return this.activeDuels.get(groupId);
+  public getDuelById(duelId: string): ActiveDuel | undefined {
+    return this.activeDuels.get(duelId);
   }
 
-  public isUserInDuel(userJid: string): boolean {
+  public getActiveDuelForUser(userJid: string): ActiveDuel | undefined {
     for (const duel of this.activeDuels.values()) {
       if (duel.phase !== 'ENDED') {
         if (duel.challengerJid === userJid || duel.challengedJid === userJid) {
-          return true;
+          return duel;
         }
       }
     }
-    return false;
+    return undefined;
+  }
+
+  public isUserInDuel(userJid: string): boolean {
+    return this.getActiveDuelForUser(userJid) !== undefined;
   }
 
   public async initiateChallenge(
@@ -58,13 +63,10 @@ class DuelManager {
     challengedPushName: string,
     sock: WASocket
   ): Promise<boolean> {
-    if (this.activeDuels.has(groupId)) {
-      await sock.sendMessage(groupId, { text: '⬩Ｍ Ｕ Ｇ Ｅ Ｎ⬩ A duel is already in progress in this group!' });
-      return false;
-    }
-
     if (this.isUserInDuel(challengerJid) || this.isUserInDuel(challengedJid)) {
-      await sock.sendMessage(groupId, { text: '⬩Ｍ Ｕ Ｇ Ｅ Ｎ⬩ One of the participants is already engaged in another duel!' });
+      await sock.sendMessage(groupId, { 
+        text: '⬩Ｍ Ｕ Ｇ Ｅ Ｎ⬩ One of the participants is already engaged in an active duel!' 
+      });
       return false;
     }
 
@@ -88,7 +90,10 @@ class DuelManager {
       return false;
     }
 
+    const duelId = `duel_${Date.now()}_${Math.random().toString(36).substring(2, 7)}`;
+
     const duelState: ActiveDuel = {
+      duelId,
       groupId,
       challengerJid,
       challengedJid,
@@ -119,10 +124,10 @@ class DuelManager {
     };
 
     duelState.phaseTimer = setTimeout(async () => {
-      await this.handleChallengeTimeout(groupId, sock);
+      await this.handleChallengeTimeout(duelId, sock);
     }, 15000);
 
-    this.activeDuels.set(groupId, duelState);
+    this.activeDuels.set(duelId, duelState);
 
     const challengerTag = `@${challengerJid.split('@')[0]}`;
     const challengedTag = `@${challengedJid.split('@')[0]}`;
@@ -135,13 +140,13 @@ class DuelManager {
     return true;
   }
 
-  private async handleChallengeTimeout(groupId: string, sock: WASocket): Promise<void> {
-    const duel = this.activeDuels.get(groupId);
+  private async handleChallengeTimeout(duelId: string, sock: WASocket): Promise<void> {
+    const duel = this.activeDuels.get(duelId);
     if (duel && duel.phase === 'CHALLENGE') {
       this.clearDuelTimers(duel);
-      this.activeDuels.delete(groupId);
+      this.activeDuels.delete(duelId);
       const challengedTag = `@${duel.challengedJid.split('@')[0]}`;
-      await sock.sendMessage(groupId, {
+      await sock.sendMessage(duel.groupId, {
         text: `⬩Ｍ Ｕ Ｇ Ｅ Ｎ⬩ Challenge expired! ${challengedTag} failed to accept in time. Duel canceled.`,
         mentions: [duel.challengedJid]
       });
@@ -149,7 +154,7 @@ class DuelManager {
   }
 
   public async acceptChallenge(groupId: string, userJid: string, sock: WASocket): Promise<void> {
-    const duel = this.activeDuels.get(groupId);
+    const duel = this.getActiveDuelForUser(userJid);
     if (!duel || duel.phase !== 'CHALLENGE' || duel.challengedJid !== userJid) {
       return;
     }
@@ -158,7 +163,7 @@ class DuelManager {
     duel.phase = 'OFFENSE_SELECTION';
 
     duel.phaseTimer = setTimeout(async () => {
-      await this.handleOffenseSelectionTimeout(groupId, sock);
+      await this.handleOffenseSelectionTimeout(duel.duelId, sock);
     }, 30000);
 
     await sock.sendMessage(groupId, {
@@ -174,7 +179,7 @@ class DuelManager {
     characterId: string,
     sock: WASocket
   ): Promise<void> {
-    const duel = this.activeDuels.get(groupId);
+    const duel = this.getActiveDuelForUser(userJid);
     if (!duel || duel.phase !== 'OFFENSE_SELECTION') return;
 
     const isPlayerA = duel.challengerJid === userJid;
@@ -215,12 +220,12 @@ class DuelManager {
     });
 
     if (duel.playerA.offenseCards.length >= 1 && duel.playerB.offenseCards.length >= 1) {
-      this.transitionToDefenseSelection(groupId, sock);
+      this.transitionToDefenseSelection(duel.duelId, sock);
     }
   }
 
-  private async handleOffenseSelectionTimeout(groupId: string, sock: WASocket): Promise<void> {
-    const duel = this.activeDuels.get(groupId);
+  private async handleOffenseSelectionTimeout(duelId: string, sock: WASocket): Promise<void> {
+    const duel = this.activeDuels.get(duelId);
     if (!duel || duel.phase !== 'OFFENSE_SELECTION') return;
 
     const playerAHas = duel.playerA.offenseCards.length > 0;
@@ -230,42 +235,42 @@ class DuelManager {
     const challengedTag = `@${duel.challengedJid.split('@')[0]}`;
 
     if (!playerAHas && !playerBHas) {
-      await sock.sendMessage(groupId, { text: '⬩Ｍ Ｕ Ｇ Ｅ Ｎ⬩ Neither player selected an Offense card! Duel forfeited.' });
+      await sock.sendMessage(duel.groupId, { text: '⬩Ｍ Ｕ Ｇ Ｅ Ｎ⬩ Neither player selected an Offense card! Duel forfeited.' });
       this.clearDuelTimers(duel);
-      this.activeDuels.delete(groupId);
+      this.activeDuels.delete(duelId);
     } else if (!playerAHas) {
-      await sock.sendMessage(groupId, {
+      await sock.sendMessage(duel.groupId, {
         text: `⬩Ｍ Ｕ Ｇ Ｅ Ｎ⬩ ${challengerTag} failed to select an Offense card! ${challengedTag} WINS BY FORFEIT!`,
         mentions: [duel.challengerJid, duel.challengedJid]
       });
-      await addDuelWinAndCheckRank(duel.challengedJid, groupId, sock);
+      await addDuelWinAndCheckRank(duel.challengedJid, duel.groupId, sock);
       this.clearDuelTimers(duel);
-      this.activeDuels.delete(groupId);
+      this.activeDuels.delete(duelId);
     } else if (!playerBHas) {
-      await sock.sendMessage(groupId, {
+      await sock.sendMessage(duel.groupId, {
         text: `⬩Ｍ Ｕ Ｇ Ｅ Ｎ⬩ ${challengedTag} failed to select an Offense card! ${challengerTag} WINS BY FORFEIT!`,
         mentions: [duel.challengerJid, duel.challengedJid]
       });
-      await addDuelWinAndCheckRank(duel.challengerJid, groupId, sock);
+      await addDuelWinAndCheckRank(duel.challengerJid, duel.groupId, sock);
       this.clearDuelTimers(duel);
-      this.activeDuels.delete(groupId);
+      this.activeDuels.delete(duelId);
     } else {
-      this.transitionToDefenseSelection(groupId, sock);
+      this.transitionToDefenseSelection(duelId, sock);
     }
   }
 
-  private async transitionToDefenseSelection(groupId: string, sock: WASocket): Promise<void> {
-    const duel = this.activeDuels.get(groupId);
+  private async transitionToDefenseSelection(duelId: string, sock: WASocket): Promise<void> {
+    const duel = this.activeDuels.get(duelId);
     if (!duel) return;
 
     if (duel.phaseTimer) clearTimeout(duel.phaseTimer);
     duel.phase = 'DEFENSE_SELECTION';
 
     duel.phaseTimer = setTimeout(async () => {
-      await this.transitionToCombat(groupId, sock);
+      await this.transitionToCombat(duelId, sock);
     }, 30000);
 
-    await sock.sendMessage(groupId, {
+    await sock.sendMessage(duel.groupId, {
       text: `⬩Ｍ Ｕ Ｇ Ｅ Ｎ     Ｄ Ｕ Ｅ Ｌ⬩\n\nSTAGE 3: DUAL-WING DEFENSE PREP (30s)\nEquip defense moves to build your starting shield using owned Defense cards!\n\nCommands:\n- def1-<move_id>\n- def2-<move_id>\nExample: def1-infinity\n\nNote: Duplicate defense moves across wings are blocked. If skipped, starting shield defaults to 0.`
     });
   }
@@ -277,7 +282,7 @@ class DuelManager {
     moveId: string,
     sock: WASocket
   ): Promise<void> {
-    const duel = this.activeDuels.get(groupId);
+    const duel = this.getActiveDuelForUser(userJid);
     if (!duel || duel.phase !== 'DEFENSE_SELECTION') return;
 
     const isPlayerA = duel.challengerJid === userJid;
@@ -349,8 +354,8 @@ class DuelManager {
     });
   }
 
-  private async transitionToCombat(groupId: string, sock: WASocket): Promise<void> {
-    const duel = this.activeDuels.get(groupId);
+  private async transitionToCombat(duelId: string, sock: WASocket): Promise<void> {
+    const duel = this.activeDuels.get(duelId);
     if (!duel) return;
 
     if (duel.phaseTimer) clearTimeout(duel.phaseTimer);
@@ -363,27 +368,27 @@ class DuelManager {
     }, 1000);
 
     duel.matchTimer = setTimeout(async () => {
-      await this.handleMatchTimeExpired(groupId, sock);
+      await this.handleMatchTimeExpired(duelId, sock);
     }, 180000);
 
-    this.startTurnTimer(groupId, sock);
+    this.startTurnTimer(duelId, sock);
 
-    await this.broadcastCombatState(groupId, sock, 'STAGE 4: COMBAT PHASE STARTED!\nChallenged player goes first!');
+    await this.broadcastCombatState(duelId, sock, 'STAGE 4: COMBAT PHASE STARTED!\nChallenged player goes first!');
   }
 
-  private startTurnTimer(groupId: string, sock: WASocket): void {
-    const duel = this.activeDuels.get(groupId);
+  private startTurnTimer(duelId: string, sock: WASocket): void {
+    const duel = this.activeDuels.get(duelId);
     if (!duel || duel.phase !== 'COMBAT') return;
 
     if (duel.turnTimer) clearTimeout(duel.turnTimer);
 
     duel.turnTimer = setTimeout(async () => {
-      await this.handleTurnTimeout(groupId, sock);
+      await this.handleTurnTimeout(duelId, sock);
     }, 30000);
   }
 
-  private async handleTurnTimeout(groupId: string, sock: WASocket): Promise<void> {
-    const duel = this.activeDuels.get(groupId);
+  private async handleTurnTimeout(duelId: string, sock: WASocket): Promise<void> {
+    const duel = this.activeDuels.get(duelId);
     if (!duel || duel.phase !== 'COMBAT') return;
 
     const activePlayer = duel.currentTurnJid === duel.challengerJid ? duel.playerA : duel.playerB;
@@ -395,33 +400,33 @@ class DuelManager {
     const inactiveTag = `@${inactivePlayerJid.split('@')[0]}`;
 
     if (activePlayer.strikes >= 2) {
-      await sock.sendMessage(groupId, {
+      await sock.sendMessage(duel.groupId, {
         text: `⬩Ｍ Ｕ Ｇ Ｅ Ｎ⬩ ${activeTag} accumulated 2 Turn Strikes (AFK)! AUTO-FORFEIT!\n\n🏆 WINNER: ${inactiveTag}!`,
         mentions: [activePlayer.jid, inactivePlayerJid]
       });
-      await addDuelWinAndCheckRank(inactivePlayerJid, groupId, sock);
+      await addDuelWinAndCheckRank(inactivePlayerJid, duel.groupId, sock);
       this.clearDuelTimers(duel);
-      this.activeDuels.delete(groupId);
+      this.activeDuels.delete(duelId);
     } else {
-      await sock.sendMessage(groupId, {
+      await sock.sendMessage(duel.groupId, {
         text: `⬩Ｍ Ｕ Ｇ Ｅ Ｎ⬩ ${activeTag} ran out of time! Strike 1! Turn Skipped.`,
         mentions: [activePlayer.jid]
       });
       duel.currentTurnJid = inactivePlayerJid;
-      this.startTurnTimer(groupId, sock);
-      await this.broadcastCombatState(groupId, sock, 'Turn skipped due to timeout!');
+      this.startTurnTimer(duelId, sock);
+      await this.broadcastCombatState(duelId, sock, 'Turn skipped due to timeout!');
     }
   }
 
   public async executeMove(groupId: string, userJid: string, moveId: string, sock: WASocket): Promise<void> {
-    const duel = this.activeDuels.get(groupId);
+    const duel = this.getActiveDuelForUser(userJid);
     if (!duel || duel.phase !== 'COMBAT') return;
 
     const currentTurnTag = `@${duel.currentTurnJid.split('@')[0]}`;
 
     if (duel.currentTurnJid !== userJid) {
       await sock.sendMessage(groupId, {
-        text: `⬩Ｍ Ｕ Ｇ Ｅ Ｎ⬩ It is not your turn! Current turn: ${currentTurnTag}`,
+        text: `⬩Ｍ Ｕ Ｇ Ｅ N⬩ It is not your turn! Current turn: ${currentTurnTag}`,
         mentions: [duel.currentTurnJid]
       });
       return;
@@ -489,22 +494,22 @@ class DuelManager {
       });
       await addDuelWinAndCheckRank(attacker.jid, groupId, sock);
       this.clearDuelTimers(duel);
-      this.activeDuels.delete(groupId);
+      this.activeDuels.delete(duel.duelId);
       return;
     }
 
     duel.currentTurnJid = defender.jid;
-    this.startTurnTimer(groupId, sock);
+    this.startTurnTimer(duel.duelId, sock);
 
     await this.broadcastCombatState(
-      groupId,
+      duel.duelId,
       sock,
       `${attackerTag} used *${selectedMove.name}* dealing ${rawDamage} DMG!`
     );
   }
 
-  private async handleMatchTimeExpired(groupId: string, sock: WASocket): Promise<void> {
-    const duel = this.activeDuels.get(groupId);
+  private async handleMatchTimeExpired(duelId: string, sock: WASocket): Promise<void> {
+    const duel = this.activeDuels.get(duelId);
     if (!duel || duel.phase !== 'COMBAT') return;
 
     this.clearDuelTimers(duel);
@@ -528,20 +533,20 @@ class DuelManager {
       announcement = `3-MINUTE MATCH TIMER EXPIRED!\n\n IT IS A DRAW! Both players ended with identical stats (${scoreA}).`;
     }
 
-    await sock.sendMessage(groupId, {
+    await sock.sendMessage(duel.groupId, {
       text: `⬩Ｍ Ｕ Ｇ Ｅ Ｎ     Ｔ Ｉ Ｍ Ｅ⬩\n\n${announcement}`,
       mentions: [duel.playerA.jid, duel.playerB.jid]
     });
 
     if (winnerJid) {
-      await addDuelWinAndCheckRank(winnerJid, groupId, sock);
+      await addDuelWinAndCheckRank(winnerJid, duel.groupId, sock);
     }
 
-    this.activeDuels.delete(groupId);
+    this.activeDuels.delete(duelId);
   }
 
-  private async broadcastCombatState(groupId: string, sock: WASocket, actionText: string): Promise<void> {
-    const duel = this.activeDuels.get(groupId);
+  private async broadcastCombatState(duelId: string, sock: WASocket, actionText: string): Promise<void> {
+    const duel = this.activeDuels.get(duelId);
     if (!duel) return;
 
     const tagA = `@${duel.playerA.jid.split('@')[0]}`;
@@ -564,12 +569,4 @@ ${actionText}
 
 👉 CURRENT TURN: ${tagCurrent} (30s)`;
 
-    await sock.sendMessage(groupId, {
-      text: display,
-      mentions: [duel.playerA.jid, duel.playerB.jid, duel.currentTurnJid]
-    });
-  }
-
-  private clearDuelTimers(duel: ActiveDuel): void {
-    if (duel.phaseTimer) clearTimeout(duel.phaseTimer);
-    if (duel.turnTimer) clearTimeout(duel.turnTimer)
+    
