@@ -15,7 +15,6 @@ import fs from 'fs';
 import path from 'path';
 import pino from 'pino';
 import { checkAndProcessElections } from './services/electionScheduler';
-import { processUserMessageAndRank } from './services/rankService';
 
 export interface CommandContext {
   sock: WASocket;
@@ -137,7 +136,7 @@ async function startBot() {
     const from = isGroup ? rawFrom.split('@')[0].split(':')[0] + '@g.us' : rawFrom;
 
     if (sender) {
-  await processUserMessageAndRank(sender, from, sock, msg, pushName);
+      await User.getOrCreate(sender, pushName);
     }
 
     const messageContent = 
