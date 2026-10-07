@@ -349,7 +349,7 @@ class DuelManager {
       (playerState.leftWingDefense?.shieldValue || 0) + (playerState.rightWingDefense?.shieldValue || 0);
 
     await sock.sendMessage(groupId, {
-      text: `⬩Ｍ Ｕ Ｇ Ｅ Ｎ⬩ ${userTag} equipped ${matchedMove.name} for Wing ${wing}! (+${calculatedShield} Shield)`,
+      text: `⬩Ｍ Ｕ Ｇ Ｅ Ｎ     Ｋ Ｉ Ｋ Ａ Ｉ⬩\n\n${userTag} equipped ${matchedMove.name} for Wing ${wing}! (+${calculatedShield} Shield)`,
       mentions: [userJid]
     });
   }
@@ -457,7 +457,7 @@ class DuelManager {
     const bxpCost = selectedMove.bxp_cost || 3;
     if (attacker.bxp < bxpCost) {
       await sock.sendMessage(groupId, {
-        text: `⬩Ｍ Ｕ Ｇ Ｅ Ｎ⬩ Insufficient Battle XP! Move requires ${bxpCost} BXP, but you only have ${attacker.bxp} BXP.`
+        text: `⬩Ｍ Ｕ Ｇ Ｅ Ｎ     Ｋ Ｉ Ｋ Ａ Ｉ⬩\n\nInsufficient Battle XP! Move requires ${bxpCost} BXP, but you only have ${attacker.bxp} BXP.`
       });
       return;
     }
@@ -489,7 +489,7 @@ class DuelManager {
     if (defender.hp <= 0) {
       defender.hp = 0;
       await sock.sendMessage(groupId, {
-        text: `⬩Ｍ Ｕ Ｇ Ｅ Ｎ     Ｋ Ｏ⬩\n\n${attackerTag} USED ${selectedMove.name} FOR ${rawDamage} DAMAGE AND LANDED A ONE-SHOT FINISHER!\n\n🏆 WINNER: ${attackerTag}!`,
+        text: `⬩Ｍ Ｕ Ｇ Ｅ Ｎ     Ｋ Ｉ Ｋ Ａ Ｉ⬩\n\n${attackerTag} USED ${selectedMove.name} FOR ${rawDamage} DAMAGE AND LANDED A ONE-SHOT FINISHER!\n\n🏆 WINNER: ${attackerTag}!`,
         mentions: [attacker.jid, defender.jid]
       });
       await addDuelWinAndCheckRank(attacker.jid, groupId, sock);
@@ -534,7 +534,7 @@ class DuelManager {
     }
 
     await sock.sendMessage(duel.groupId, {
-      text: `⬩Ｍ Ｕ Ｇ Ｅ Ｎ     Ｔ Ｉ Ｍ Ｅ⬩\n\n${announcement}`,
+      text: `⬩Ｍ Ｕ Ｇ Ｅ Ｎ     Ｋ Ｉ Ｋ Ａ Ｉ⬩\n\n${announcement}`,
       mentions: [duel.playerA.jid, duel.playerB.jid]
     });
 
