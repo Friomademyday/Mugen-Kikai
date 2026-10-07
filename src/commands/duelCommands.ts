@@ -8,13 +8,13 @@ export const duelCommands = [
     execute: async (ctx: CommandContext) => {
       const mentionedJids = ctx.msg.message?.extendedTextMessage?.contextInfo?.mentionedJid || [];
       if (mentionedJids.length === 0) {
-        await ctx.sock.sendMessage(ctx.from, { text: '⬩Ｍ Ｕ Ｇ Ｅ Ｎ⬩ Tag a user to duel! Example: duel @user' }, { quoted: ctx.msg });
+        await ctx.sock.sendMessage(ctx.from, { text: '⬩Ｍ Ｕ Ｇ Ｅ Ｎ     Ｋ Ｉ Ｋ Ａ Ｉ⬩\n\nTag a user to duel! Example: duel @user' }, { quoted: ctx.msg });
         return;
       }
 
       const targetJid = mentionedJids[0];
       if (targetJid === ctx.sender) {
-        await ctx.sock.sendMessage(ctx.from, { text: '⬩Ｍ Ｕ Ｇ Ｅ Ｎ⬩ You cannot challenge yourself!' }, { quoted: ctx.msg });
+        await ctx.sock.sendMessage(ctx.from, { text: '⬩Ｍ Ｕ Ｇ Ｅ Ｎ     Ｋ Ｉ Ｋ Ａ Ｉ⬩\n\nYou cannot challenge yourself!' }, { quoted: ctx.msg });
         return;
       }
 
