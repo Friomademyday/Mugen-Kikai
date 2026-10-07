@@ -90,9 +90,9 @@ export const rankCommands = [
         const englishTitle = tier ? tier.name : 'Beginner';
 
         caption += `*▬▬▬▬▬▬▬ ⬩ ${japaneseTitle}*\n`;
-        caption += `❏ NAME: ${displayName}\n`;
-        caption += `❏ COMBAT XP: ${xpVal} (${wins} Wins)\n`;
-        caption += `❏ RANK: ${englishTitle}\n\n`;
+        caption += `❏ \`NAME:\` ${displayName}\n`;
+        caption += `❏ \`COMBAT XP:\`  ${xpVal} (${wins} Wins)\n`;
+        caption += `❏ \`RANK:\` ${englishTitle}\n\n`;
       }
 
       caption += `*────────────────────*\n`;
