@@ -1,5 +1,10 @@
 import { Schema, model, Document, Model } from 'mongoose';
 
+export interface IUserInventoryItem {
+  character_id: string;
+  level: number;
+}
+
 export interface IUser extends Document {
   jid: string;
   pushName?: string;
@@ -13,6 +18,7 @@ export interface IUser extends Document {
   wallet: number;
   bank: number;
   lastDaily: Date | null;
+  inventory: IUserInventoryItem[];
   custom01: any;
   custom02: any;
   custom03: any;
@@ -59,6 +65,12 @@ const UserSchema = new Schema<IUser, IUserModel>(
     wallet: { type: Number, default: 1000 },
     bank: { type: Number, default: 0 },
     lastDaily: { type: Date, default: null },
+    inventory: [
+      {
+        character_id: { type: String, required: true },
+        level: { type: Number, default: 1, min: 1, max: 5 }
+      }
+    ],
     custom01: { type: Schema.Types.Mixed, default: null },
     custom02: { type: Schema.Types.Mixed, default: null },
     custom03: { type: Schema.Types.Mixed, default: null },
@@ -86,7 +98,7 @@ const UserSchema = new Schema<IUser, IUserModel>(
 UserSchema.statics.getOrCreate = async function (jid: string, pushName?: string) {
   let user = await this.findOne({ jid });
   if (!user) {
-    user = await this.create({ jid, pushName: pushName || 'Anonymous Titan' });
+    user = await this.create({ jid, pushName: pushName || 'Anonymous Titan', inventory: [] });
   } else if (pushName && user.pushName !== pushName) {
     user.pushName = pushName;
     await user.save();
