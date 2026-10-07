@@ -9,6 +9,7 @@ import { leaderboardCommands } from './leaderboard';
 import { electionCommands } from './election';
 import { politicsCommands } from './politics';
 import { rankCommands } from './rank';
+import { duelCommands } from './duel';
 
 export const commands = new Map<string, Command>();
 
