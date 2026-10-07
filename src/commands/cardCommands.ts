@@ -10,20 +10,20 @@ export const cardCommands = [
     execute: async (ctx: CommandContext) => {
       const input = ctx.args.join('').replace(/^card-/i, '').replace(/^card/i, '').trim().toLowerCase();
       if (!input) {
-        await ctx.sock.sendMessage(ctx.from, { text: '⬩Ｍ Ｕ Ｇ Ｅ Ｎ⬩ Specify a card ID to buy! Example: buy-luffy' }, { quoted: ctx.msg });
+        await ctx.sock.sendMessage(ctx.from, { text: '⬩Ｍ Ｕ Ｇ Ｅ Ｎ     Ｋ Ｉ Ｋ Ａ Ｉ⬩\n\n Specify a card ID to buy! Example: buy-luffy' }, { quoted: ctx.msg });
         return;
       }
 
       const card = cardLoader.getCard(input);
       if (!card) {
-        await ctx.sock.sendMessage(ctx.from, { text: `⬩Ｍ Ｕ Ｇ Ｅ Ｎ⬩ Card "${input}" does not exist!` }, { quoted: ctx.msg });
+        await ctx.sock.sendMessage(ctx.from, { text: `⬩Ｍ Ｕ Ｇ Ｅ Ｎ     Ｋ Ｉ Ｋ Ａ Ｉ⬩\n\nCard "${input}" does not exist!` }, { quoted: ctx.msg });
         return;
       }
 
       const user = await User.getOrCreate(ctx.sender);
       const existing = user.inventory.find((i) => i.character_id.toLowerCase() === card.character_id.toLowerCase());
       if (existing) {
-        await ctx.sock.sendMessage(ctx.from, { text: `⬩Ｍ Ｕ Ｇ Ｅ Ｎ⬩ You already own ${card.name}!` }, { quoted: ctx.msg });
+        await ctx.sock.sendMessage(ctx.from, { text: `⬩Ｍ Ｕ Ｇ Ｅ Ｎ     Ｋ Ｉ Ｋ Ａ Ｉ⬩\n\nYou already own ${card.name}!` }, { quoted: ctx.msg });
         return;
       }
 
@@ -31,7 +31,7 @@ export const cardCommands = [
       if (user.wallet < cost) {
         await ctx.sock.sendMessage(
           ctx.from,
-          { text: `⬩Ｍ Ｕ Ｇ Ｅ Ｎ⬩ Insufficient funds! ${card.name} costs 🪙${cost.toLocaleString()}, but your wallet has 🪙${user.wallet.toLocaleString()}` },
+          { text: `⬩Ｍ Ｕ Ｇ Ｅ Ｎ     Ｋ Ｉ Ｋ Ａ Ｉ⬩\n\nInsufficient funds! ${card.name} costs 🪙${cost.toLocaleString()}, but your wallet has 🪙${user.wallet.toLocaleString()}` },
           { quoted: ctx.msg }
         );
         return;
@@ -43,9 +43,9 @@ export const cardCommands = [
 
       const imagePath = cardLoader.getCardImagePath(card.character_id, 1);
       const captionText =
-`⬩Ｍ Ｕ Ｇ Ｅ Ｎ     Ｓ Ｈ Ｏ Ｐ⬩
+`⬩Ｍ Ｕ Ｇ Ｅ Ｎ     Ｋ Ｉ Ｋ Ａ Ｉ⬩
 
-SUCCESSFULLY PURCHASED CARD!
+> SUCCESSFULLY PURCHASED CARD!
 CARD: ${card.name}
 TYPE: ${card.character_type.toUpperCase()}
 RARITY: ${card.rarity}
@@ -68,11 +68,11 @@ REMAINING WALLET: 🪙${user.wallet.toLocaleString()}`;
     execute: async (ctx: CommandContext) => {
       const user = await User.getOrCreate(ctx.sender);
       if (!user.inventory || user.inventory.length === 0) {
-        await ctx.sock.sendMessage(ctx.from, { text: '⬩Ｍ Ｕ Ｇ Ｅ Ｎ⬩ You do not own any cards yet! Use buy-<card_id> to start.' }, { quoted: ctx.msg });
+        await ctx.sock.sendMessage(ctx.from, { text: '⬩Ｍ Ｕ Ｇ Ｅ Ｎ     Ｋ Ｉ Ｋ Ａ Ｉ⬩\n\nYou do not own any cards yet! Use buy-<card_id> to start.' }, { quoted: ctx.msg });
         return;
       }
 
-      let caption = `⬩Ｍ Ｕ Ｇ Ｅ Ｎ     Ｃ Ａ Ｒ Ｄ Ｓ⬩\n\n`;
+      let caption = `⬩Ｍ Ｕ Ｇ Ｅ Ｎ     Ｋ Ｉ Ｋ Ａ Ｉ⬩\n\n`;
       caption += `@${ctx.sender.split('@')[0]}'s COLLECTION (${user.inventory.length} Cards)\n\n`;
 
       for (let i = 0; i < user.inventory.length; i++) {
@@ -96,13 +96,13 @@ REMAINING WALLET: 🪙${user.wallet.toLocaleString()}`;
     execute: async (ctx: CommandContext) => {
       const input = ctx.args.join('').replace(/^card-/i, '').replace(/^card/i, '').trim().toLowerCase();
       if (!input) {
-        await ctx.sock.sendMessage(ctx.from, { text: '⬩Ｍ Ｕ Ｇ Ｅ Ｎ⬩ Specify a card ID! Example: card-luffy' }, { quoted: ctx.msg });
+        await ctx.sock.sendMessage(ctx.from, { text: '⬩Ｍ Ｕ Ｇ Ｅ Ｎ     Ｋ Ｉ Ｋ Ａ Ｉ⬩\n\nSpecify a card ID! Example: card-luffy' }, { quoted: ctx.msg });
         return;
       }
 
       const card = cardLoader.getCard(input);
       if (!card) {
-        await ctx.sock.sendMessage(ctx.from, { text: `⬩Ｍ Ｕ Ｇ Ｅ Ｎ⬩ Card "${input}" not found!` }, { quoted: ctx.msg });
+        await ctx.sock.sendMessage(ctx.from, { text: `⬩Ｍ Ｕ Ｇ Ｅ Ｎ     Ｋ Ｉ Ｋ Ａ Ｉ⬩\n\nCard "${input}" not found!` }, { quoted: ctx.msg });
         return;
       }
 
@@ -110,7 +110,7 @@ REMAINING WALLET: 🪙${user.wallet.toLocaleString()}`;
       const invItem = user.inventory.find((i) => i.character_id.toLowerCase() === card.character_id.toLowerCase());
       const userLevel = invItem ? invItem.level : 1;
 
-      let text = `⬩Ｍ Ｕ Ｇ Ｅ Ｎ     Ｉ Ｎ Ｓ Ｐ Ｅ Ｃ Ｔ⬩\n\n`;
+      let text = `⬩Ｍ Ｕ Ｇ Ｅ Ｎ     Ｋ Ｉ Ｋ Ａ Ｉ⬩\n\n`;
       text += `CARD: ${card.name}\n`;
       text += `TYPE: ${card.character_type.toUpperCase()}\n`;
       text += `RARITY: ${card.rarity}\n`;
@@ -138,25 +138,25 @@ REMAINING WALLET: 🪙${user.wallet.toLocaleString()}`;
     execute: async (ctx: CommandContext) => {
       const input = ctx.args.join('').replace(/^upg-/i, '').replace(/^upg/i, '').trim().toLowerCase();
       if (!input) {
-        await ctx.sock.sendMessage(ctx.from, { text: '⬩Ｍ Ｕ Ｇ Ｅ Ｎ⬩ Specify a card ID to upgrade! Example: upg-luffy' }, { quoted: ctx.msg });
+        await ctx.sock.sendMessage(ctx.from, { text: '⬩Ｍ Ｕ Ｇ Ｅ Ｎ     Ｋ Ｉ Ｋ Ａ Ｉ⬩\n\nSpecify a card ID to upgrade! Example: upg-luffy' }, { quoted: ctx.msg });
         return;
       }
 
       const card = cardLoader.getCard(input);
       if (!card) {
-        await ctx.sock.sendMessage(ctx.from, { text: `⬩Ｍ Ｕ Ｇ Ｅ Ｎ⬩ Card "${input}" does not exist!` }, { quoted: ctx.msg });
+        await ctx.sock.sendMessage(ctx.from, { text: `⬩Ｍ Ｕ Ｇ Ｅ Ｎ     Ｋ Ｉ Ｋ Ａ Ｉ⬩\n\nCard "${input}" does not exist!` }, { quoted: ctx.msg });
         return;
       }
 
       const user = await User.getOrCreate(ctx.sender);
       const invItem = user.inventory.find((i) => i.character_id.toLowerCase() === card.character_id.toLowerCase());
       if (!invItem) {
-        await ctx.sock.sendMessage(ctx.from, { text: `⬩Ｍ Ｕ Ｇ Ｅ Ｎ⬩ You do not own ${card.name}!` }, { quoted: ctx.msg });
+        await ctx.sock.sendMessage(ctx.from, { text: `⬩Ｍ Ｕ Ｇ Ｅ Ｎ     Ｋ Ｉ Ｋ Ａ Ｉ⬩\n\nYou do not own ${card.name}!` }, { quoted: ctx.msg });
         return;
       }
 
       if (invItem.level >= card.max_level) {
-        await ctx.sock.sendMessage(ctx.from, { text: `⬩Ｍ Ｕ Ｇ Ｅ Ｎ⬩ ${card.name} is already at MAX level (${card.max_level})!` }, { quoted: ctx.msg });
+        await ctx.sock.sendMessage(ctx.from, { text: `⬩Ｍ Ｕ Ｇ Ｅ Ｎ     Ｋ Ｉ Ｋ Ａ Ｉ⬩\n\n*${card.name}* is already at MAX level (${card.max_level})!` }, { quoted: ctx.msg });
         return;
       }
 
@@ -166,7 +166,7 @@ REMAINING WALLET: 🪙${user.wallet.toLocaleString()}`;
       if (user.wallet < cost) {
         await ctx.sock.sendMessage(
           ctx.from,
-          { text: `⬩Ｍ Ｕ Ｇ Ｅ Ｎ⬩ Insufficient funds! Upgrading to Level ${targetLevel} costs 🪙${cost.toLocaleString()}, but your wallet has 🪙${user.wallet.toLocaleString()}` },
+          { text: `⬩Ｍ Ｕ Ｇ Ｅ Ｎ     Ｋ Ｉ Ｋ Ａ Ｉ⬩\n\nInsufficient funds! Upgrading to Level ${targetLevel} costs 🪙${cost.toLocaleString()}, but your wallet has 🪙${user.wallet.toLocaleString()}` },
           { quoted: ctx.msg }
         );
         return;
@@ -178,9 +178,9 @@ REMAINING WALLET: 🪙${user.wallet.toLocaleString()}`;
 
       const imagePath = cardLoader.getCardImagePath(card.character_id, targetLevel);
       const captionText =
-`⬩Ｍ Ｕ Ｇ Ｅ N     Ｕ Ｐ Ｇ Ｒ Ａ Ｄ Ｅ⬩
+`⬩Ｍ Ｕ Ｇ Ｅ Ｎ     Ｋ Ｉ Ｋ Ａ Ｉ⬩
 
-SUCCESSFULLY UPGRADED CARD!
+> SUCCESSFULLY UPGRADED CARD!
 CARD: ${card.name}
 NEW LEVEL: ${targetLevel}/${card.max_level}
 UPGRADE COST: 🪙${cost.toLocaleString()}
