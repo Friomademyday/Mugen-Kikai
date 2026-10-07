@@ -26,6 +26,7 @@ export const rankCommands = [
 `⬩Ｍ Ｕ Ｇ Ｅ Ｎ     Ｋ Ｉ Ｋ Ａ Ｉ⬩
 ⬩╭────────────╮ 
 ⬩                                ╰──────╯⬩
+
 ⬩ 𝑹𝑨𝑵𝑲:
 
 ▬ ⬩ @${ctx.sender.split('@')[0]}
@@ -33,7 +34,7 @@ export const rankCommands = [
 ▬ ⬩ ${totalWins.toLocaleString()} DUEL WINS
 ▬ ⬩ ${currentRankName}
 
-Next Rank ⬩ ${nextRankInfo}`;
+> Next Rank ⬩ ${nextRankInfo}`;
 
       const rankTierId = currentTier ? currentTier.id : 1;
       const imagePath = path.join(process.cwd(), 'assets', `rank${rankTierId}.jpg`);
