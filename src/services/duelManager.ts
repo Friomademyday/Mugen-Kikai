@@ -65,7 +65,7 @@ class DuelManager {
   ): Promise<boolean> {
     if (this.isUserInDuel(challengerJid) || this.isUserInDuel(challengedJid)) {
       await sock.sendMessage(groupId, { 
-        text: '⬩Ｍ Ｕ Ｇ Ｅ Ｎ⬩ One of the participants is already engaged in an active duel!' 
+        text: '⬩Ｍ Ｕ Ｇ Ｅ Ｎ     Ｋ Ｉ Ｋ Ａ Ｉ⬩\n\nOne of the participants is already engaged in an active duel!' 
       });
       return false;
     }
@@ -85,7 +85,7 @@ class DuelManager {
 
     if (!hasOffenseA || !hasOffenseB) {
       await sock.sendMessage(groupId, {
-        text: '⬩Ｍ Ｕ Ｇ Ｅ Ｎ⬩ Both players must own at least 1 Offense card to participate in a duel!'
+        text: '⬩Ｍ Ｕ Ｇ Ｅ Ｎ     Ｋ Ｉ Ｋ Ａ Ｉ⬩\n\nBoth players must own at least 1 Offense card to participate in a duel!'
       });
       return false;
     }
@@ -133,7 +133,7 @@ class DuelManager {
     const challengedTag = `@${challengedJid.split('@')[0]}`;
 
     await sock.sendMessage(groupId, {
-      text: `⬩Ｍ Ｕ Ｇ Ｅ Ｎ     Ｄ Ｕ Ｅ Ｌ⬩\n\n${challengerTag} (${duelState.playerA.pushName}) HAS CHALLENGED ${challengedTag} (${duelState.playerB.pushName}) TO A CARD DUEL!\n\nType "accept" within 15 seconds to enter battle!`,
+      text: `⬩Ｍ Ｕ Ｇ Ｅ Ｎ     Ｋ Ｉ Ｋ Ａ Ｉ⬩\n\n${challengerTag} (${duelState.playerA.pushName}) HAS CHALLENGED ${challengedTag} (${duelState.playerB.pushName}) TO A CARD DUEL!\n\nType "accept" within 15 seconds to enter battle!`,
       mentions: [challengerJid, challengedJid]
     });
 
@@ -147,7 +147,7 @@ class DuelManager {
       this.activeDuels.delete(duelId);
       const challengedTag = `@${duel.challengedJid.split('@')[0]}`;
       await sock.sendMessage(duel.groupId, {
-        text: `⬩Ｍ Ｕ Ｇ Ｅ Ｎ⬩ Challenge expired! ${challengedTag} failed to accept in time. Duel canceled.`,
+        text: `⬩Ｍ Ｕ Ｇ Ｅ Ｎ     Ｋ Ｉ Ｋ Ａ Ｉ⬩\n\nChallenge expired! ${challengedTag} failed to accept in time. Duel canceled.`,
         mentions: [duel.challengedJid]
       });
     }
@@ -167,7 +167,7 @@ class DuelManager {
     }, 30000);
 
     await sock.sendMessage(groupId, {
-      text: `⬩Ｍ Ｕ Ｇ Ｅ Ｎ     Ｄ Ｕ Ｅ Ｌ⬩\n\nCHALLENGE ACCEPTED!\n\nSTAGE 2: OFFENSE DECK SELECTION (30s)\nBoth players must select up to 2 Offense cards from their inventory.\n\nCommands:\n- off1-<card_id>\n- off2-<card_id>\nExample: off1-revy\n\nNote: Failure to select at least 1 Offense card within 30s will result in immediate forfeit!`,
+      text: `⬩Ｍ Ｕ Ｇ Ｅ Ｎ     Ｋ Ｉ Ｋ Ａ Ｉ⬩\n\nCHALLENGE ACCEPTED!\n\nSTAGE 2: OFFENSE DECK SELECTION (30s)\nBoth players must select up to 2 Offense cards from their inventory.\n\nCommands:\n- off1-<card_id>\n- off2-<card_id>\nExample: off1-revy\n\nNote: Failure to select at least 1 Offense card within 30s will result in immediate forfeit!`,
       mentions: [duel.challengerJid, duel.challengedJid]
     });
   }
@@ -193,7 +193,7 @@ class DuelManager {
     const invItem = user.inventory.find((i) => i.character_id.toLowerCase() === characterId.toLowerCase());
     if (!invItem) {
       await sock.sendMessage(groupId, {
-        text: `⬩Ｍ Ｕ Ｇ Ｅ Ｎ⬩ ${userTag}, you do not own the card "${characterId}"!`,
+        text: `⬩Ｍ Ｕ Ｇ Ｅ Ｎ     Ｋ Ｉ Ｋ Ａ Ｉ⬩\n\n${userTag}, you do not own the card "${characterId}"!`,
         mentions: [userJid]
       });
       return;
@@ -202,7 +202,7 @@ class DuelManager {
     const card = cardLoader.getCard(characterId);
     if (!card || card.character_type !== 'offense') {
       await sock.sendMessage(groupId, {
-        text: `⬩Ｍ Ｕ Ｇ Ｅ Ｎ⬩ ${userTag}, "${characterId}" is not a valid Offense card!`,
+        text: `⬩Ｍ Ｕ Ｇ Ｅ Ｎ     Ｋ Ｉ Ｋ Ａ Ｉ⬩\n\n${userTag}, "${characterId}" is not a valid Offense card!`,
         mentions: [userJid]
       });
       return;
@@ -215,7 +215,7 @@ class DuelManager {
     }
 
     await sock.sendMessage(groupId, {
-      text: `⬩Ｍ Ｕ Ｇ Ｅ Ｎ⬩ ${userTag} locked in ${card.name} (Lvl ${invItem.level}) for Offense Slot ${slot}!`,
+      text: `⬩Ｍ Ｕ Ｇ Ｅ Ｎ     Ｋ Ｉ Ｋ Ａ Ｉ⬩\n\n${userTag} locked in ${card.name} (Lvl ${invItem.level}) for Offense Slot ${slot}!`,
       mentions: [userJid]
     });
 
@@ -235,7 +235,7 @@ class DuelManager {
     const challengedTag = `@${duel.challengedJid.split('@')[0]}`;
 
     if (!playerAHas && !playerBHas) {
-      await sock.sendMessage(duel.groupId, { text: '⬩Ｍ Ｕ Ｇ Ｅ Ｎ⬩ Neither player selected an Offense card! Duel forfeited.' });
+      await sock.sendMessage(duel.groupId, { text: '⬩Ｍ Ｕ Ｇ Ｅ Ｎ     Ｋ Ｉ Ｋ Ａ Ｉ⬩\n\nNeither player selected an Offense card! Duel forfeited.' });
       this.clearDuelTimers(duel);
       this.activeDuels.delete(duelId);
     } else if (!playerAHas) {
@@ -248,7 +248,7 @@ class DuelManager {
       this.activeDuels.delete(duelId);
     } else if (!playerBHas) {
       await sock.sendMessage(duel.groupId, {
-        text: `⬩Ｍ Ｕ Ｇ Ｅ Ｎ⬩ ${challengedTag} failed to select an Offense card! ${challengerTag} WINS BY FORFEIT!`,
+        text: `⬩Ｍ Ｕ Ｇ Ｅ Ｎ     Ｋ Ｉ Ｋ Ａ Ｉ⬩\n\n${challengedTag} failed to select an Offense card! ${challengerTag} WINS BY FORFEIT!`,
         mentions: [duel.challengerJid, duel.challengedJid]
       });
       await addDuelWinAndCheckRank(duel.challengerJid, duel.groupId, sock);
@@ -271,7 +271,7 @@ class DuelManager {
     }, 30000);
 
     await sock.sendMessage(duel.groupId, {
-      text: `⬩Ｍ Ｕ Ｇ Ｅ Ｎ     Ｄ Ｕ Ｅ Ｌ⬩\n\nSTAGE 3: DUAL-WING DEFENSE PREP (30s)\nEquip defense moves to build your starting shield using owned Defense cards!\n\nCommands:\n- def1-<move_id>\n- def2-<move_id>\nExample: def1-infinity\n\nNote: Duplicate defense moves across wings are blocked. If skipped, starting shield defaults to 0.`
+      text: `⬩Ｍ Ｕ Ｇ Ｅ Ｎ     Ｋ Ｉ Ｋ Ａ Ｉ⬩\n\nSTAGE 3: DUAL-WING DEFENSE PREP (30s)\nEquip defense moves to build your starting shield using owned Defense cards!\n\nCommands:\n- def1-<move_id>\n- def2-<move_id>\nExample: def1-infinity\n\nNote: Duplicate defense moves across wings are blocked. If skipped, starting shield defaults to 0.`
     });
   }
 
@@ -312,18 +312,18 @@ class DuelManager {
 
     if (!matchedCard || !matchedMove) {
       await sock.sendMessage(groupId, {
-        text: `⬩Ｍ Ｕ Ｇ Ｅ Ｎ⬩ ${userTag}, move "${moveId}" was not found among your owned Defense cards!`,
+        text: `⬩Ｍ Ｕ Ｇ Ｅ Ｎ     Ｋ Ｉ Ｋ Ａ Ｉ⬩\n\n${userTag}, move "${moveId}" was not found among your owned Defense cards!`,
         mentions: [userJid]
       });
       return;
     }
 
     if (wing === 1 && playerState.rightWingDefense?.move.move_id === matchedMove.move_id) {
-      await sock.sendMessage(groupId, { text: `⬩Ｍ Ｕ Ｇ Ｅ Ｎ⬩ Duplicate defense moves are not allowed across wings!` });
+      await sock.sendMessage(groupId, { text: `⬩Ｍ Ｕ Ｇ Ｅ Ｎ     Ｋ Ｉ Ｋ Ａ Ｉ⬩\n\nDuplicate defense moves are not allowed across wings!` });
       return;
     }
     if (wing === 2 && playerState.leftWingDefense?.move.move_id === matchedMove.move_id) {
-      await sock.sendMessage(groupId, { text: `⬩Ｍ Ｕ Ｇ Ｅ Ｎ⬩ Duplicate defense moves are not allowed across wings!` });
+      await sock.sendMessage(groupId, { text: `⬩Ｍ Ｕ Ｇ Ｅ Ｎ     Ｋ Ｉ Ｋ Ａ Ｉ⬩\n\nDuplicate defense moves are not allowed across wings!` });
       return;
     }
 
@@ -373,7 +373,7 @@ class DuelManager {
 
     this.startTurnTimer(duelId, sock);
 
-    await this.broadcastCombatState(duelId, sock, 'STAGE 4: COMBAT PHASE STARTED!\nChallenged player goes first!');
+    await this.broadcastCombatState(duelId, sock, '⬩Ｍ Ｕ Ｇ Ｅ Ｎ     Ｋ Ｉ Ｋ Ａ Ｉ⬩\n\nSTAGE 4: COMBAT PHASE STARTED!\nChallenged player goes first!');
   }
 
   private startTurnTimer(duelId: string, sock: WASocket): void {
@@ -401,7 +401,7 @@ class DuelManager {
 
     if (activePlayer.strikes >= 2) {
       await sock.sendMessage(duel.groupId, {
-        text: `⬩Ｍ Ｕ Ｇ Ｅ Ｎ⬩ ${activeTag} accumulated 2 Turn Strikes (AFK)! AUTO-FORFEIT!\n\n🏆 WINNER: ${inactiveTag}!`,
+        text: `⬩Ｍ Ｕ Ｇ Ｅ Ｎ     Ｋ Ｉ Ｋ Ａ Ｉ⬩\n\n${activeTag} accumulated 2 Turn Strikes (AFK)! AUTO-FORFEIT!\n\n🏆 WINNER: ${inactiveTag}!`,
         mentions: [activePlayer.jid, inactivePlayerJid]
       });
       await addDuelWinAndCheckRank(inactivePlayerJid, duel.groupId, sock);
@@ -409,7 +409,7 @@ class DuelManager {
       this.activeDuels.delete(duelId);
     } else {
       await sock.sendMessage(duel.groupId, {
-        text: `⬩Ｍ Ｕ Ｇ Ｅ Ｎ⬩ ${activeTag} ran out of time! Strike 1! Turn Skipped.`,
+        text: `⬩Ｍ Ｕ Ｇ Ｅ Ｎ     Ｋ Ｉ Ｋ Ａ Ｉ⬩\n\n${activeTag} ran out of time! Strike 1! Turn Skipped.`,
         mentions: [activePlayer.jid]
       });
       duel.currentTurnJid = inactivePlayerJid;
@@ -426,7 +426,7 @@ class DuelManager {
 
     if (duel.currentTurnJid !== userJid) {
       await sock.sendMessage(groupId, {
-        text: `⬩Ｍ Ｕ Ｇ Ｅ N⬩ It is not your turn! Current turn: ${currentTurnTag}`,
+        text: `⬩Ｍ Ｕ Ｇ Ｅ Ｎ     Ｋ Ｉ Ｋ Ａ Ｉ⬩\n\nIt is not your turn! Current turn: ${currentTurnTag}`,
         mentions: [duel.currentTurnJid]
       });
       return;
@@ -449,7 +449,7 @@ class DuelManager {
 
     if (!selectedMove) {
       await sock.sendMessage(groupId, {
-        text: `⬩Ｍ Ｕ Ｇ Ｅ Ｎ⬩ Move "${moveId}" is not available in your active Offense cards!`
+        text: `⬩Ｍ Ｕ Ｇ Ｅ Ｎ     Ｋ Ｉ Ｋ Ａ Ｉ⬩\n\nMove "${moveId}" is not available in your active Offense cards!`
       });
       return;
     }
@@ -554,7 +554,7 @@ class DuelManager {
     const tagCurrent = `@${duel.currentTurnJid.split('@')[0]}`;
 
     const display =
-`⬩Ｍ Ｕ Ｇ Ｅ Ｎ     Ｄ Ｕ Ｅ Ｌ⬩
+`⬩Ｍ Ｕ Ｇ Ｅ Ｎ     Ｋ Ｉ Ｋ Ａ Ｉ⬩
 ${actionText}
 
 🔴 ${tagA} (${duel.playerA.pushName})
@@ -569,4 +569,18 @@ ${actionText}
 
 👉 CURRENT TURN: ${tagCurrent} (30s)`;
 
-    
+await sock.sendMessage(duel.groupId, {
+      text: display,
+      mentions: [duel.playerA.jid, duel.playerB.jid, duel.currentTurnJid]
+    });
+  }
+
+  private clearDuelTimers(duel: ActiveDuel): void {
+    if (duel.phaseTimer) clearTimeout(duel.phaseTimer);
+    if (duel.turnTimer) clearTimeout(duel.turnTimer);
+    if (duel.matchTimer) clearTimeout(duel.matchTimer);
+    if (duel.bxpInterval) clearInterval(duel.bxpInterval);
+  }
+}
+
+export const duelManager = new DuelManager();
