@@ -62,10 +62,30 @@ export const helpCommand: Command = {
 
 ⬩╭────────────╮ 
 ⬩                                ╰──────╯⬩
+▬▬▬▬▬▬▬▬▬ ⬩ 𝗗 𝗨 𝗘 𝗟
+❏ *duel* - Challenge a tagged user to a card duel
+❏ *accept* - Accept an active duel challenge
+❏ *off1* - Select offense card for slot 1
+❏ *off2* - Select offense card for slot 2
+❏ *def1* - Equip defense move to Left Wing
+❏ *def2* - Equip defense move to Right Wing
+
+
+⬩╭────────────╮ 
+⬩                                ╰──────╯⬩
+▬▬▬▬▬▬▬▬▬ ⬩ 𝗖 𝗔 𝗥 𝗗 𝗦
+❏ *buy* - Purchase a card from the shop
+❏ *mycards* - Display your owned card collection
+❏ *card* - Inspect detailed card statistics and moves
+❏ *upgrade* - Upgrade an owned card to next level
+
+
+⬩╭────────────╮ 
+⬩                                ╰──────╯⬩
 ▬▬▬▬▬▬▬▬▬ ⬩ 𝗨 𝗦 𝗘 𝗥
 ❏ *profile* - Fetch target operative details and bank account state
-❏ *rank* - Check your current rank and universal message progress with XP count, Japanese title, and next rank requirement.
-❏ *rankleaderboard* - Displays top 5 users with the highest message counts universally.
+❏ *rank* - Check your current rank (rank increases with battle wins.
+❏ *rankleaderboard* - Displays top 5 users with the highest battle points universally.
 
 
 ⬩╭────────────╮ 
