@@ -192,17 +192,19 @@ export const whatsNewCommand: Command = {
 ⬩                                ╰──────╯⬩
 
 𝑰𝒏𝒕𝒓𝒐𝒅𝒖𝒄𝒆𝒔:
-⬩     *Ｄ Ｅ Ｍ Ｏ Ｃ Ｒ Ａ Ｃ Ｙ*    ⬩
+⬩                  *Ｄ Ｕ Ｅ Ｌ*                  ⬩
 ⬩╭────────────╮ 
 ⬩                                ╰──────╯⬩
 
-This patch introduces a complete *political economy*. 
-The system now runs on a *timed election cycle* that moves from locked to registration to voting. Players can *purchase candidacy forms with in-game currency* with *limited slots per office*, campaign, and voters can fund votes directly from their wallet.
+This patch introduces a complete *card battle economy*. 
+A *timed 4-stage cycle* that moves from challenge to offense selection to defense prep to combat. Players can *purchase, collect, and upgrade cards* with *scaled power per level*, and use them to duel for rank.
+The ranking 1msg/XP system was cleared and XP was set to 0, 
+XP is now based on duel wins
 
-Once elected, a *full government hierarchy is activated with President, Vice President, Head of Security, and per-group Governors*. 
-The President now has executive powers to appoint and dismiss, and every office now controls its own state treasury with a reserve-lock security to prevent total drain. 
+Once accepted, a *full tactical combat is activated with HP, Shield, and Battle XP*. 
+The duel now has real consequences with strike-based forfeits, shield-first damage calculation, and a 3-minute match timer that decides winners by combined stats.
 
-> More details on "help`;
+> More details on "help"`;
 
     if (fs.existsSync(whatsNewImagePath)) {
       const imageBuffer = fs.readFileSync(whatsNewImagePath);
@@ -224,11 +226,11 @@ export const updatesCommand: Command = {
   aliases: ['version', 'changelog'],
   execute: async ({ sock, from }: CommandContext) => {
     const updateText = `⬩Ｍ Ｕ Ｇ Ｅ Ｎ     Ｋ Ｉ Ｋ Ａ Ｉ⬩
-> _2nd Generation (v.2)_
+> _3rd Generation (v.3)_
 
 This update focuses on stability, speed, and systems. Core commands were optimized for faster response time, economy balances were adjusted, and several bug fixes were pushed to prevent spam and command locks.
 
-New systems have been added to expand gameplay and interaction, with improved database handling and cleaner UI responses. More features and quality-of-life improvements are in testing and will ship in the next cycle.
+New systems have been added to expand gameplay and interaction, with improved database handling and cleaner UI responses. More features and quality of life improvements are in testing and will ship in the next cycle.
 
 > Use _wn_/_whatsnew_ to see what's new`;
 
