@@ -105,9 +105,11 @@ export const electionCommands: Command[] = [
       user.wallet -= price;
       await user.save();
 
+      const displayName = user.pushName || ctx.pushName || 'Anonymous';
+
       state.candidates.push({
         jid: ctx.sender,
-        pushName: ctx.pushName || 'Anonymous',
+        pushName: displayName,
         role,
         groupId: role === 'GOVERNOR' ? ctx.from : null,
         purchasedAt: new Date(),
@@ -118,8 +120,7 @@ export const electionCommands: Command[] = [
       await state.save();
 
       await ctx.sock.sendMessage(ctx.from, {
-        text: `⬩Ｍ Ｕ Ｇ Ｅ Ｎ     Ｋ Ｉ Ｋ Ａ Ｉ⬩\n⬩ 🗳️ 𝗙𝗢𝗥𝗠 𝗣𝗨𝗥𝗖𝗛𝗔𝗦𝗘𝗗\n\n🎉 Candidate: *@${ctx.sender.split('@')[0]}*\n📜 Role: *${role}*\n💰 Paid: *🪙${price.toLocaleString()}*`,
-        mentions: [ctx.sender]
+        text: `⬩Ｍ Ｕ Ｇ Ｅ Ｎ     Ｋ Ｉ Ｋ Ａ Ｉ⬩\n⬩ 🗳️ 𝗙𝗢𝗥𝗠 𝗣𝗨𝗥𝗖𝗛𝗔𝗦𝗘𝗗\n\n🎉 Candidate: *${displayName}*\n📜 Role: *${role}*\n💰 Paid: *🪙${price.toLocaleString()}*`
       }, { quoted: ctx.msg });
     }
   },
@@ -218,8 +219,7 @@ export const electionCommands: Command[] = [
       await state.save();
 
       await ctx.sock.sendMessage(ctx.from, {
-        text: `⬩Ｍ Ｕ Ｇ Ｅ Ｎ     Ｋ Ｉ Ｋ Ａ Ｉ⬩\n⬩ 🗳️ 𝗩𝗢𝗧𝗘 𝗖𝗔𝗦𝗧\n\n🎯 Candidate: *@${targetJid.split('@')[0]}*\n📥 Votes Added: *+${voteCount.toLocaleString()}*\n💰 Total Cost: *🪙${totalCost.toLocaleString()}*`,
-        mentions: [targetJid]
+        text: `⬩Ｍ Ｕ Ｇ Ｅ Ｎ     Ｋ Ｉ Ｋ Ａ Ｉ⬩\n⬩ 🗳️ 𝗩𝗢𝗧𝗘 𝗖𝗔𝗦𝗧\n\n🎯 Candidate: *${candidate.pushName}*\n📥 Votes Added: *+${voteCount.toLocaleString()}*\n💰 Total Cost: *🪙${totalCost.toLocaleString()}*`
       }, { quoted: ctx.msg });
     }
   }
