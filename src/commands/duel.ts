@@ -3,35 +3,34 @@ import { duelManager } from '../services/duelManager';
 
 export const duelCommands = [
 ‎{
-‎    name: 'duel',
-‎    description: 'Challenges a tagged user to a card duel',
-‎    execute: async (ctx: CommandContext) => {
-‎      const mentionedJids = ctx.msg.message?.extendedTextMessage?.contextInfo?.mentionedJid || [];
-‎      if (mentionedJids.length === 0) {
-‎        await ctx.sock.sendMessage(ctx.from, { text: '⬩Ｍ Ｕ Ｇ Ｅ Ｎ     Ｋ Ｉ Ｋ Ａ Ｉ⬩\n\nTag a user to duel! Example: duel @user' }, { quoted: ctx.msg });
-‎        return;
-‎      }
-‎
-‎      const targetJid = mentionedJids[0];
-‎      if (targetJid === ctx.sender) {
-‎        await ctx.sock.sendMessage(ctx.from, { text: '⬩Ｍ Ｕ Ｇ Ｅ Ｎ     Ｋ Ｉ Ｋ Ａ Ｉ⬩\n\nYou cannot challenge yourself!' }, { quoted: ctx.msg });
-‎        return;
-‎      }
-‎
-‎      const challengerPushName = ctx.pushName || ctx.msg.pushName || 'Shinobi A';
-‎      // If you can easily fetch the target's pushname, do so here, otherwise pass a fallback string:
-‎      const challengedPushName = 'Shinobi B';
-‎
-‎      await duelManager.initiateChallenge(
-‎        ctx.from,
-‎        ctx.sender,
-‎        targetJid,
-‎        challengerPushName,
-‎        challengedPushName,
-‎        ctx.sock
-‎      );
-‎    }
-‎  },
+    name: 'duel',
+    description: 'Challenges a tagged user to a card duel',
+    execute: async (ctx: CommandContext) => {
+      const mentionedJids = ctx.msg.message?.extendedTextMessage?.contextInfo?.mentionedJid || [];
+      if (mentionedJids.length === 0) {
+        await ctx.sock.sendMessage(ctx.from, { text: '⬩Ｍ Ｕ Ｇ Ｅ Ｎ     Ｋ Ｉ Ｋ Ａ Ｉ⬩\n\nTag a user to duel! Example: duel @user' }, { quoted: ctx.msg });
+        return;
+      }
+
+      const targetJid = mentionedJids[0];
+      if (targetJid === ctx.sender) {
+        await ctx.sock.sendMessage(ctx.from, { text: '⬩Ｍ Ｕ Ｇ Ｅ Ｎ     Ｋ Ｉ Ｋ Ａ Ｉ⬩\n\nYou cannot challenge yourself!' }, { quoted: ctx.msg });
+        return;
+      }
+
+      const challengerPushName = ctx.pushName || ctx.msg.pushName || '';
+      const challengedPushName = '';
+
+      await duelManager.initiateChallenge(
+        ctx.from,
+        ctx.sender,
+        targetJid,
+        challengerPushName,
+        challengedPushName,
+        ctx.sock
+      );
+    }
+  },
 ‎
   {
     name: 'accept',
