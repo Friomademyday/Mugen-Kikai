@@ -33,8 +33,18 @@ export async function checkAndProcessElections(sock: any): Promise<void> {
 }
 
 async function finalizeElections(sock: any, state: any): Promise<void> {
+  // Unfreeze candidate wallets
   const candidateJids = state.candidates.map((c: any) => c.jid);
   await User.updateMany({ jid: { $in: candidateJids } }, { custom03: false });
+
+  // Clear 'OFFICIAL' role status from all previous political officeholders
+  await User.updateMany({ custom04: 'OFFICIAL' }, { custom04: '' });
+
+  // Reset current leaders before declaring new cycle winners
+  state.presidentJid = null;
+  state.vicePresidentJid = null;
+  state.hosJid = null;
+  state.governors = new Map();
 
   const presidentialCandidates = state.candidates.filter((c: any) => c.role === 'PRESIDENT');
   const hosCandidates = state.candidates.filter((c: any) => c.role === 'HOS');
@@ -53,7 +63,6 @@ async function finalizeElections(sock: any, state: any): Promise<void> {
   const presWinner = declareWinner(presidentialCandidates);
   if (presWinner) {
     state.presidentJid = presWinner.jid;
-    state.vicePresidentJid = null;
   }
 
   const hosWinner = declareWinner(hosCandidates);
@@ -70,8 +79,24 @@ async function finalizeElections(sock: any, state: any): Promise<void> {
     }
   }
 
-  const allWinners = [presWinner?.jid, hosWinner?.jid, ...Array.from(state.governors.values())].filter(Boolean);
-  await User.updateMany({ jid: { $in: allWinners } }, { custom04: 'OFFICIAL' });
+  // Grant 'OFFICIAL' role status only to new winners
+  const allWinners = [state.presidentJid, state.hosJid, ...Array.from(state.governors.values())].filter(Boolean);
+  if (allWinners.length > 0) {
+    await User.updateMany({ jid: { $in: allWinners } }, { custom04: 'OFFICIAL' });
+  }
+
+  // Resolve visible display names from DB instead of printing raw JIDs/tags
+  let presDisplayName = 'Vacant';
+  if (state.presidentJid) {
+    const presUser = await User.findOne({ jid: state.presidentJid });
+    presDisplayName = presUser?.pushName || presWinner?.pushName || 'Anonymous Titan';
+  }
+
+  let hosDisplayName = 'Vacant';
+  if (state.hosJid) {
+    const hosUser = await User.findOne({ jid: state.hosJid });
+    hosDisplayName = hosUser?.pushName || hosWinner?.pushName || 'Anonymous Titan';
+  }
 
   state.electionPhase = 'LOCKED';
   state.phaseEndsAt = null;
@@ -79,7 +104,7 @@ async function finalizeElections(sock: any, state: any): Promise<void> {
   state.candidates = [];
   await state.save();
 
-  await broadcastMessage(sock, `▬▬▬▬▬ ⬩ 🏛️ 𝗘𝗟𝗘𝗖𝗧𝗜𝗢𝗡 𝗥𝗘𝗦𝗨𝗟𝗧𝗦\n\n🏆 *THE ELECTION HAS CONCLUDED!*\n\n👑 President: ${presWinner ? `@${presWinner.jid.split('@')[0]}` : 'Vacant'}\n🛡️ Head of Security: ${hosWinner ? `@${hosWinner.jid.split('@')[0]}` : 'Vacant'}\n\nCongratulations to the winners! Next elections run in 4 days.`);
+  await broadcastMessage(sock, `▬▬▬▬▬ ⬩ 🏛️ 𝗘𝗟𝗘𝗖𝗧𝗜𝗢𝗡 𝗥𝗘𝗦𝗨𝗟𝗧𝗦\n\n🏆 *THE ELECTION HAS CONCLUDED!*\n\n👑 President: *${presDisplayName}*\n🛡️ Head of Security: *${hosDisplayName}*\n\nCongratulations to the winners! Next elections run in 4 days.`);
 }
 
 async function broadcastMessage(sock: any, text: string): Promise<void> {
@@ -91,4 +116,4 @@ async function broadcastMessage(sock: any, text: string): Promise<void> {
   } catch (err) {
     console.error('Broadcast failed:', err);
   }
-                      }
+                                                         }
