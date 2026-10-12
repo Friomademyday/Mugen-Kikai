@@ -2,7 +2,7 @@ import { CommandContext } from '../index';
 import { duelManager } from '../services/duelManager';
 
 export const duelCommands = [
-‎{
+  {
     name: 'duel',
     description: 'Challenges a tagged user to a card duel',
     execute: async (ctx: CommandContext) => {
@@ -31,7 +31,6 @@ export const duelCommands = [
       );
     }
   },
-‎
   {
     name: 'accept',
     description: 'Accepts an active duel challenge',
