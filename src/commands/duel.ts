@@ -1,5 +1,6 @@
 import { CommandContext } from '../index';
 import { duelManager } from '../services/duelManager';
+import { User } from '../database/models/User';
 
 export const duelCommands = [
   {
@@ -18,8 +19,11 @@ export const duelCommands = [
         return;
       }
 
-      const challengerPushName = ctx.pushName || ctx.msg.pushName || '';
-      const challengedPushName = '';
+      const challengerUser = await User.findOne({ jid: ctx.sender });
+      const challengedUser = await User.findOne({ jid: targetJid });
+
+      const challengerPushName = challengerUser?.pushName || ctx.msg.pushName || '';
+      const challengedPushName = challengedUser?.pushName || '';
 
       await duelManager.initiateChallenge(
         ctx.from,
@@ -31,6 +35,7 @@ export const duelCommands = [
       );
     }
   },
+
   {
     name: 'accept',
     description: 'Accepts an active duel challenge',
