@@ -23,15 +23,16 @@ export const cardCommands = [
       const user = await User.getOrCreate(ctx.sender);
       const existing = user.inventory.find((i) => i.character_id.toLowerCase() === card.character_id.toLowerCase());
       if (existing) {
-        await ctx.sock.sendMessage(ctx.from, { text: `⬩Ｍ Ｕ Ｇ Ｅ Ｎ     Ｋ Ｉ Ｋ Ａ Ｉ⬩\n\nYou already own ${card.name}!` }, { quoted: ctx.msg });
+        await ctx.sock.sendMessage(ctx.from, { text: `⬩Ｍ Ｕ Ｇ Ｅ Ｎ     Ｋ Ｉ Ｋ Ａ Ｉ⬩\n\nYou already own ${card.name || card.character_id}!` }, { quoted: ctx.msg });
         return;
       }
 
-      const cost = RARITY_BASE_COSTS[card.rarity];
+      const cost = Number(card.price || RARITY_BASE_COSTS[card.rarity]) || 1500000;
+
       if (user.wallet < cost) {
         await ctx.sock.sendMessage(
           ctx.from,
-          { text: `⬩Ｍ Ｕ Ｇ Ｅ Ｎ     Ｋ Ｉ Ｋ Ａ Ｉ⬩\n\nInsufficient funds! ${card.name} costs 🪙${cost.toLocaleString()}, but your wallet has 🪙${user.wallet.toLocaleString()}` },
+          { text: `⬩Ｍ Ｕ Ｇ Ｅ Ｎ     Ｋ Ｉ Ｋ Ａ Ｉ⬩\n\nInsufficient funds! ${card.name || card.character_id} costs 🪙${cost.toLocaleString()}, but your wallet has 🪙${user.wallet.toLocaleString()}` },
           { quoted: ctx.msg }
         );
         return;
@@ -46,8 +47,8 @@ export const cardCommands = [
 `⬩Ｍ Ｕ Ｇ Ｅ Ｎ     Ｋ Ｉ Ｋ Ａ Ｉ⬩
 
 > SUCCESSFULLY PURCHASED CARD!
-CARD: ${card.name}
-TYPE: ${card.character_type.toUpperCase()}
+CARD: ${card.name || card.character_id}
+TYPE: ${card.character_type ? card.character_type.toUpperCase() : 'OFFENSE'}
 RARITY: ${card.rarity}
 LEVEL: 1
 COST: 🪙${cost.toLocaleString()}
@@ -78,8 +79,8 @@ REMAINING WALLET: 🪙${user.wallet.toLocaleString()}`;
       for (let i = 0; i < user.inventory.length; i++) {
         const item = user.inventory[i];
         const card = cardLoader.getCard(item.character_id);
-        const cardName = card ? card.name : item.character_id;
-        const cardType = card ? card.character_type.toUpperCase() : 'UNKNOWN';
+        const cardName = card ? (card.name || card.character_id) : item.character_id;
+        const cardType = card && card.character_type ? card.character_type.toUpperCase() : 'UNKNOWN';
 
         caption += `${i + 1}. *${cardName}* [${cardType}]\n`;
         caption += `   ├─ Level: ${item.level}/5\n`;
@@ -111,16 +112,19 @@ REMAINING WALLET: 🪙${user.wallet.toLocaleString()}`;
       const userLevel = invItem ? invItem.level : 1;
 
       let text = `⬩Ｍ Ｕ Ｇ Ｅ Ｎ     Ｋ Ｉ Ｋ Ａ Ｉ⬩\n\n`;
-      text += `CARD: ${card.name}\n`;
-      text += `TYPE: ${card.character_type.toUpperCase()}\n`;
+      text += `CARD: ${card.name || card.character_id}\n`;
+      text += `TYPE: ${card.character_type ? card.character_type.toUpperCase() : 'OFFENSE'}\n`;
       text += `RARITY: ${card.rarity}\n`;
-      text += `OWNED LEVEL: ${userLevel}/${card.max_level}\n\n`;
+      text += `OWNED LEVEL: ${userLevel}/${card.max_level || 5}\n\n`;
       text += `MOVES & SCALED POINTS:\n`;
 
-      for (const move of card.moves) {
-        const scaled = cardLoader.calculateScaledPoints(move.base_points, userLevel);
-        const bxp = move.bxp_cost || 3;
-        text += `• *${move.name}* (\`${move.move_id}\`)\n  ├─ Base: ${move.base_points} ➔ Scaled: ${scaled}\n  └─ BXP Cost: ⚡ ${bxp}\n`;
+      if (card.moves && Array.isArray(card.moves)) {
+        for (const move of card.moves) {
+          const moveName = move.move_name || move.name || move.move_id;
+          const scaled = cardLoader.calculateScaledPoints(move.base_points, userLevel);
+          const bxp = move.bxp_cost || 3;
+          text += `• *${moveName}* (\`${move.move_id}\`)\n  ├─ Base: ${move.base_points} ➔ Scaled: ${scaled}\n  └─ BXP Cost: ⚡ ${bxp}\n`;
+        }
       }
 
       const imagePath = cardLoader.getCardImagePath(card.character_id, userLevel);
@@ -151,12 +155,13 @@ REMAINING WALLET: 🪙${user.wallet.toLocaleString()}`;
       const user = await User.getOrCreate(ctx.sender);
       const invItem = user.inventory.find((i) => i.character_id.toLowerCase() === card.character_id.toLowerCase());
       if (!invItem) {
-        await ctx.sock.sendMessage(ctx.from, { text: `⬩Ｍ Ｕ Ｇ Ｅ Ｎ     Ｋ Ｉ Ｋ Ａ Ｉ⬩\n\nYou do not own ${card.name}!` }, { quoted: ctx.msg });
+        await ctx.sock.sendMessage(ctx.from, { text: `⬩Ｍ Ｕ Ｇ Ｅ Ｎ     Ｋ Ｉ Ｋ Ａ Ｉ⬩\n\nYou do not own ${card.name || card.character_id}!` }, { quoted: ctx.msg });
         return;
       }
 
-      if (invItem.level >= card.max_level) {
-        await ctx.sock.sendMessage(ctx.from, { text: `⬩Ｍ Ｕ Ｇ Ｅ Ｎ     Ｋ Ｉ Ｋ Ａ Ｉ⬩\n\n*${card.name}* is already at MAX level (${card.max_level})!` }, { quoted: ctx.msg });
+      const maxLevel = card.max_level || 5;
+      if (invItem.level >= maxLevel) {
+        await ctx.sock.sendMessage(ctx.from, { text: `⬩Ｍ Ｕ Ｇ Ｅ Ｎ     Ｋ Ｉ Ｋ Ａ Ｉ⬩\n\n*${card.name || card.character_id}* is already at MAX level (${maxLevel})!` }, { quoted: ctx.msg });
         return;
       }
 
@@ -181,8 +186,8 @@ REMAINING WALLET: 🪙${user.wallet.toLocaleString()}`;
 `⬩Ｍ Ｕ Ｇ Ｅ Ｎ     Ｋ Ｉ Ｋ Ａ Ｉ⬩
 
 > SUCCESSFULLY UPGRADED CARD!
-CARD: ${card.name}
-NEW LEVEL: ${targetLevel}/${card.max_level}
+CARD: ${card.name || card.character_id}
+NEW LEVEL: ${targetLevel}/${maxLevel}
 UPGRADE COST: 🪙${cost.toLocaleString()}
 REMAINING WALLET: 🪙${user.wallet.toLocaleString()}`;
 
