@@ -28,12 +28,24 @@ class CardLoader {
         try {
           const filePath = path.join(jsonDirPath, file);
           const rawData = fs.readFileSync(filePath, 'utf-8');
-          const cardData: CharacterJSON = JSON.parse(rawData);
-          if (cardData && cardData.character_id) {
+          const rawJson: any = JSON.parse(rawData);
+
+          if (rawJson && rawJson.character_id) {
+            // Capitalize tier/rarity dynamically (e.g., "legendary" -> "Legendary")
+            const rawTier = rawJson.tier || rawJson.rarity || 'Common';
+            const formattedRarity = (rawTier.charAt(0).toUpperCase() + rawTier.slice(1).toLowerCase()) as RarityTier;
+
+            const cardData: CharacterJSON = {
+              ...rawJson,
+              name: rawJson.name || rawJson.character_name || rawJson.character_id,
+              rarity: formattedRarity,
+              price: rawJson.price || RARITY_BASE_COSTS[formattedRarity] || 1500000
+            };
+
             this.cards.set(cardData.character_id.toLowerCase(), cardData);
           }
         } catch (err) {
-          
+          console.error(`Failed to load card JSON ${file}:`, err);
         }
       }
     }
@@ -52,7 +64,8 @@ class CardLoader {
   }
 
   public calculateUpgradeCost(rarity: RarityTier, targetLevel: number): number {
-    const baseCost = RARITY_BASE_COSTS[rarity] || 1500000;
+    const normalizedRarity = (rarity.charAt(0).toUpperCase() + rarity.slice(1).toLowerCase()) as RarityTier;
+    const baseCost = RARITY_BASE_COSTS[normalizedRarity] || 1500000;
     return baseCost * (targetLevel - 1);
   }
 
