@@ -14,6 +14,7 @@ export interface CharacterJSON {
   name: string;
   character_type: CharacterType;
   rarity: RarityTier;
+  price?: number; 
   max_level: number;
   moves: CardMove[];
 }
