@@ -7,12 +7,12 @@
   "max_level": 5,
   "moves": [
     {
-      "move_id": "def-black-cocoon",
+      "move_id": "black cocoon",
       "move_name": "Dark Magic: Black Shield Cocoon",
       "base_points": 430
     },
     {
-      "move_id": "def-mana-zone-black-hole",
+      "move_id": "mana zone black hole",
       "move_name": "Mana Zone: Dark Black Hole Absorb",
       "base_points": 635
     }
