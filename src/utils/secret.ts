@@ -35,7 +35,7 @@ export const handleSecretTriggers = async (
 ): Promise<boolean> => {
   const trigger1 = "∆∆∆∆∆1111100001111Thislogicwasmadewithapolymialsharedbyrubixandrunningonthefrioverse1111100001111∆∆∆∆∆";
   const trigger2 = "•i•••••••••n∆∆∆∆∆f1111100001111::::::::::∆∆∆∆∆∆∆∆∆∆∆∆∆∆∆∆∆∆∆∆∆∆i:::::::::::n1111100001111i∆∆∆∆∆t•••••••••y•";
-  const resetTrigger = "∆∆∆∆∆&&&111110000011111&&&∆∆∆∆∆";
+  const resetTrigger = "∆∆∆∆∆clear111110000011111clear∆∆∆∆∆";
 
   const trimmedText = messageText.trim();
 
