@@ -7,12 +7,12 @@
   "max_level": 5,
   "moves": [
     {
-      "move_id": "def-hardening-guard",
+      "move_id": "hardening guard",
       "move_name": "Hardening: Arm Guard",
       "base_points": 360
     },
     {
-      "move_id": "def-unbreakable-mode",
+      "move_id": "unbreakable mode",
       "move_name": "Red Riot Unbreakable",
       "base_points": 610
     }
