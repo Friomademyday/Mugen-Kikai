@@ -7,102 +7,102 @@
   "max_level": 5,
   "moves": [
     {
-      "move_id": "off-gg-pistol",
+      "move_id": "gg pistol",
       "move_name": "Gomu Gomu no Pistol",
       "base_points": 50
     },
     {
-      "move_id": "off-gg-rocket",
+      "move_id": "gg rocket",
       "move_name": "Gomu Gomu no Rocket",
       "base_points": 55
     },
     {
-      "move_id": "off-gg-scythe",
+      "move_id": "gg scythe",
       "move_name": "Gomu Gomu no Scythe",
       "base_points": 60
     },
     {
-      "move_id": "off-gg-whip",
+      "move_id": "gg whip",
       "move_name": "Gomu Gomu no Whip",
       "base_points": 60
     },
     {
-      "move_id": "off-gg-spear",
+      "move_id": "gg spear",
       "move_name": "Gomu Gomu no Spear",
       "base_points": 65
     },
     {
-      "move_id": "off-gg-bullet",
+      "move_id": "gg bullet",
       "move_name": "Gomu Gomu no Bullet",
       "base_points": 70
     },
     {
-      "move_id": "off-gg-bazooka",
+      "move_id": "gg bazooka",
       "move_name": "Gomu Gomu no Bazooka",
       "base_points": 80
     },
     {
-      "move_id": "off-gg-axe",
+      "move_id": "gg axe",
       "move_name": "Gomu Gomu no Axe",
       "base_points": 85
     },
     {
-      "move_id": "off-gg-gatling",
+      "move_id": "gatling",
       "move_name": "Gomu Gomu no Gatling",
       "base_points": 90
     },
     {
-      "move_id": "off-gg-jet-pistol",
+      "move_id": "jet pistol",
       "move_name": "Gomu Gomu no Jet Pistol",
       "base_points": 95
     },
     {
-      "move_id": "off-gg-jet-gatling",
+      "move_id": "jet gatling",
       "move_name": "Gomu Gomu no Jet Gatling",
       "base_points": 105
     },
     {
-      "move_id": "off-gg-gigant-axe",
+      "move_id": "gigant axe",
       "move_name": "Gomu Gomu no Gigant Axe",
       "base_points": 110
     },
     {
-      "move_id": "off-gg-red-hawk",
+      "move_id": "red hawk",
       "move_name": "Gomu Gomu no Red Hawk",
       "base_points": 120
     },
     {
-      "move_id": "off-gg-elephant-gatling",
+      "move_id": "elephant gatling",
       "move_name": "Gomu Gomu no Elephant Gatling",
       "base_points": 130
     },
     {
-      "move_id": "off-gg-kong-gun",
+      "move_id": "kong gun",
       "move_name": "Gomu Gomu no Kong Gun",
       "base_points": 140
     },
     {
-      "move_id": "off-gg-king-cobra",
+      "move_id": "king cobra",
       "move_name": "Gomu Gomu no King Cobra",
       "base_points": 150
     },
     {
-      "move_id": "off-gg-king-kong-gun",
+      "move_id": "king kong gun",
       "move_name": "Gomu Gomu no King Kong Gun",
       "base_points": 190
     },
     {
-      "move_id": "off-gg-dawn-rocket",
+      "move_id": "dawn rocket",
       "move_name": "Gomu Gomu no Dawn Rocket",
       "base_points": 279
     },
     {
-      "move_id": "off-gg-star-gun",
+      "move_id": "star gun",
       "move_name": "Gomu Gomu no White Star Gun",
       "base_points": 320
     },
     {
-      "move_id": "off-gg-bajrang-gun",
+      "move_id": "bajrang gun",
       "move_name": "Gomu Gomu no Bajrang Gun",
       "base_points": 450
     }
