@@ -120,7 +120,7 @@ REMAINING WALLET: 🪙${user.wallet.toLocaleString()}`;
 
       if (card.moves && Array.isArray(card.moves)) {
         for (const move of card.moves) {
-          const moveName = move.move_name || move.name || move.move_id;
+          const moveName = (move as any).move_name || move.name || move.move_id;
           const scaled = cardLoader.calculateScaledPoints(move.base_points, userLevel);
           const bxp = move.bxp_cost || 3;
           text += `• *${moveName}* (\`${move.move_id}\`)\n  ├─ Base: ${move.base_points} ➔ Scaled: ${scaled}\n  └─ BXP Cost: ⚡ ${bxp}\n`;
