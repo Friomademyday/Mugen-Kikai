@@ -7,12 +7,12 @@
   "max_level": 5,
   "moves": [
     {
-      "move_id": "def-android-energy-field",
+      "move_id": "android energy field",
       "move_name": "Android Energy Barrier",
       "base_points": 440
     },
     {
-      "move_id": "def-super-energy-dome",
+      "move_id": "super energy dome",
       "move_name": "Multi-Layered Energy Barrier Fortress",
       "base_points": 655
     }
