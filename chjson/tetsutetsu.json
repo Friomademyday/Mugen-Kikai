@@ -7,12 +7,12 @@
   "max_level": 5,
   "moves": [
     {
-      "move_id": "def-steel-body",
+      "move_id": "steel body",
       "move_name": "Steel Iron Guard",
       "base_points": 355
     },
     {
-      "move_id": "def-white-hot-steel",
+      "move_id": "white hot steel",
       "move_name": "White-Hot Steel Overdrive Defense",
       "base_points": 595
     }
