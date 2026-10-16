@@ -291,6 +291,111 @@ _Rarity_
   }
 };
 
+export const duelmenuCommand: Command = {
+  name: 'duelmenu',
+  description: 'Detailed explanation on Duel Mechanics',
+  aliases: ['dm'],
+  execute: async ({ sock, from }: CommandContext) => {
+    const caption = `⬩Ｍ Ｕ Ｇ Ｅ Ｎ     Ｋ Ｉ Ｋ Ａ Ｉ⬩
+⬩╭────────────╮ 
+⬩                                ╰──────╯⬩
+*⚔️    𝘋𝘜𝘌𝘓 𝘚𝘠𝘚𝘛𝘌𝘔 𝘎𝘜𝘐𝘋𝘌    ⚔️*
+────────────────────
+‎Welcome to the Mugen Kikai Card Duel Arena! 
+‎Engage in real-time, turn-based tactical battles using your collected cards.
+> Click Readmore.
+⬩╭────────────╮ 
+⬩                                ╰──────╯⬩
+‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎
+‎📜          *𝘉𝘈𝘛𝘛𝘓𝘌 𝘍𝘓𝘖𝘞*          📜
+_‎A duel progresses through 4 distinct phases:_
+
+> Stage 1: Challenge & Acceptance (15s)
+‎
+> Stage 2: Offense Deck Selection (30s)
+‎
+> Stage 3: Dual-wing Defense Prep (30s)
+‎
+> Stage 4: Combat Phase (3 Mins / 30s per Turn)
+⬩╭────────────╮ 
+⬩                                ╰──────╯⬩
+
+⬩ *𝘚𝘛𝘈𝘎𝘌 1 (𝘐𝘕𝘐𝘛𝘐𝘈𝘛𝘐𝘕𝘎 𝘉𝘈𝘛𝘛𝘓𝘌)*
+> ‎_:duel @user_
+‎Issues a formal challenge to a tagged user.
+‎Requirements:
+‎• Neither player can be in an active duel.
+‎• Both players must own at least 1 Offense card.
+‎Timer: 15 seconds to accept.
+> ‎_:accept_
+‎Accepts an incoming duel challenge.
+‎Must be typed by the challenged player within 15s.
+⬩╭────────────╮ 
+⬩                                ╰──────╯⬩
+
+⬩ *𝘚𝘛𝘈𝘎𝘌 2 (𝘖𝘍𝘍𝘌𝘕𝘚𝘌 𝘋𝘌𝘊𝘒 𝘚𝘌𝘓𝘌𝘊𝘛𝘐𝘖𝘕)*
+‎Select up to 2 Offense cards from your inventory.
+> _‎:off1 <card_id>_
+‎Example: :off1 revy
+‎Locks in your primary Offense card into Slot 1.
+> ‎_:off2 <card_id>_
+‎Example: :off2 yuji
+‎Locks in your secondary Offense card into Slot 2.
+⬩ ───────  *SELECTION RULES*
+‎· You have 30 seconds to select at least 1 card.
+‎· Fail to lock in = Immediate Forfeit! Opponent wins automatically.
+⬩╭────────────╮ 
+⬩                                ╰──────╯⬩
+
+⬩ *𝘚𝘛𝘈𝘎𝘌 3 (𝘋𝘜𝘈𝘓-𝘞𝘐𝘕𝘎 𝘋𝘌𝘍𝘌𝘕𝘚𝘌 𝘗𝘙𝘌𝘗)*
+> Optional: Skip this = Starting shield = 0.
+‎Prepare your defenses! Build your starting Shield Value.
+> ‎_:def1 <move_id>_
+‎Example: :black cocoon
+‎Equips Defense move to Left Wing (Wing 1).
+> ‎_:def2 <move_id>_
+‎Example: :mana zone black hole
+‎Equips Defense move to Right Wing (Wing 2).
+⬩ ─ ‎*DEFENSE & SHIELD MECHS*
+‎· Shield Generation: Scales with card level.
+‎  Formula: Base Points x 1.5^(Level - 1)
+‎· Combined Shield: Left Wing + Right Wing
+‎· No Duplicates: Cannot equip same move on both wings.
+⬩╭────────────╮ 
+⬩                                ╰──────╯⬩
+
+⬩ *‎𝘚𝘛𝘈𝘎𝘌 4 (𝘊𝘖𝘔𝘉𝘈𝘛 𝘗𝘏𝘈𝘚𝘌)*
+‎Once combat begins, take turns attacking.
+> ‎_:<move_id>_
+‎Example: :black flash
+‎Executes an attack move on your turn.
+⬩╭────────────╮ 
+⬩                                ╰──────╯⬩
+
+‎⬩ *𝘊𝘖𝘔𝘉𝘈𝘛 𝘙𝘜𝘓𝘌𝘚 & 𝘛𝘐𝘔𝘐𝘕𝘎*
+‎1. Turn Order: Challenged player goes first.
+‎2. Turn Timer: 30 seconds per turn.
+‎3. Turn Strikes (AFK System):
+‎· Timeout = 1 Strike + Skip turn, 2 Strikes = Immediate Auto-Forfeit
+‎4. Match Timer (3 Minutes):
+‎· If time expires, winner = Highest Combined Stat (HP + Shield)
+‎· Equal stats = Draw
+⬩╭────────────╮ 
+⬩                                ╰──────╯⬩
+> Made by Frio`;
+
+    if (fs.existsSync(allcardsImagePath)) {
+      const imageBuffer = fs.readFileSync(allcardsImagePath);
+      await sock.sendMessage(from, {
+        image: imageBuffer,
+        caption
+      });
+    } else {
+      await sock.sendMessage(from, { text: caption });
+    }
+  }
+};
+
 export const updatesImagePath = path.join(process.cwd(), 'assets', 'mugenupdate.jpg');
 
 export const updatesCommand: Command = {
@@ -405,6 +510,7 @@ export const utilityCommands = [
   ownerCommand,
   whatsNewCommand,
   allcardsCommand,
+  duelmenuCommand,
   updatesCommand,
   profileCommand
 ];
