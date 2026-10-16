@@ -15,6 +15,7 @@ import fs from 'fs';
 import path from 'path';
 import pino from 'pino';
 import { checkAndProcessElections } from './services/electionScheduler';
+import { duelManager } from './services/duelManager';
 
 export interface CommandContext {
   sock: WASocket;
@@ -157,7 +158,7 @@ async function startBot() {
 
     if (!commandName) return;
 
-    const targetCommand = commands.get(commandName);
+const targetCommand = commands.get(commandName);
 
     if (targetCommand) {
       try {
@@ -175,6 +176,17 @@ async function startBot() {
       } catch (error) {
         console.error(`Error executing ${commandName}:`, error);
         await sock.sendMessage(from, { text: 'An error occurred while executing that command!' }, { quoted: msg });
+      }
+    } else {
+      if (duelManager.isUserInDuel(sender)) {
+        const duel = duelManager.getActiveDuelForUser(sender);
+        if (duel && duel.phase === 'COMBAT') {
+          try {
+            await duelManager.executeMove(from, sender, commandName, sock);
+          } catch (error) {
+            console.error(`Error executing combat move ${commandName}:`, error);
+          }
+        }
       }
     }
   });
