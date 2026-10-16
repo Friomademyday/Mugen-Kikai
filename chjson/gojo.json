@@ -7,17 +7,17 @@
   "max_level": 5,
   "moves": [
     {
-      "move_id": "def-simple-domain",
+      "move_id": "simple domain",
       "move_name": "New Shadow Style: Simple Domain",
       "base_points": 380
     },
     {
-      "move_id": "def-reverse-cursed-technique",
+      "move_id": "reverse cursed technique",
       "move_name": "Reverse Cursed Technique Output",
       "base_points": 490
     },
     {
-      "move_id": "def-infinity-barrier",
+      "move_id": "infinity",
       "move_name": "Mugen (Infinity Barrier)",
       "base_points": 660
     }
