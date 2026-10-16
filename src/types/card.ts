@@ -3,7 +3,8 @@ export type RarityTier = 'Common' | 'Rare' | 'Epic' | 'Legendary';
 
 export interface CardMove {
   move_id: string;
-  name: string;
+  name?: string;
+  move_name?: string;
   base_points: number;
   bxp_cost?: number;
   description?: string;
