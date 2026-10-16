@@ -181,10 +181,12 @@ const targetCommand = commands.get(commandName);
       if (duelManager.isUserInDuel(sender)) {
         const duel = duelManager.getActiveDuelForUser(sender);
         if (duel && duel.phase === 'COMBAT') {
+          // Grab everything after the prefix as the full move ID (supports spaces!)
+          const fullMoveId = messageContent.slice(CONFIG.prefix.length).trim().toLowerCase();
           try {
-            await duelManager.executeMove(from, sender, commandName, sock);
+            await duelManager.executeMove(from, sender, fullMoveId, sock);
           } catch (error) {
-            console.error(`Error executing combat move ${commandName}:`, error);
+            console.error(`Error executing combat move ${fullMoveId}:`, error);
           }
         }
       }
