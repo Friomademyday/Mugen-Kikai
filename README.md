@@ -142,7 +142,7 @@ Risk it all across: `gamble`, `coinflip`, `slots`, `dice`, `blackjack`, `roulett
 
 ```bash
 # 1. Clone the repo
-git clone [https://github.com/your-username/mugen-kikai.git](https://github.com/your-username/mugen-kikai.git)
+git clone [https://github.com/Friomademyday/Mugen-Kikai.git](https://github.com/Friomademyday/Mugen-Kikai.git)
 cd mugen-kikai
 
 # 2. Install dependencies
@@ -156,14 +156,14 @@ npm start
 ```
 
 ### Requirements
-- **Node.js:** 
+- **Node.js:** `18+`
 - **WhatsApp:** Active account for pairing / QR
 - **Database:** MongoDB / JSON DB (depending on your setup)
 
 ---
 
 ## 🛠️ Tech Stack
-- **Runtime:** Node.js
+- **Runtime:** Node.js 
 - **WhatsApp API:** Baileys / WhatsApp-Web.js
 - **Database:** JSON / MongoDB for player data, cards, elections, treasuries
 
